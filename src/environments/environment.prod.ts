@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://kasavelli-backend.onrender.com'
+  apiUrl: 'https://kasavelli-backend.onrender.com/api'
 };
