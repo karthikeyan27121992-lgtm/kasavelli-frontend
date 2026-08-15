@@ -1,3 +1,5 @@
 name = "kasavelli-frontend"
-pages_build_output_dir = "dist/silver-jewellery-frontend"
 compatibility_date = "2024-01-01"
+
+[assets]
+directory = "./dist/silver-jewellery-frontend"
