@@ -8,8 +8,6 @@ yarn-error.log*
 dist/
 .angular/cache/
 
-# Production environment file (keep example, ignore real secrets)
-src/environments/environment.prod.ts
 
 # macOS
 .DS_Store
