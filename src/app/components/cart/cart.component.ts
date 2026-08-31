@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { PaymentService, RazorpayOrder } from '../../services/payment.service';
+import { AuthService } from '../../services/auth.service';
 import { CartItem } from '../../models/product.model';
 
 @Component({
@@ -175,6 +176,7 @@ export class CartComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private paymentService: PaymentService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -236,10 +238,17 @@ export class CartComponent implements OnInit {
   }
 
   initiatePayment(orderData: RazorpayOrder): void {
+    const user = this.authService.currentUserValue;
+    const prefill = {
+      name: user?.name || '',
+      email: user?.email || '',
+      contact: user?.phone_number || ''
+    };
+
     this.paymentService.initiatePayment(
       orderData,
+      prefill,
       (response) => {
-        // Payment success
         this.paymentService.verifyPayment({
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
@@ -247,24 +256,22 @@ export class CartComponent implements OnInit {
         }).subscribe({
           next: (result) => {
             this.processing = false;
-            alert('Payment successful! Order ID: ' + result.order_id);
-            this.router.navigate(['/']);
+            this.router.navigate(['/order-confirmation'], {
+              queryParams: { id: result.order_id }
+            });
           },
           error: (err) => {
             this.processing = false;
             console.error('Payment verification failed:', err);
-            alert('Payment verification failed');
+            alert('Payment verification failed. Please contact support.');
           }
         });
       },
       (error) => {
-        // Payment failed
         this.processing = false;
         this.paymentService.paymentFailed(orderData.order_id).subscribe();
-        alert('Payment failed or cancelled');
+        alert('Payment failed or cancelled.');
       }
     );
   }
 }
-
-// Made with Bob

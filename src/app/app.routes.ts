@@ -24,6 +24,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'order-confirmation',
+    loadComponent: () => import('./components/order-confirmation/order-confirmation.component').then(m => m.OrderConfirmationComponent),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'admin',
     loadComponent: () => import('./components/admin/admin.component').then(m => m.AdminComponent),
     canActivate: [AdminGuard]
@@ -33,5 +38,3 @@ export const routes: Routes = [
     redirectTo: ''
   }
 ];
-
-// Made with Bob

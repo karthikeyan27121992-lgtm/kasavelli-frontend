@@ -18,6 +18,12 @@ export interface PaymentVerification {
   razorpay_signature: string;
 }
 
+export interface UserPrefill {
+  name: string;
+  email: string;
+  contact: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -38,21 +44,26 @@ export class PaymentService {
     return this.http.post<{ message: string }>(`${this.apiUrl}/payment_failed/`, { razorpay_order_id: orderId });
   }
 
-  initiatePayment(orderData: RazorpayOrder, onSuccess: (response: any) => void, onFailure: (error: any) => void): void {
+  initiatePayment(
+    orderData: RazorpayOrder,
+    prefill: UserPrefill,
+    onSuccess: (response: any) => void,
+    onFailure: (error: any) => void
+  ): void {
     const options = {
       key: orderData.key,
-      amount: orderData.amount * 100, // Amount in paise
+      amount: orderData.amount * 100, // amount already in rupees from backend, convert to paise
       currency: orderData.currency,
-      name: 'Silver Jewellery Shop',
+      name: 'Kasavelli - 925 Silver Jewellery',
       description: 'Purchase of 925 Silver Jewellery',
       order_id: orderData.order_id,
       handler: (response: any) => {
         onSuccess(response);
       },
       prefill: {
-        name: '',
-        email: '',
-        contact: ''
+        name: prefill.name,
+        email: prefill.email,
+        contact: prefill.contact
       },
       theme: {
         color: '#C0C0C0'
@@ -64,9 +75,10 @@ export class PaymentService {
       }
     };
 
-    const razorpay = new Razorpay(options);
-    razorpay.open();
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', (response: any) => {
+      onFailure(response.error);
+    });
+    rzp.open();
   }
 }
-
-// Made with Bob
