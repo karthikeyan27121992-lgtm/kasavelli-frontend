@@ -210,8 +210,12 @@ import { Product, Category } from '../../models/product.model';
 
               <div class="form-group">
                 <label class="form-label">Product Image</label>
+                <div *ngIf="editingProduct?.image" class="current-image-preview">
+                  <img [src]="editingProduct!.image" alt="Current image" class="preview-img">
+                  <small class="text-muted">Current image — upload a new file to replace it</small>
+                </div>
                 <input type="file" class="form-control" (change)="onFileSelect($event, 'product')" accept="image/*">
-                <small class="text-muted">Optional - can be added later</small>
+                <small class="text-muted" *ngIf="!editingProduct">Required — upload a product image</small>
               </div>
 
               <div class="modal-footer">
@@ -271,8 +275,12 @@ import { Product, Category } from '../../models/product.model';
 
               <div class="form-group">
                 <label class="form-label">Category Image</label>
+                <div *ngIf="editingCategory?.image" class="current-image-preview">
+                  <img [src]="editingCategory!.image" alt="Current image" class="preview-img">
+                  <small class="text-muted">Current image — upload a new file to replace it</small>
+                </div>
                 <input type="file" class="form-control" (change)="onFileSelect($event, 'category')" accept="image/*">
-                <small class="text-muted">Recommended: Square image for best display</small>
+                <small class="text-muted" *ngIf="!editingCategory">Recommended: Square image for best display</small>
               </div>
 
               <div class="modal-footer">
@@ -348,6 +356,25 @@ import { Product, Category } from '../../models/product.model';
       height: 60px;
       object-fit: cover;
       border-radius: 4px;
+    }
+
+    .current-image-preview {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      padding: 8px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      border: 1px solid #eee;
+    }
+
+    .preview-img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #ddd;
     }
 
     .no-records {
@@ -492,7 +519,8 @@ export class AdminComponent implements OnInit {
   };
 
   saving = false;
-  selectedFile: File | null = null;
+  selectedProductFile: File | null = null;
+  selectedCategoryFile: File | null = null;
 
   constructor(private productService: ProductService) {}
 
@@ -575,8 +603,8 @@ export class AdminComponent implements OnInit {
       }
     });
 
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile, this.selectedFile.name);
+    if (this.selectedProductFile) {
+      formData.append('image', this.selectedProductFile, this.selectedProductFile.name);
     }
 
     const request = this.editingProduct
@@ -628,7 +656,7 @@ export class AdminComponent implements OnInit {
       is_featured: false,
       is_active: true
     };
-    this.selectedFile = null;
+    this.selectedProductFile = null;
   }
 
   // Category Modal Methods
@@ -679,8 +707,8 @@ export class AdminComponent implements OnInit {
       }
     });
 
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile, this.selectedFile.name);
+    if (this.selectedCategoryFile) {
+      formData.append('image', this.selectedCategoryFile, this.selectedCategoryFile.name);
     }
 
     const request = this.editingCategory
@@ -723,12 +751,16 @@ export class AdminComponent implements OnInit {
       description: '',
       is_active: true
     };
-    this.selectedFile = null;
+    this.selectedCategoryFile = null;
   }
 
   onFileSelect(event: any, type: 'product' | 'category'): void {
     if (event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
+      if (type === 'product') {
+        this.selectedProductFile = event.target.files[0];
+      } else {
+        this.selectedCategoryFile = event.target.files[0];
+      }
     }
   }
 }
