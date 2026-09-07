@@ -61,7 +61,10 @@ import { Product, Category } from '../../models/product.model';
             </thead>
             <tbody>
               <tr *ngFor="let product of products">
-                <td><img [src]="product.image" [alt]="product.name" class="table-img"></td>
+                <td>
+                  <img *ngIf="product.image; else noImg" [src]="product.image" [alt]="product.name" class="table-img">
+                  <ng-template #noImg><div class="no-img-placeholder">No Image</div></ng-template>
+                </td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.category_name }}</td>
                 <td>₹{{ product.price }}</td>
@@ -105,7 +108,10 @@ import { Product, Category } from '../../models/product.model';
             </thead>
             <tbody>
               <tr *ngFor="let category of categories">
-                <td><img [src]="category.image" [alt]="category.name" class="table-img"></td>
+                <td>
+                  <img *ngIf="category.image; else noCatImg" [src]="category.image" [alt]="category.name" class="table-img">
+                  <ng-template #noCatImg><div class="no-img-placeholder">No Image</div></ng-template>
+                </td>
                 <td>{{ category.name }}</td>
                 <td>{{ category.display_name }}</td>
                 <td>{{ category.description || '-' }}</td>
@@ -356,6 +362,20 @@ import { Product, Category } from '../../models/product.model';
       height: 60px;
       object-fit: cover;
       border-radius: 4px;
+    }
+
+    .no-img-placeholder {
+      width: 60px;
+      height: 60px;
+      background: #f0f0f0;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #999;
+      text-align: center;
     }
 
     .current-image-preview {
