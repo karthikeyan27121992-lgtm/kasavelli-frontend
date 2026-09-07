@@ -52,7 +52,7 @@ export class PaymentService {
   ): void {
     const options = {
       key: orderData.key,
-      amount: orderData.amount * 100, // amount already in rupees from backend, convert to paise
+      amount: Math.round(orderData.amount * 100), // backend sends rupees; Razorpay SDK needs paise
       currency: orderData.currency,
       name: 'Kasavelli - 925 Silver Jewellery',
       description: 'Purchase of 925 Silver Jewellery',
@@ -66,7 +66,7 @@ export class PaymentService {
         contact: prefill.contact
       },
       theme: {
-        color: '#C0C0C0'
+        color: '#551756'
       },
       modal: {
         ondismiss: () => {

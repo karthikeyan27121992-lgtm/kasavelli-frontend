@@ -48,6 +48,7 @@ export interface ProductReview {
 export interface CartItem {
   id: number;
   product: number;
+  product_id?: number;   // alias returned by some serializers
   product_name: string;
   product_price: number;
   product_image: string;

@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
-import { Product } from '../../models/product.model';
+import { Product, CartItem } from '../../models/product.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-detail',
@@ -50,28 +51,34 @@ import { Product } from '../../models/product.model';
             <p>{{ product.description }}</p>
           </div>
 
-          <div class="actions" *ngIf="isAuthenticated">
-            <div class="quantity-selector">
-              <label>Quantity:</label>
-              <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stock_quantity" class="form-control">
-            </div>
-            
-            <button 
-              class="btn btn-primary" 
-              (click)="addToCart()" 
-              [disabled]="!product.in_stock || adding"
-            >
-              {{ adding ? 'Adding...' : 'Add to Cart' }}
-            </button>
+          <div class="actions" *ngIf="isAuthenticated && product.in_stock">
+            <!-- Amazon-style: plain "Add to Cart" → inline stepper once added -->
+            <ng-container *ngIf="cartItem; else addBtnTpl">
+              <div class="cart-stepper">
+                <button class="step-btn" (click)="decrease()">−</button>
+                <span class="step-qty">{{ cartItem.quantity }}</span>
+                <button class="step-btn" (click)="increase()">+</button>
+              </div>
+              <a routerLink="/cart" class="go-to-bag">View Bag →</a>
+            </ng-container>
+            <ng-template #addBtnTpl>
+              <button class="btn-add" (click)="addToCart()" [disabled]="adding">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                {{ adding ? 'Adding…' : 'Add to Cart' }}
+              </button>
+            </ng-template>
+          </div>
+
+          <div class="out-of-stock-msg" *ngIf="!product.in_stock">
+            <span>⊗ Currently out of stock</span>
           </div>
 
           <p *ngIf="!isAuthenticated" class="alert alert-info">
             Please <a routerLink="/login">login</a> to add items to cart
           </p>
-
-          <div class="alert alert-success" *ngIf="successMessage">
-            {{ successMessage }}
-          </div>
         </div>
       </div>
 
@@ -93,119 +100,241 @@ import { Product } from '../../models/product.model';
     <div class="spinner" *ngIf="!product"></div>
   `,
   styles: [`
+    .container {
+      padding: 2rem 1.5rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a { color: var(--royal); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--gold-dark); }
+    .breadcrumb span { margin: 0 0.5rem; opacity: 0.4; }
+
     .product-detail {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      margin: 2rem 0;
+      gap: 4rem;
+      margin-bottom: 4rem;
     }
 
+    /* Images */
     .product-images {
       position: sticky;
-      top: 100px;
+      top: 80px;
     }
-
     .main-image {
       width: 100%;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .thumbnail-images {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .thumbnail {
-      width: 80px;
-      height: 80px;
+      aspect-ratio: 1;
       object-fit: cover;
-      border-radius: 4px;
+      display: block;
+      margin-bottom: 0.85rem;
+      background: var(--cream);
+      transition: transform 0.4s ease;
+    }
+    .main-image:hover { transform: scale(1.02); }
+    .thumbnail-images { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .thumbnail {
+      width: 78px; height: 78px;
+      object-fit: cover;
       cursor: pointer;
       border: 2px solid transparent;
+      transition: border-color 0.2s;
+      background: var(--cream);
     }
+    .thumbnail:hover, .thumbnail.active { border-color: var(--gold); }
 
-    .thumbnail:hover {
-      border-color: #c0c0c0;
-    }
-
+    /* Info */
+    .product-info {}
     .product-info h1 {
-      margin-bottom: 0.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--royal);
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
     }
-
     .category {
-      color: #666;
-      margin-bottom: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
     }
 
     .price-section {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin: 1.5rem 0;
+      display: flex; align-items: center; gap: 1rem;
+      margin: 0 0 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--cream-dark);
     }
+    .price { font-size: 2rem; font-weight: 700; color: var(--royal); font-family: 'Jost', sans-serif; }
+    .price-original { font-size: 1.1rem; color: var(--text-light); text-decoration: line-through; }
 
     .product-specs {
-      background: #f8f9fa;
-      padding: 1rem;
-      border-radius: 4px;
+      background: var(--cream);
+      padding: 1.25rem;
+      border-left: 3px solid var(--gold);
       margin: 1.5rem 0;
     }
-
     .product-specs p {
       margin: 0.5rem 0;
+      font-size: 0.92rem;
+      color: var(--text-mid);
     }
+    .product-specs strong { color: var(--royal); }
 
-    .in-stock {
-      color: #28a745;
-    }
+    .in-stock  { color: #2e7d32; font-weight: 600; }
+    .out-of-stock { color: var(--error); font-weight: 600; }
 
-    .out-of-stock {
-      color: #dc3545;
+    .description { margin: 1.5rem 0; }
+    .description h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--royal);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
     }
-
-    .description {
-      margin: 2rem 0;
-    }
+    .description p { font-size: 0.95rem; line-height: 1.8; color: var(--text-mid); }
 
     .actions {
       display: flex;
+      align-items: center;
       gap: 1rem;
-      align-items: flex-end;
       margin: 2rem 0;
+      flex-wrap: wrap;
     }
 
-    .quantity-selector {
-      flex: 0 0 150px;
+    /* Cart stepper */
+    .cart-stepper {
+      display: inline-flex;
+      align-items: center;
+      border: 2px solid var(--royal);
+      border-radius: 4px;
+      overflow: hidden;
+      height: 48px;
+    }
+    .step-btn {
+      width: 48px; height: 48px;
+      background: var(--royal);
+      color: var(--cream);
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      font-family: 'Jost', sans-serif;
+      line-height: 1;
+    }
+    .step-btn:hover { opacity: 0.82; }
+    .step-qty {
+      min-width: 52px;
+      text-align: center;
+      font-family: 'Jost', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--royal);
     }
 
-    .quantity-selector input {
-      width: 100%;
+    /* "Add to Cart" primary button */
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 2rem;
+      background: var(--royal);
+      color: var(--cream);
+      border: 2px solid var(--royal);
+      font-family: 'Jost', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.25s;
     }
+    .btn-add:hover:not(:disabled) { background: transparent; color: var(--royal); }
+    .btn-add:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* "View Bag" link after adding */
+    .go-to-bag {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .go-to-bag:hover { opacity: 0.75; }
+
+    /* Out of stock message */
+    .out-of-stock-msg {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: #fdecea;
+      color: var(--error);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 3px;
+      margin: 1.5rem 0;
+    }
+
+    .alert { margin: 1rem 0; }
+
+    /* Related */
+    .related-products { padding-top: 2rem; border-top: 1px solid var(--cream-dark); }
+    .related-products h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--royal);
+      margin-bottom: 1.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .card { cursor: pointer; border: 1px solid var(--cream-dark); }
+    .card:hover { border-color: var(--gold); }
+    .card-img {
+      width: 100%; height: 220px;
+      object-fit: cover; background: var(--cream);
+      transition: transform 0.35s ease;
+    }
+    .card:hover .card-img { transform: scale(1.05); }
+    .card-body { padding: 1rem; }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--royal);
+      margin-bottom: 0.3rem;
+    }
+    .price { font-size: 1.05rem; font-weight: 700; color: var(--royal); }
 
     @media (max-width: 768px) {
-      .product-detail {
-        grid-template-columns: 1fr;
-      }
-
-      .actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .quantity-selector {
-        flex: 1;
-      }
+      .product-detail { grid-template-columns: 1fr; gap: 2rem; }
+      .product-images { position: static; }
+      .actions { flex-direction: column; align-items: flex-start; }
+      .btn-add { width: 100%; justify-content: center; }
     }
   `]
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
   product: Product | null = null;
   relatedProducts: Product[] = [];
   selectedImage = '';
-  quantity = 1;
   adding = false;
-  successMessage = '';
+  cartItem: CartItem | null = null;
+  private cartSub!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -219,10 +348,21 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Subscribe to live cart so stepper reacts immediately
+    this.cartSub = this.cartService.cartItems$.subscribe(items => {
+      if (this.product) {
+        this.cartItem = items.find(i => i.product === this.product!.id) ?? null;
+      }
+    });
+
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.loadProduct(id);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.cartSub?.unsubscribe();
   }
 
   loadProduct(id: number): void {
@@ -230,6 +370,9 @@ export class ProductDetailComponent implements OnInit {
       next: (data) => {
         this.product = data;
         this.selectedImage = data.image;
+        // Sync cartItem for the newly loaded product
+        const items = this.cartService['cartItemsSubject'].value as CartItem[];
+        this.cartItem = items.find(i => i.product === data.id) ?? null;
         this.loadRelatedProducts(id);
       },
       error: (err) => console.error('Error loading product:', err)
@@ -249,22 +392,34 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart(): void {
     if (!this.product) return;
-
     this.adding = true;
-    this.successMessage = '';
-
-    this.cartService.addToCart(this.product.id, this.quantity).subscribe({
-      next: () => {
-        this.adding = false;
-        this.successMessage = 'Product added to cart successfully!';
-        setTimeout(() => this.successMessage = '', 3000);
-      },
+    this.cartService.addToCart(this.product.id, 1).subscribe({
+      next: () => { this.adding = false; },
       error: (err) => {
         this.adding = false;
         console.error('Error adding to cart:', err);
-        alert('Failed to add product to cart');
       }
     });
+  }
+
+  increase(): void {
+    if (!this.cartItem) return;
+    this.cartService.updateCartItem(this.cartItem.id, this.cartItem.quantity + 1).subscribe({
+      error: (err) => console.error('Error updating cart:', err)
+    });
+  }
+
+  decrease(): void {
+    if (!this.cartItem) return;
+    if (this.cartItem.quantity <= 1) {
+      this.cartService.removeFromCart(this.cartItem.id).subscribe({
+        error: (err) => console.error('Error removing from cart:', err)
+      });
+    } else {
+      this.cartService.updateCartItem(this.cartItem.id, this.cartItem.quantity - 1).subscribe({
+        error: (err) => console.error('Error updating cart:', err)
+      });
+    }
   }
 }
 

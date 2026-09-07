@@ -12,42 +12,68 @@ export class CartService {
   private cartCountSubject = new BehaviorSubject<number>(0);
   public cartCount$ = this.cartCountSubject.asObservable();
 
+  /** Live snapshot of all cart items — kept in sync after every mutation */
+  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  public cartItems$ = this.cartItemsSubject.asObservable();
+
   constructor(private http: HttpClient) {
-    // Only load cart count if a token is already present (page refresh while logged in)
     if (localStorage.getItem('accessToken')) {
-      this.loadCartCount();
+      this.refreshCart();
     }
   }
 
-  loadCartCount(): void {
-    this.getCartTotal().subscribe({
-      next: (data) => this.cartCountSubject.next(data.items_count),
-      error: () => this.cartCountSubject.next(0)
+  /** Reload both the item list and the header count badge */
+  refreshCart(): void {
+    this.http.get<CartItem[]>(`${this.apiUrl}/cart/`).subscribe({
+      next: (items) => {
+        this.cartItemsSubject.next(items);
+        this.cartCountSubject.next(items.reduce((s, i) => s + i.quantity, 0));
+      },
+      error: () => {
+        this.cartItemsSubject.next([]);
+        this.cartCountSubject.next(0);
+      }
     });
+  }
+
+  loadCartCount(): void {
+    this.refreshCart();
   }
 
   getCartItems(): Observable<CartItem[]> {
     return this.http.get<CartItem[]>(`${this.apiUrl}/cart/`);
   }
 
+  /** Returns the cart row for a given product id, or undefined */
+  getCartItemForProduct(productId: number): CartItem | undefined {
+    return this.cartItemsSubject.value.find(i => i.product === productId);
+  }
+
+  /**
+   * Upsert: POST increments quantity if the item already exists (backend upsert).
+   * Returns the updated/created CartItem.
+   */
   addToCart(productId: number, quantity: number = 1): Observable<CartItem> {
     return this.http.post<CartItem>(`${this.apiUrl}/cart/`, { product: productId, quantity })
-      .pipe(tap(() => this.loadCartCount()));
+      .pipe(tap(() => this.refreshCart()));
   }
 
   updateCartItem(id: number, quantity: number): Observable<CartItem> {
     return this.http.patch<CartItem>(`${this.apiUrl}/cart/${id}/`, { quantity })
-      .pipe(tap(() => this.loadCartCount()));
+      .pipe(tap(() => this.refreshCart()));
   }
 
   removeFromCart(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/cart/${id}/`)
-      .pipe(tap(() => this.loadCartCount()));
+      .pipe(tap(() => this.refreshCart()));
   }
 
   clearCart(): Observable<{ message: string }> {
     return this.http.delete<{ message: string }>(`${this.apiUrl}/cart/clear/`)
-      .pipe(tap(() => this.cartCountSubject.next(0)));
+      .pipe(tap(() => {
+        this.cartItemsSubject.next([]);
+        this.cartCountSubject.next(0);
+      }));
   }
 
   getCartTotal(): Observable<{ total: number, items_count: number }> {

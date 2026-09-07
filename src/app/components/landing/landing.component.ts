@@ -9,429 +9,578 @@ import { Product, Category, Banner } from '../../models/product.model';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="container">
-      <!-- Banners Section -->
-      <section class="banners" *ngIf="banners.length > 0">
-        <div class="banner" *ngFor="let banner of banners">
-          <img [src]="banner.image" [alt]="banner.title" class="banner-img">
-          <div class="banner-content">
-            <h2>{{ banner.title }}</h2>
-            <p>{{ banner.description }}</p>
-            <span class="discount-badge" *ngIf="banner.discount_offer">
-              {{ banner.discount_offer }}
-            </span>
-          </div>
-        </div>
-      </section>
+    <div class="landing">
 
-      <!-- Video Banner Section -->
-      <section class="video-banner">
-        <video autoplay muted loop playsinline class="video-bg">
+      <!-- ── Hero Video Banner ────────────────── -->
+      <section class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
           <source src="assets/images/WhatsApp Video 2026-05-17 at 2.58.52 PM.mp4" type="video/mp4">
-          Your browser does not support the video tag.
         </video>
-        <div class="video-overlay">
-          <h1 class="video-title">KASAVELLI 925</h1>
-          <p class="video-subtitle">Premium Silver Collection</p>
+        <div class="hero-overlay">
+          <p class="hero-eyebrow">Since 2024 · Handcrafted in India</p>
+          <h1 class="hero-title">KASAVELLI<br><span>9 2 5</span></h1>
+          <p class="hero-sub">Pure Silver. Timeless Elegance.</p>
+          <div class="hero-actions">
+            <a routerLink="/products" class="btn btn-gold btn-lg">Explore Collection</a>
+            <a routerLink="/products" class="btn btn-hero-outline btn-lg">View All</a>
+          </div>
+        </div>
+        <div class="hero-scroll-hint">
+          <span></span>
         </div>
       </section>
 
-      <!-- Categories Section - Horizontal Scrollable -->
-      <section class="categories mt-4">
-        <h2 class="text-center mb-3">Shop by Category</h2>
-        <div class="category-scroll-container">
-          <div class="category-scroll">
-            <div class="category-item" *ngFor="let category of categories" [routerLink]="['/products']" [queryParams]="{category: category.id}">
-              <div class="category-image-wrapper">
-                <img [src]="category.image || 'assets/placeholder.jpg'" [alt]="category.display_name" class="category-img">
+      <!-- ── Image Banners ────────────────────── -->
+      <section class="banners" *ngIf="banners.length > 0">
+        <div class="banner-card" *ngFor="let banner of banners">
+          <img [src]="banner.image" [alt]="banner.title" class="banner-img">
+          <div class="banner-info">
+            <h3>{{ banner.title }}</h3>
+            <p>{{ banner.description }}</p>
+            <span class="discount-badge" *ngIf="banner.discount_offer">{{ banner.discount_offer }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Trust Bar ─────────────────────────── -->
+      <section class="trust-bar">
+        <div class="container trust-inner">
+          <div class="trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <span>925 Certified Silver</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="1" y="3" width="15" height="13" rx="1"/>
+              <path d="M16 8h4l3 5v3h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+            </svg>
+            <span>Free Shipping ₹999+</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+            <span>30-Day Easy Returns</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <span>Handcrafted with Love</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Shop by Category ──────────────────── -->
+      <section class="categories-section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Shop by Category</h2>
+            <span class="gold-divider"></span>
+            <p class="section-sub">Discover our curated silver collections</p>
+          </div>
+        </div>
+        <div class="category-scroll-wrap">
+          <div class="category-track">
+            <div class="category-tile" *ngFor="let cat of categories"
+                 [routerLink]="['/products']" [queryParams]="{category: cat.id}">
+              <div class="cat-img-ring">
+                <img [src]="cat.image || 'assets/placeholder.jpg'" [alt]="cat.display_name" class="cat-img">
               </div>
-              <h3 class="category-name">{{ category.display_name }}</h3>
+              <p class="cat-name">{{ cat.display_name }}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Featured Products -->
-      <section class="featured-products mt-4">
-        <h2 class="text-center mb-3">Featured Products</h2>
-        <div class="grid">
-          <div class="card" *ngFor="let product of featuredProducts" [routerLink]="['/products', product.id]">
-            <img [src]="product.image" [alt]="product.name" class="card-img">
-            <div class="card-body">
-              <h3 class="card-title">{{ product.title }}</h3>
-              <div class="price-section">
-                <span class="price-original" *ngIf="product.discounted_price">₹{{ product.price }}</span>
-                <span class="price">₹{{ product.final_price }}</span>
-                <span class="discount-badge" *ngIf="product.discount_percentage > 0">
-                  {{ product.discount_percentage }}% OFF
-                </span>
+      <!-- ── Featured Products ─────────────────── -->
+      <section class="featured-section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Featured Collection</h2>
+            <span class="gold-divider"></span>
+            <p class="section-sub">Bestsellers loved by our customers</p>
+          </div>
+
+          <div class="products-grid">
+            <div class="product-card" *ngFor="let p of featuredProducts" [routerLink]="['/products', p.id]">
+              <div class="product-img-wrap">
+                <img [src]="p.image" [alt]="p.name" class="product-img">
+                <span class="off-badge" *ngIf="p.discount_percentage > 0">{{ p.discount_percentage }}% OFF</span>
+                <div class="hover-overlay">
+                  <span class="quick-view">Quick View</span>
+                </div>
               </div>
-              <p class="card-text">{{ product.purity }}</p>
+              <div class="product-body">
+                <p class="prod-category">{{ p.category_name }}</p>
+                <h3 class="prod-title">{{ p.title }}</h3>
+                <p class="prod-purity">{{ p.purity }}</p>
+                <div class="prod-price">
+                  <span class="price-strike" *ngIf="p.discounted_price">₹{{ p.price }}</span>
+                  <span class="price-main">₹{{ p.final_price }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="view-all-wrap">
+            <a routerLink="/products" class="btn btn-outline btn-lg">View All Collections</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Quality Promise ──────────────────── -->
+      <section class="promise-section">
+        <div class="container promise-inner">
+          <div class="promise-text">
+            <p class="promise-eyebrow">Our Promise</p>
+            <h2>Every Piece, A Work of Art</h2>
+            <p>At Kasavelli, each piece of jewellery is handcrafted by skilled artisans using 925 hallmarked silver. We blend traditional Indian craftsmanship with modern design sensibilities to create pieces that are truly timeless.</p>
+            <a routerLink="/products" class="btn btn-primary mt-3">Discover More</a>
+          </div>
+          <div class="promise-stats">
+            <div class="stat">
+              <span class="stat-num">925</span>
+              <span class="stat-label">Silver Purity</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">100+</span>
+              <span class="stat-label">Unique Designs</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">500+</span>
+              <span class="stat-label">Happy Customers</span>
             </div>
           </div>
         </div>
       </section>
+
     </div>
   `,
   styles: [`
-    .container {
-      padding: 0;
-      max-width: 100%;
-    }
+    .landing { background: var(--cream); }
 
-    h2 {
-      color: var(--primary-purple);
-      font-family: 'Playfair Display', serif;
-      font-size: 1.75rem;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .banners {
-      margin: 0;
-    }
-    
-    .banner {
+    /* ── Hero ───────────────────────────────── */
+    .hero {
       position: relative;
+      height: 92vh;
+      min-height: 560px;
       overflow: hidden;
-      margin-bottom: 0;
-    }
-    
-    .banner-img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-    }
-    
-    .banner-content {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(transparent, rgba(139, 58, 98, 0.9));
-      color: white;
-      padding: 2rem;
-    }
-
-    .banner-content h2 {
-      color: white;
-      margin-bottom: 0.5rem;
-      font-size: 1.5rem;
-    }
-
-    .discount-badge {
-      background: linear-gradient(135deg, #4A7C59 0%, #5A9C69 100%);
-      color: white;
-      padding: 0.4rem 0.9rem;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      display: inline-block;
-      margin-top: 0.5rem;
-    }
-
-    /* Video Banner Section */
-    .video-banner {
-      position: relative;
-      width: 100%;
-      height: 500px;
-      overflow: hidden;
-      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-
-    .video-bg {
-      width: 100%;
-      height: 100%;
+    .hero-video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center;
     }
-
-    .video-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(139, 58, 98, 0.7) 0%, rgba(169, 75, 118, 0.6) 50%, rgba(199, 123, 161, 0.5) 100%);
+    .hero-overlay {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(58, 14, 59, 0.55);
+      width: 100%; height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 2rem;
+      justify-content: center;
     }
-
-    .video-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 4rem;
-      font-weight: 700;
-      color: white;
-      text-transform: uppercase;
-      letter-spacing: 8px;
-      margin: 0;
-      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
-      animation: fadeInUp 1s ease-out;
-    }
-
-    .video-subtitle {
-      font-family: 'Lato', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 300;
-      color: white;
+    .hero-eyebrow {
+      font-size: 0.78rem;
       letter-spacing: 3px;
-      margin-top: 1rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-      animation: fadeInUp 1.2s ease-out;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
     }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1;
+      letter-spacing: 6px;
+      margin: 0 0 0.5rem;
     }
-
-    /* Horizontal Scrollable Categories */
-    .categories {
-      background: linear-gradient(135deg, #8B3A62 0%, #A94B76 50%, #C77BA1 100%);
-      padding: 3rem 0;
-      margin: 0;
+    .hero-title span {
+      display: block;
+      font-size: 0.38em;
+      letter-spacing: 14px;
+      color: var(--gold);
+      font-weight: 400;
+      margin-top: 0.3rem;
     }
-
-    .categories h2 {
-      color: white;
-      text-align: center;
-      margin-bottom: 2rem;
-      padding: 0 2rem;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    .hero-sub {
+      font-size: 1.05rem;
+      letter-spacing: 2px;
+      color: rgba(239,235,225,0.8);
+      margin: 1.25rem 0 2.5rem;
+      font-weight: 300;
     }
-
-    .category-scroll-container {
-      position: relative;
-      padding: 0 2rem;
-    }
-
-    .category-scroll {
-      display: flex;
-      gap: 2rem;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-behavior: smooth;
-      padding: 1rem 0 2rem;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
-    }
-
-    .category-scroll::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .category-scroll::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-    }
-
-    .category-scroll::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.5);
-      border-radius: 10px;
-    }
-
-    .category-scroll::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.7);
-    }
-
-    .category-item {
-      flex: 0 0 auto;
-      width: 150px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .category-item:hover {
-      transform: translateY(-8px);
-    }
-
-    .category-image-wrapper {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin: 0 auto 0.75rem;
-      background: white;
-      border: 4px solid white;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .category-item:hover .category-image-wrapper {
-      border-color: #4A7C59;
-      box-shadow: 0 8px 20px rgba(74, 124, 89, 0.3);
-    }
-
-    .category-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .category-item:hover .category-img {
-      transform: scale(1.1);
-    }
-
-    .category-name {
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-hero-outline {
+      background: transparent;
+      border: 2px solid rgba(239,235,225,0.5);
+      color: var(--cream);
+      letter-spacing: 1.5px;
       font-size: 0.9rem;
       font-weight: 600;
-      color: white;
-      font-family: 'Lato', sans-serif;
-      margin: 0;
       text-transform: uppercase;
+      padding: 0.8rem 1.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s;
+    }
+    .btn-hero-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+    }
+    .hero-scroll-hint span {
+      display: block;
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, var(--gold));
+      animation: scrollLine 1.5s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+      50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── Banners ─────────────────────────────── */
+    .banners {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 0;
+    }
+    .banner-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .banner-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .banner-card:hover .banner-img { transform: scale(1.04); }
+    .banner-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(58,14,59,0.9));
+      padding: 2rem 1.75rem 1.5rem;
+      color: var(--cream);
+    }
+    .banner-info h3 {
+      color: var(--cream);
+      font-size: 1.4rem;
+      margin-bottom: 0.35rem;
+    }
+    .banner-info p { font-size: 0.9rem; opacity: 0.85; margin: 0 0 0.75rem; }
+
+    /* ── Trust Bar ────────────────────────────── */
+    .trust-bar {
+      background: var(--royal);
+      padding: 1.35rem 0;
+    }
+    .trust-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 2rem;
+      color: var(--gold-light);
+    }
+    .trust-item svg { flex-shrink: 0; }
+    .trust-item span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .trust-divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(202,178,115,0.3);
+    }
+
+    /* ── Section Head ─────────────────────────── */
+    .section-head {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .section-head h2 {
+      font-size: 2.2rem;
+      color: var(--royal);
+      letter-spacing: 1px;
+    }
+    .section-sub {
+      margin-top: 0.75rem;
+      color: var(--text-light);
+      font-size: 0.95rem;
       letter-spacing: 0.5px;
     }
 
-    /* Featured Products */
-    .featured-products {
-      background: #FFFFFF;
-      padding: 3rem 2rem;
-      margin: 0;
+    /* ── Categories ───────────────────────────── */
+    .categories-section {
+      padding: 4rem 0;
+      background: var(--cream);
     }
-
-    .featured-products h2 {
+    .category-scroll-wrap {
+      overflow-x: auto;
+      padding: 0.5rem 2rem 1.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold) transparent;
+    }
+    .category-track {
+      display: flex;
+      gap: 2rem;
+      width: max-content;
+      padding: 0.5rem 0;
+    }
+    .category-tile {
+      width: 140px;
       text-align: center;
-      margin-bottom: 2rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .category-tile:hover { transform: translateY(-8px); }
+    .cat-img-ring {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 0.85rem;
+      border: 3px solid var(--gold);
+      background: var(--white);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .category-tile:hover .cat-img-ring {
+      border-color: var(--royal);
+      box-shadow: 0 8px 24px rgba(85,23,86,0.2);
+    }
+    .cat-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+    .category-tile:hover .cat-img { transform: scale(1.1); }
+    .cat-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--royal);
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
-    .grid {
+    /* ── Featured Products ────────────────────── */
+    .featured-section {
+      padding: 4rem 0 3rem;
+      background: var(--white);
+    }
+    .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 2rem;
       max-width: 1400px;
       margin: 0 auto;
     }
-
-    .card {
-      background: white;
-      border-radius: 8px;
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: 4px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+      transition: box-shadow 0.35s, border-color 0.35s, transform 0.35s;
       cursor: pointer;
-      border: 1px solid #f0f0f0;
     }
-
-    .card:hover {
+    .product-card:hover {
+      box-shadow: 0 16px 40px rgba(85,23,86,0.12);
+      border-color: var(--gold);
       transform: translateY(-6px);
-      box-shadow: 0 8px 16px rgba(139, 58, 98, 0.15);
-      border-color: var(--primary-purple);
     }
-
-    .card-img {
-      width: 100%;
-      height: 280px;
+    .product-img-wrap {
+      position: relative;
+      height: 290px;
+      overflow: hidden;
+      background: var(--cream);
+    }
+    .product-img {
+      width: 100%; height: 100%;
       object-fit: cover;
-      transition: transform 0.3s ease;
+      transition: transform 0.45s ease;
     }
-
-    .card:hover .card-img {
-      transform: scale(1.05);
+    .product-card:hover .product-img { transform: scale(1.07); }
+    .off-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--royal);
+      color: var(--gold-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.3rem 0.65rem;
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
-
-    .card-body {
-      padding: 1.25rem;
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--primary-purple);
-      margin-bottom: 0.75rem;
-      font-family: 'Playfair Display', serif;
-      line-height: 1.3;
-    }
-
-    .price-section {
+    .hover-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(58,14,59,0.35);
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      margin: 0.75rem 0;
-      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
-
-    .price {
+    .product-card:hover .hover-overlay { opacity: 1; }
+    .quick-view {
+      background: var(--gold);
+      color: var(--royal-dark);
+      padding: 0.65rem 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+    .product-body {
+      padding: 1.1rem 1.25rem 1.4rem;
+    }
+    .prod-category {
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.35rem;
+    }
+    .prod-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--royal);
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
+    }
+    .prod-purity {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 0.75rem;
+    }
+    .prod-price {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .price-main {
       font-size: 1.25rem;
       font-weight: 700;
-      color: var(--primary-magenta);
-      font-family: 'Lato', sans-serif;
+      color: var(--royal);
+      font-family: 'Jost', sans-serif;
     }
-
-    .price-original {
-      font-size: 1rem;
-      color: var(--dark-gray);
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-
-    .card-text {
-      color: var(--dark-gray);
+    .price-strike {
       font-size: 0.9rem;
-      margin-top: 0.5rem;
+      color: var(--text-light);
+      text-decoration: line-through;
+    }
+    .view-all-wrap {
+      text-align: center;
+      margin-top: 3rem;
     }
 
-    @media (max-width: 768px) {
-      .category-item {
-        width: 120px;
-      }
+    /* ── Promise ──────────────────────────────── */
+    .promise-section {
+      background: var(--royal-dark);
+      padding: 5rem 0;
+    }
+    .promise-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .promise-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .promise-text h2 {
+      color: var(--cream);
+      font-size: 2.2rem;
+      margin-bottom: 1.25rem;
+    }
+    .promise-text p {
+      color: rgba(239,235,225,0.7);
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+    .promise-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .stat {
+      text-align: center;
+      padding: 2rem 1rem;
+      border: 1px solid rgba(202,178,115,0.25);
+      border-radius: 4px;
+    }
+    .stat-num {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(239,235,225,0.6);
+    }
 
-      .category-image-wrapper {
-        width: 120px;
-        height: 120px;
-      }
-
-      .category-name {
-        font-size: 0.8rem;
-      }
-
-      .grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
-      }
-
-      .banner-img {
-        height: 300px;
-      }
-
-      .video-banner {
-        height: 350px;
-      }
-
-      .video-title {
-        font-size: 2.5rem;
-        letter-spacing: 4px;
-      }
-
-      .video-subtitle {
-        font-size: 1rem;
-        letter-spacing: 2px;
-      }
-
-      .categories, .featured-products {
-        padding: 2rem 1rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-      }
+    /* ── Responsive ───────────────────────────── */
+    @media (max-width: 900px) {
+      .promise-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .promise-stats { grid-template-columns: repeat(3, 1fr); }
+      .trust-divider { display: none; }
+      .trust-inner { gap: 1rem; }
+      .trust-item { padding: 0.5rem 1rem; }
+    }
+    @media (max-width: 640px) {
+      .hero { height: 85vh; }
+      .hero-title { font-size: 3.2rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .promise-stats { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+    }
+    @media (max-width: 400px) {
+      .products-grid { grid-template-columns: 1fr; }
     }
   `]
 })
@@ -443,41 +592,17 @@ export class LandingComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadFeaturedProducts();
-    this.loadBanners();
-  }
-
-  loadCategories(): void {
     this.productService.getCategories().subscribe({
-      next: (data: any) => {
-        // Handle both array and paginated response
-        this.categories = Array.isArray(data) ? data : (data.results || []);
-        console.log('Categories loaded:', this.categories.length);
-      },
-      error: (err) => console.error('Error loading categories:', err)
+      next: (d: any) => this.categories = Array.isArray(d) ? d : (d.results || []),
+      error: (e) => console.error('Categories:', e)
     });
-  }
-
-  loadFeaturedProducts(): void {
     this.productService.getFeaturedProducts().subscribe({
-      next: (data: any) => {
-        // Handle both array and paginated response
-        this.featuredProducts = Array.isArray(data) ? data : (data.results || []);
-        console.log('Featured products loaded:', this.featuredProducts.length);
-      },
-      error: (err) => console.error('Error loading featured products:', err)
+      next: (d: any) => this.featuredProducts = Array.isArray(d) ? d : (d.results || []),
+      error: (e) => console.error('Featured:', e)
     });
-  }
-
-  loadBanners(): void {
     this.productService.getBanners().subscribe({
-      next: (data: any) => {
-        // Handle both array and paginated response
-        this.banners = Array.isArray(data) ? data : (data.results || []);
-        console.log('Banners loaded:', this.banners.length);
-      },
-      error: (err) => console.error('Error loading banners:', err)
+      next: (d: any) => this.banners = Array.isArray(d) ? d : (d.results || []),
+      error: (e) => console.error('Banners:', e)
     });
   }
 }

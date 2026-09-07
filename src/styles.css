@@ -1,282 +1,245 @@
-/* KASAVELLI Brand Colors - Purple/Magenta Theme */
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Jost:wght@300;400;500;600&display=swap');
+
+/* KASAVELLI Brand Palette */
 :root {
-  /* Primary Brand Colors from Logo */
-  --primary-purple: #8B3A62;
-  --primary-magenta: #A94B76;
-  --accent-green: #4A7C59;
-  --light-purple: #C77BA1;
-  --dark-purple: #6B2A4A;
-  
-  /* Neutral Colors */
-  --white: #FFFFFF;
-  --off-white: #FAF8F9;
-  --light-gray: #F5F3F4;
-  --gray: #E8E4E6;
-  --dark-gray: #4A4A4A;
-  --text-dark: #2D2D2D;
-  
-  /* Accent Colors */
-  --gold: #D4AF37;
-  --silver: #C0C0C0;
-  --success: #4A7C59;
-  --error: #D32F2F;
-  --warning: #F57C00;
+  --royal:       #551756;   /* deep royal purple */
+  --gold:        #cab273;   /* antique gold      */
+  --cream:       #efebe1;   /* warm cream        */
+  --royal-dark:  #3a0e3b;   /* darker royal      */
+  --royal-mid:   #6e2370;   /* mid-tone purple   */
+  --gold-dark:   #a08a4a;   /* darker gold       */
+  --gold-light:  #ddc99a;   /* lighter gold      */
+  --cream-dark:  #ddd6c6;   /* darker cream      */
+  --white:       #ffffff;
+  --text-dark:   #2a1a2e;   /* near-black with purple tint */
+  --text-mid:    #5a4a5e;
+  --text-light:  #9a8a9e;
+  --success:     #3a7d44;
+  --error:       #c0392b;
 }
 
-/* Global Styles */
-* {
+/* Reset */
+*, *::before, *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Base */
+html { scroll-behavior: smooth; }
+
 body {
-  font-family: 'Playfair Display', 'Georgia', serif;
+  font-family: 'Jost', 'Arial', sans-serif;
   color: var(--text-dark);
-  background-color: var(--off-white);
-  line-height: 1.6;
+  background-color: var(--cream);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
-  color: var(--primary-purple);
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  color: var(--royal);
   font-weight: 600;
   letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
+h1 { font-size: 2.75rem; margin-bottom: 1rem; }
+h2 { font-size: 2.25rem; margin-bottom: 0.875rem; }
+h3 { font-size: 1.6rem;  margin-bottom: 0.75rem; }
 
-h2 {
-  font-size: 2rem;
-  margin-bottom: 0.875rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-p, span, div {
-  font-family: 'Lato', 'Arial', sans-serif;
+p, span, li {
+  font-family: 'Jost', sans-serif;
   font-size: 1rem;
   line-height: 1.7;
-}
-
-/* Buttons */
-.btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 4px;
-  font-family: 'Lato', sans-serif;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-magenta) 100%);
-  color: var(--white);
-  box-shadow: 0 4px 6px rgba(139, 58, 98, 0.2);
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, var(--dark-purple) 0%, var(--primary-purple) 100%);
-  box-shadow: 0 6px 12px rgba(139, 58, 98, 0.3);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background-color: var(--light-purple);
-  color: var(--white);
-}
-
-.btn-secondary:hover {
-  background-color: var(--primary-magenta);
-}
-
-.btn-outline {
-  background-color: transparent;
-  border: 2px solid var(--primary-purple);
-  color: var(--primary-purple);
-}
-
-.btn-outline:hover {
-  background-color: var(--primary-purple);
-  color: var(--white);
-}
-
-.btn-success {
-  background-color: var(--success);
-  color: var(--white);
-}
-
-.btn-danger {
-  background-color: var(--error);
-  color: var(--white);
-}
-
-.btn-sm {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-}
-
-.btn-lg {
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
-}
-
-/* Form Controls */
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--gray);
-  border-radius: 4px;
-  font-family: 'Lato', sans-serif;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  background-color: var(--white);
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: var(--primary-purple);
-  box-shadow: 0 0 0 3px rgba(139, 58, 98, 0.1);
-}
-
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--primary-purple);
-  font-family: 'Lato', sans-serif;
+  color: var(--text-mid);
 }
 
 /* Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
-}
-
-/* Cards */
-.card {
-  background-color: var(--white);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(139, 58, 98, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(139, 58, 98, 0.15);
+  padding: 0 1.25rem;
 }
 
 /* Links */
 a {
-  color: var(--primary-purple);
+  color: var(--royal);
   text-decoration: none;
   transition: color 0.3s ease;
 }
+a:hover { color: var(--gold-dark); }
 
-a:hover {
-  color: var(--primary-magenta);
-}
-
-/* Utility Classes */
-.text-center {
+/* ── Buttons ─────────────────────────────── */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.75rem;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
   text-align: center;
 }
 
-.text-primary {
-  color: var(--primary-purple);
+.btn-primary {
+  background: var(--royal);
+  color: var(--cream);
+  border: 2px solid var(--royal);
+}
+.btn-primary:hover {
+  background: transparent;
+  color: var(--royal);
 }
 
-.text-muted {
-  color: var(--dark-gray);
-  font-size: 0.875rem;
+.btn-gold {
+  background: var(--gold);
+  color: var(--royal-dark);
+  border: 2px solid var(--gold);
+}
+.btn-gold:hover {
+  background: transparent;
+  color: var(--gold-dark);
+  border-color: var(--gold-dark);
 }
 
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mt-4 { margin-top: 2rem; }
-
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.mb-3 { margin-bottom: 1.5rem; }
-.mb-4 { margin-bottom: 2rem; }
-
-.p-1 { padding: 0.5rem; }
-.p-2 { padding: 1rem; }
-.p-3 { padding: 1.5rem; }
-.p-4 { padding: 2rem; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  h3 { font-size: 1.25rem; }
-  
-  .container {
-    padding: 0 0.75rem;
-  }
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--royal);
+  color: var(--royal);
+}
+.btn-outline:hover {
+  background: var(--royal);
+  color: var(--cream);
 }
 
-/* Loading Spinner */
+.btn-sm  { padding: 0.55rem 1.1rem; font-size: 0.8rem; }
+.btn-lg  { padding: 1rem 2.5rem;   font-size: 1rem;  }
+
+/* ── Form Controls ────────────────────────── */
+.form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--cream-dark);
+  border-radius: 2px;
+  font-family: 'Jost', sans-serif;
+  font-size: 1rem;
+  background: var(--white);
+  color: var(--text-dark);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(202, 178, 115, 0.2);
+}
+
+.form-group  { margin-bottom: 1.25rem; }
+.form-label  {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: var(--royal);
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ── Cards ────────────────────────────────── */
+.card {
+  background: var(--white);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(85, 23, 86, 0.08);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(85, 23, 86, 0.14);
+}
+
+/* ── Alerts ───────────────────────────────── */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  margin: 1rem 0;
+}
+.alert-success { background: #e8f5e9; color: var(--success); border-left: 4px solid var(--success); }
+.alert-info    { background: #ede7f6; color: var(--royal);   border-left: 4px solid var(--royal); }
+.alert-error   { background: #fdecea; color: var(--error);   border-left: 4px solid var(--error); }
+
+/* ── Discount Badge ───────────────────────── */
+.discount-badge {
+  display: inline-block;
+  background: var(--royal);
+  color: var(--gold-light);
+  padding: 0.3rem 0.75rem;
+  border-radius: 2px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Loading Spinner ──────────────────────── */
 .spinner {
-  border: 3px solid var(--light-gray);
-  border-top: 3px solid var(--primary-purple);
+  border: 3px solid var(--cream-dark);
+  border-top: 3px solid var(--royal);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 2rem auto;
+  width: 44px;
+  height: 44px;
+  animation: spin 0.8s linear infinite;
+  margin: 2.5rem auto;
 }
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
+  0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+/* ── Utilities ────────────────────────────── */
+.text-center  { text-align: center; }
+.text-primary { color: var(--royal); }
+.text-gold    { color: var(--gold-dark); }
+.text-muted   { color: var(--text-light); font-size: 0.875rem; }
+
+.mt-1 { margin-top: 0.5rem; }  .mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }  .mt-4 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 0.5rem; } .mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; } .mb-4 { margin-bottom: 2rem; }
+.p-2  { padding: 1rem; }  .p-3 { padding: 1.5rem; } .p-4 { padding: 2rem; }
+
+/* ── Gold Divider ─────────────────────────── */
+.gold-divider {
+  display: block;
+  width: 60px;
+  height: 2px;
+  background: var(--gold);
+  margin: 0.75rem auto 0;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--light-gray);
-}
+/* ── Scrollbar ────────────────────────────── */
+::-webkit-scrollbar       { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
 
-::-webkit-scrollbar-thumb {
-  background: var(--primary-purple);
-  border-radius: 5px;
-}
+/* ── Selection ────────────────────────────── */
+::selection { background: var(--gold-light); color: var(--royal-dark); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-magenta);
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 768px) {
+  h1 { font-size: 2.1rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.35rem; }
+  .container { padding: 0 1rem; }
 }
-
-/* Selection */
-::selection {
-  background-color: var(--light-purple);
-  color: var(--white);
-}
-
-/* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;500;700&display=swap');
 
 /* Made with Bob */
