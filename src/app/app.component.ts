@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink, ChatbotComponent],
   template: `
     <!-- ── Header ───────────────────────────── -->
     <header [class.scrolled]="scrolled">
@@ -141,6 +142,9 @@ import { CartService } from './services/cart.service';
         </div>
       </div>
     </footer>
+
+    <!-- ── Chatbot ───────────────────────────── -->
+    <app-chatbot></app-chatbot>
   `,
   styles: [`
     /* ── Header ───────────────────────────────────── */
