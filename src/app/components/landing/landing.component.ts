@@ -24,14 +24,32 @@ import { Product, Category, Banner } from '../../models/product.model';
 
       <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
       <section class="leadspace">
+
+        <!-- ── MOBILE HERO IMAGE (shown only on mobile, full width) ── -->
+        <div class="ls-mob-img" *ngIf="heroBanner?.image">
+          <img [src]="heroBanner!.image" alt="Kasavelli Silver Collection" class="ls-mob-photo">
+        </div>
+        <div class="ls-mob-img ls-mob-img--placeholder" *ngIf="!heroBanner?.image">
+          <div class="ls-mob-svg-bg">
+            <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <rect width="360" height="220" fill="#3a0e3b"/>
+              <circle cx="180" cy="90" r="55" stroke="#c9a84c" stroke-width="2" fill="none" opacity="0.5"/>
+              <circle cx="180" cy="90" r="35" stroke="#c9a84c" stroke-width="1.5" fill="none" opacity="0.4"/>
+              <circle cx="180" cy="90" r="12" fill="#c9a84c" opacity="0.6"/>
+              <path d="M125 90 Q180 160 235 90" stroke="#c9a84c" stroke-width="1.5" fill="none" opacity="0.5"/>
+              <text x="180" y="180" text-anchor="middle" fill="#c9a84c" font-size="13" letter-spacing="6" opacity="0.7" font-family="serif">KASAVELLI</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- ── DESKTOP: 3-col horizontal banner ── -->
         <div class="ls-main">
 
-          <!-- LEFT: brand photo or gradient panel -->
+          <!-- LEFT: brand photo -->
           <div class="ls-left">
             <img *ngIf="heroBanner?.image" [src]="heroBanner!.image" alt="Kasavelli Silver" class="ls-hero-img">
             <div *ngIf="!heroBanner?.image" class="ls-hero-placeholder">
-              <!-- decorative SVG jewellery silhouette -->
-              <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="90" height="120">
+              <svg viewBox="0 0 120 160" fill="none" width="90" height="120">
                 <ellipse cx="60" cy="30" rx="22" ry="22" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
                 <path d="M38 30 Q20 70 30 120 Q60 150 90 120 Q100 70 82 30" stroke="#c9a84c" stroke-width="2" fill="none"/>
                 <circle cx="60" cy="30" r="6" fill="#c9a84c" opacity="0.7"/>
@@ -47,9 +65,7 @@ import { Product, Category, Banner } from '../../models/product.model';
             <h1 class="ls-title">A PIECE FOR YOU.<br>A PIECE FOR INDIA.</h1>
             <div class="ls-divider"></div>
             <p class="ls-tagline">Authentic silver jewellery that honours traditional craftsmanship and modern elegance.</p>
-            <div class="ls-tag-highlight" *ngIf="heroBanner?.discount_offer">
-              {{ heroBanner!.discount_offer }}
-            </div>
+            <div class="ls-tag-highlight" *ngIf="heroBanner?.discount_offer">{{ heroBanner!.discount_offer }}</div>
             <div class="ls-feature-row">
               <div class="ls-feat-box">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
@@ -70,7 +86,7 @@ import { Product, Category, Banner } from '../../models/product.model';
           <div class="ls-right">
             <div class="ls-brand">
               <div class="ls-brand-icon">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+                <svg viewBox="0 0 48 48" fill="none" width="52" height="52">
                   <path d="M24 4 L40 14 L40 34 L24 44 L8 34 L8 14 Z" stroke="#551756" stroke-width="2.5" fill="rgba(85,23,86,0.06)"/>
                   <path d="M24 12 L34 18 L34 30 L24 36 L14 30 L14 18 Z" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
                   <circle cx="24" cy="24" r="4" fill="#c9a84c"/>
@@ -83,6 +99,16 @@ import { Product, Category, Banner } from '../../models/product.model';
             <p class="ls-free-ship">✓ Free shipping above ₹999</p>
           </div>
 
+        </div>
+
+        <!-- ── MOBILE CONTENT BLOCK (shown below image on mobile) ── -->
+        <div class="ls-mob-content">
+          <p class="ls-eyebrow">Handcrafted 925 Sterling Silver</p>
+          <h1 class="ls-title">Pure Silver.<br>Timeless Craft.</h1>
+          <div class="ls-divider"></div>
+          <p class="ls-tagline">Handcrafted jewellery for every occasion — certified, authentic &amp; made in India.</p>
+          <div class="ls-tag-highlight" *ngIf="heroBanner?.discount_offer">{{ heroBanner!.discount_offer }}</div>
+          <a routerLink="/products" class="ls-cta-btn ls-mob-btn">Shop Collection</a>
         </div>
 
         <!-- BOTTOM TRUST STRIP -->
@@ -359,6 +385,12 @@ import { Product, Category, Banner } from '../../models/product.model';
       background: #f5f0e8;
       border-bottom: 1px solid #e0d5c0;
     }
+
+    /* Mobile hero image — hidden on desktop */
+    .ls-mob-img { display: none; }
+    .ls-mob-content { display: none; }
+
+    /* Desktop 3-col grid */
     .ls-main {
       display: grid;
       grid-template-columns: 260px 1fr 220px;
@@ -368,7 +400,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       padding: 0 1.5rem;
     }
 
-    /* LEFT — hero image or ornament */
+    /* LEFT — hero image */
     .ls-left {
       display: flex; align-items: flex-end; justify-content: center;
       overflow: hidden; position: relative;
@@ -718,13 +750,56 @@ import { Product, Category, Banner } from '../../models/product.model';
       .about-img-frame::before { display: none; }
       .about-badge { right: 0; }
     }
+
+    /* ── MOBILE: swap to full-width stacked layout ── */
     @media (max-width: 700px) {
-      .ls-main { grid-template-columns: 1fr; min-height: auto; }
-      .ls-left { display: none; }
-      .ls-centre { border-left: none; border-right: none; padding: 1.75rem 1rem 1.5rem; }
-      .ls-right { padding: 1rem; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 1rem; }
-      .ls-strip { gap: 1.25rem; }
+      /* Show mobile-specific elements */
+      .ls-mob-img {
+        display: block; width: 100%; overflow: hidden;
+        background: var(--royal-dark);
+      }
+      .ls-mob-photo {
+        width: 100%; display: block;
+        max-height: 56vw; object-fit: cover; object-position: center top;
+      }
+      .ls-mob-img--placeholder .ls-mob-svg-bg {
+        width: 100%; aspect-ratio: 16/7; display: block;
+      }
+      .ls-mob-content {
+        display: flex; flex-direction: column; align-items: center;
+        text-align: center; padding: 1.6rem 1.25rem 1.25rem;
+        background: #f5f0e8;
+      }
+      .ls-mob-content .ls-eyebrow { margin-bottom: 0.5rem; }
+      .ls-mob-content .ls-title {
+        font-size: clamp(1.8rem, 7vw, 2.4rem);
+        margin-bottom: 0.6rem;
+      }
+      .ls-mob-content .ls-tagline { margin-bottom: 0.6rem; }
+      .ls-mob-btn {
+        margin-top: 0.25rem; padding: 0.8rem 2.2rem;
+        font-size: 0.82rem;
+      }
+
+      /* Hide desktop 3-col layout entirely */
+      .ls-main { display: none; }
+
+      /* Trust strip compact on mobile */
+      .ls-strip {
+        gap: 0; padding: 0;
+        display: grid; grid-template-columns: 1fr 1fr;
+      }
+      .ls-strip-item {
+        padding: 0.65rem 0.75rem;
+        border-right: 1px solid #ddd3bb;
+        border-bottom: 1px solid #ddd3bb;
+        font-size: 0.72rem;
+      }
+      .ls-strip-item:nth-child(even) { border-right: none; }
+      .ls-strip-item:nth-child(3),
+      .ls-strip-item:nth-child(4) { border-bottom: none; }
     }
+
     @media (max-width: 640px) {
       .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
       .offers-grid { grid-template-columns: 1fr; }
