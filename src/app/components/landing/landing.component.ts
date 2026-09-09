@@ -24,7 +24,8 @@ import { Product, Category, Banner } from '../../models/product.model';
 
       <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
       <section class="leadspace">
-        <!-- LEFT: text content -->
+        <img src="assets/images/vanki-ring.webp" alt="Vanki Rings" class="ls-bg-img">
+        <div class="ls-gradient"></div>
         <div class="ls-text">
           <p class="ls-eyebrow">New Collection · 2026</p>
           <h1 class="ls-title">Vanki<br>Rings</h1>
@@ -36,10 +37,6 @@ import { Product, Category, Banner } from '../../models/product.model';
             <span class="ls-offer-label">on all Vanki Rings · Limited Time</span>
           </div>
           <a routerLink="/products" class="ls-shop-btn">Shop Now</a>
-        </div>
-        <!-- RIGHT: image -->
-        <div class="ls-img-wrap">
-          <img src="assets/images/vanki-ring.webp" alt="Vanki Rings" class="ls-photo">
         </div>
       </section>
 
@@ -293,38 +290,59 @@ import { Product, Category, Banner } from '../../models/product.model';
 
     /* ══ 1. LEADSPACE ══ */
     .leadspace {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 460px;
-      max-height: 580px;
-      background: #faf7f2;
+      position: relative;
+      width: 100%;
+      min-height: 480px;
+      max-height: 600px;
+      aspect-ratio: 16 / 7;
       overflow: hidden;
+      display: flex; align-items: center;
     }
 
-    /* LEFT — text panel */
+    /* Full-bleed background image */
+    .ls-bg-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 25%;
+    }
+
+    /* Gradient: opaque on the left where text sits, fades to transparent on the right */
+    .ls-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(18, 4, 18, 0.80) 0%,
+        rgba(18, 4, 18, 0.60) 38%,
+        rgba(18, 4, 18, 0.15) 62%,
+        transparent 100%
+      );
+    }
+
+    /* Text floated to the left over the gradient */
     .ls-text {
+      position: relative; z-index: 2;
       display: flex; flex-direction: column; justify-content: center;
-      padding: 3.5rem 3.5rem 3.5rem 4rem;
-      background: #faf7f2;
+      padding: 3rem 3rem 3rem 5vw;
+      max-width: 520px;
     }
     .ls-eyebrow {
       font-size: 0.68rem; letter-spacing: 3.5px; text-transform: uppercase;
-      color: var(--gold); font-weight: 700; margin: 0 0 1rem;
+      color: var(--gold-light); font-weight: 700; margin: 0 0 1rem;
     }
     .ls-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 5.5vw, 5rem);
-      font-weight: 700; color: var(--royal-dark);
+      font-weight: 700; color: #fff;
       line-height: 1.0; letter-spacing: 1px;
       margin: 0 0 1.1rem;
     }
     .ls-rule {
       width: 48px; height: 3px;
-      background: var(--gold); margin-bottom: 1.1rem;
+      background: var(--gold-light); margin-bottom: 1.1rem;
       border-radius: 2px;
     }
     .ls-desc {
-      font-size: 0.88rem; color: #5a4e3c;
+      font-size: 0.88rem; color: rgba(255,255,255,0.82);
       line-height: 1.7; margin: 0 0 0.35rem;
       max-width: 340px;
     }
@@ -335,32 +353,24 @@ import { Product, Category, Banner } from '../../models/product.model';
     .ls-offer-pct {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.2rem; font-weight: 800;
-      color: var(--royal-dark); line-height: 1;
+      color: var(--gold-light); line-height: 1;
     }
     .ls-offer-label {
-      font-size: 0.73rem; color: #7a6e5e;
+      font-size: 0.73rem; color: rgba(255,255,255,0.7);
       letter-spacing: 0.5px; line-height: 1.4;
       max-width: 140px;
     }
     .ls-shop-btn {
       display: inline-block; align-self: flex-start;
-      background: var(--royal-dark); color: #efebe1;
+      background: var(--gold-light); color: var(--royal-dark);
       font-size: 0.75rem; font-weight: 800; letter-spacing: 2.5px;
       text-transform: uppercase; padding: 0.8rem 2.2rem;
       border-radius: 2px; text-decoration: none;
-      border: 2px solid var(--royal-dark);
-      transition: background 0.25s, color 0.25s;
+      border: 2px solid var(--gold-light);
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
     }
-    .ls-shop-btn:hover { background: transparent; color: var(--royal-dark); }
-
-    /* RIGHT — image panel */
-    .ls-img-wrap {
-      overflow: hidden; position: relative;
-    }
-    .ls-photo {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center 20%;
-      display: block;
+    .ls-shop-btn:hover {
+      background: transparent; color: var(--gold-light);
     }
 
     /* ══ 2. CATEGORIES ══ */
@@ -607,17 +617,24 @@ import { Product, Category, Banner } from '../../models/product.model';
       .about-badge { right: 0; }
     }
 
-    /* Mobile leadspace — stack: image on top, text below */
+    /* Mobile leadspace */
     @media (max-width: 640px) {
       .leadspace {
-        grid-template-columns: 1fr;
-        grid-template-rows: 52vw auto;
-        min-height: auto; max-height: none;
+        aspect-ratio: 3 / 4;
+        min-height: auto; max-height: 92vh;
+        align-items: flex-end;
       }
-      .ls-img-wrap { grid-row: 1; height: 52vw; }
+      .ls-gradient {
+        background: linear-gradient(
+          to top,
+          rgba(18,4,18,0.88) 0%,
+          rgba(18,4,18,0.55) 50%,
+          rgba(18,4,18,0.05) 100%
+        );
+      }
       .ls-text {
-        grid-row: 2;
-        padding: 1.75rem 1.25rem 2rem;
+        padding: 1.75rem 1.5rem 2rem;
+        max-width: 100%;
         align-items: center; text-align: center;
       }
       .ls-rule { margin-left: auto; margin-right: auto; }
