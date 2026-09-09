@@ -24,14 +24,22 @@ import { Product, Category, Banner } from '../../models/product.model';
 
       <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
       <section class="leadspace">
-        <img src="assets/images/vanki-ring.webp" alt="Vanki Rings" class="ls-bg-img">
-        <div class="ls-overlay"></div>
-        <div class="ls-content">
-          <span class="ls-discount-badge">20% OFF — Limited Time</span>
-          <h1 class="ls-title">Vanki Rings</h1>
+        <!-- LEFT: text content -->
+        <div class="ls-text">
+          <p class="ls-eyebrow">New Collection · 2026</p>
+          <h1 class="ls-title">Vanki<br>Rings</h1>
+          <div class="ls-rule"></div>
           <p class="ls-desc">Traditional South Indian finger rings, handcrafted in 925 sterling silver.</p>
           <p class="ls-desc">Worn with mehndi or bridal wear — a timeless symbol of grace.</p>
+          <div class="ls-offer">
+            <span class="ls-offer-pct">20% OFF</span>
+            <span class="ls-offer-label">on all Vanki Rings · Limited Time</span>
+          </div>
           <a routerLink="/products" class="ls-shop-btn">Shop Now</a>
+        </div>
+        <!-- RIGHT: image -->
+        <div class="ls-img-wrap">
+          <img src="assets/images/vanki-ring.webp" alt="Vanki Rings" class="ls-photo">
         </div>
       </section>
 
@@ -285,61 +293,75 @@ import { Product, Category, Banner } from '../../models/product.model';
 
     /* ══ 1. LEADSPACE ══ */
     .leadspace {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      max-height: 70vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 460px;
+      max-height: 580px;
+      background: #faf7f2;
       overflow: hidden;
-      display: flex; align-items: flex-end;
     }
-    .ls-bg-img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center center;
+
+    /* LEFT — text panel */
+    .ls-text {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 3.5rem 3.5rem 3.5rem 4rem;
+      background: #faf7f2;
     }
-    .ls-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(20,5,20,0.82) 0%,
-        rgba(20,5,20,0.45) 45%,
-        rgba(20,5,20,0.05) 100%
-      );
-    }
-    .ls-content {
-      position: relative; z-index: 2;
-      padding: 2.5rem 3rem;
-      max-width: 600px;
-    }
-    .ls-discount-badge {
-      display: inline-block;
-      background: var(--gold-light); color: var(--royal-dark);
-      font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px;
-      text-transform: uppercase; padding: 0.3rem 0.9rem;
-      border-radius: 2px; margin-bottom: 0.9rem;
+    .ls-eyebrow {
+      font-size: 0.68rem; letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--gold); font-weight: 700; margin: 0 0 1rem;
     }
     .ls-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 6vw, 4.5rem);
-      font-weight: 700; color: #fff;
-      line-height: 1.05; letter-spacing: 1px;
-      margin: 0 0 0.85rem; display: block;
+      font-size: clamp(3rem, 5.5vw, 5rem);
+      font-weight: 700; color: var(--royal-dark);
+      line-height: 1.0; letter-spacing: 1px;
+      margin: 0 0 1.1rem;
+    }
+    .ls-rule {
+      width: 48px; height: 3px;
+      background: var(--gold); margin-bottom: 1.1rem;
+      border-radius: 2px;
     }
     .ls-desc {
-      font-size: clamp(0.82rem, 1.6vw, 0.98rem);
-      color: rgba(255,255,255,0.82);
-      line-height: 1.65; margin: 0 0 0.3rem;
+      font-size: 0.88rem; color: #5a4e3c;
+      line-height: 1.7; margin: 0 0 0.35rem;
+      max-width: 340px;
+    }
+    .ls-offer {
+      display: flex; align-items: baseline; gap: 0.6rem;
+      margin: 1.4rem 0 1.6rem;
+    }
+    .ls-offer-pct {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 800;
+      color: var(--royal-dark); line-height: 1;
+    }
+    .ls-offer-label {
+      font-size: 0.73rem; color: #7a6e5e;
+      letter-spacing: 0.5px; line-height: 1.4;
+      max-width: 140px;
     }
     .ls-shop-btn {
-      display: inline-block; margin-top: 1.4rem;
-      background: #fff; color: var(--royal-dark);
-      font-size: 0.78rem; font-weight: 800; letter-spacing: 2px;
-      text-transform: uppercase; padding: 0.7rem 2rem;
+      display: inline-block; align-self: flex-start;
+      background: var(--royal-dark); color: #efebe1;
+      font-size: 0.75rem; font-weight: 800; letter-spacing: 2.5px;
+      text-transform: uppercase; padding: 0.8rem 2.2rem;
       border-radius: 2px; text-decoration: none;
+      border: 2px solid var(--royal-dark);
       transition: background 0.25s, color 0.25s;
-      border: 2px solid #fff;
     }
-    .ls-shop-btn:hover { background: transparent; color: #fff; }
+    .ls-shop-btn:hover { background: transparent; color: var(--royal-dark); }
+
+    /* RIGHT — image panel */
+    .ls-img-wrap {
+      overflow: hidden; position: relative;
+    }
+    .ls-photo {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 20%;
+      display: block;
+    }
 
     /* ══ 2. CATEGORIES ══ */
     .cat-section { padding: 5rem 0; background: #faf8f5; }
@@ -585,10 +607,23 @@ import { Product, Category, Banner } from '../../models/product.model';
       .about-badge { right: 0; }
     }
 
-    /* Mobile leadspace */
-    @media (max-width: 600px) {
-      .leadspace { aspect-ratio: 3 / 4; max-height: 88vh; }
-      .ls-content { padding: 1.6rem 1.25rem; }
+    /* Mobile leadspace — stack: image on top, text below */
+    @media (max-width: 640px) {
+      .leadspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 52vw auto;
+        min-height: auto; max-height: none;
+      }
+      .ls-img-wrap { grid-row: 1; height: 52vw; }
+      .ls-text {
+        grid-row: 2;
+        padding: 1.75rem 1.25rem 2rem;
+        align-items: center; text-align: center;
+      }
+      .ls-rule { margin-left: auto; margin-right: auto; }
+      .ls-desc { max-width: 100%; }
+      .ls-offer { justify-content: center; }
+      .ls-shop-btn { align-self: center; }
     }
 
     @media (max-width: 640px) {
