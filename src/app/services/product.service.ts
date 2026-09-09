@@ -50,6 +50,13 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.apiUrl}/products/featured/`);
   }
 
+  getNewArrivals(): Observable<{ results: Product[], count: number }> {
+    // Products ordered by newest first, limit 8
+    return this.http.get<{ results: Product[], count: number }>(
+      `${this.apiUrl}/products/?ordering=-created_at&page_size=8`
+    );
+  }
+
   searchProducts(query: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/products/search/?q=${query}`);
   }
