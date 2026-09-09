@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product.service';
@@ -9,221 +9,274 @@ import { Product, Category, Banner } from '../../models/product.model';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
+
+    <!-- ══ NOTIFICATION BAR ══════════════════════════════════════ -->
+    <div class="notif-bar" *ngIf="notifVisible">
+      <div class="notif-inner">
+        <span class="notif-icon">✦</span>
+        <span class="notif-text">Free shipping on orders above ₹999 &nbsp;·&nbsp; 30-Day easy returns &nbsp;·&nbsp; 925 Hallmarked Silver — Certified &amp; Authentic &nbsp;·&nbsp; Handcrafted in India</span>
+        <span class="notif-icon">✦</span>
+      </div>
+      <button class="notif-close" (click)="notifVisible=false" aria-label="Close">✕</button>
+    </div>
+
     <div class="landing">
 
-      <!-- ── Hero Carousel ────────────────────── -->
-      <section class="hero-carousel">
-        <div class="carousel-track" [style.transform]="'translateX(-' + (activeSlide * 100) + '%)'">
+      <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
+      <section class="leadspace">
+        <div class="ls-main">
 
-          <!-- Slide 1 — Deep Royal Purple -->
-          <div class="carousel-slide slide-1">
-            <div class="slide-inner">
-              <div class="slide-content">
-                <p class="slide-eyebrow">Since 2024 · Handcrafted in India</p>
-                <h1 class="slide-title">Where Silver<br><span class="accent">Meets Soul</span></h1>
-                <p class="slide-sub">925 Sterling Silver jewellery crafted for the modern woman who carries tradition with grace.</p>
-                <div class="slide-actions">
-                  <a routerLink="/products" class="btn btn-gold btn-lg">Shop Now</a>
-                  <a routerLink="/products" class="btn btn-ghost btn-lg">View All</a>
-                </div>
-              </div>
-              <div class="slide-badge-wrap">
-                <div class="slide-badge">
-                  <span class="badge-num">925</span>
-                  <span class="badge-lbl">Pure Silver</span>
-                </div>
-              </div>
-            </div>
-            <div class="slide-deco deco-circles">
-              <div class="deco-c c1"></div>
-              <div class="deco-c c2"></div>
-              <div class="deco-c c3"></div>
+          <!-- LEFT: brand photo or gradient panel -->
+          <div class="ls-left">
+            <img *ngIf="heroBanner?.image" [src]="heroBanner!.image" alt="Kasavelli Silver" class="ls-hero-img">
+            <div *ngIf="!heroBanner?.image" class="ls-hero-placeholder">
+              <!-- decorative SVG jewellery silhouette -->
+              <svg viewBox="0 0 120 160" fill="none" xmlns="http://www.w3.org/2000/svg" width="90" height="120">
+                <ellipse cx="60" cy="30" rx="22" ry="22" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
+                <path d="M38 30 Q20 70 30 120 Q60 150 90 120 Q100 70 82 30" stroke="#c9a84c" stroke-width="2" fill="none"/>
+                <circle cx="60" cy="30" r="6" fill="#c9a84c" opacity="0.7"/>
+                <path d="M50 55 Q60 75 70 55" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+                <path d="M44 80 Q60 105 76 80" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+              </svg>
             </div>
           </div>
 
-          <!-- Slide 2 — Warm Gold Gradient -->
-          <div class="carousel-slide slide-2">
-            <div class="slide-inner">
-              <div class="slide-content">
-                <p class="slide-eyebrow">New Collection 2026</p>
-                <h1 class="slide-title">Timeless<br><span class="accent-dark">Elegance</span></h1>
-                <p class="slide-sub">Each piece tells a story — handforged by artisans who have mastered the art of silver for generations.</p>
-                <div class="slide-actions">
-                  <a routerLink="/products" class="btn btn-royal btn-lg">Explore</a>
-                  <a routerLink="/products" class="btn btn-ghost-dark btn-lg">Our Story</a>
-                </div>
+          <!-- CENTRE: headline + feature boxes -->
+          <div class="ls-centre">
+            <p class="ls-eyebrow">Handcrafted 925 Sterling Silver</p>
+            <h1 class="ls-title">A PIECE FOR YOU.<br>A PIECE FOR INDIA.</h1>
+            <div class="ls-divider"></div>
+            <p class="ls-tagline">Authentic silver jewellery that honours traditional craftsmanship and modern elegance.</p>
+            <div class="ls-tag-highlight" *ngIf="heroBanner?.discount_offer">
+              {{ heroBanner!.discount_offer }}
+            </div>
+            <div class="ls-feature-row">
+              <div class="ls-feat-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <p><strong>925 Hallmarked</strong><br>certified pure silver on every piece</p>
               </div>
-              <div class="slide-ornament">
-                <svg viewBox="0 0 200 200" class="ornament-svg">
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(85,23,86,0.15)" stroke-width="1"/>
-                  <circle cx="100" cy="100" r="60" fill="none" stroke="rgba(85,23,86,0.1)" stroke-width="1"/>
-                  <circle cx="100" cy="100" r="40" fill="none" stroke="rgba(85,23,86,0.08)" stroke-width="1"/>
-                  <path d="M100 20 L100 180 M20 100 L180 100 M44 44 L156 156 M156 44 L44 156"
-                        stroke="rgba(85,23,86,0.08)" stroke-width="0.8"/>
+              <div class="ls-feat-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/>
+                </svg>
+                <p><strong>Artisan Made</strong><br>handcrafted by skilled Indian artisans</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: brand identity + CTA -->
+          <div class="ls-right">
+            <div class="ls-brand">
+              <div class="ls-brand-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="52" height="52">
+                  <path d="M24 4 L40 14 L40 34 L24 44 L8 34 L8 14 Z" stroke="#551756" stroke-width="2.5" fill="rgba(85,23,86,0.06)"/>
+                  <path d="M24 12 L34 18 L34 30 L24 36 L14 30 L14 18 Z" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
+                  <circle cx="24" cy="24" r="4" fill="#c9a84c"/>
                 </svg>
               </div>
+              <p class="ls-brand-name">KASAVELLI</p>
+              <p class="ls-brand-sub">— SILVER JEWELLERY —</p>
             </div>
-            <div class="slide-deco deco-diamonds">
-              <div class="deco-d d1"></div>
-              <div class="deco-d d2"></div>
-            </div>
-          </div>
-
-          <!-- Slide 3 — Deep Teal/Emerald -->
-          <div class="carousel-slide slide-3">
-            <div class="slide-inner">
-              <div class="slide-content">
-                <p class="slide-eyebrow">Festive Season Specials</p>
-                <h1 class="slide-title">Crafted for<br><span class="accent-light">Every Occasion</span></h1>
-                <p class="slide-sub">From bridal sets to everyday wear — discover the perfect silver piece for every moment that matters.</p>
-                <div class="slide-actions">
-                  <a routerLink="/products" class="btn btn-light btn-lg">Discover</a>
-                  <a routerLink="/products" class="btn btn-ghost-light btn-lg">Gift Guide</a>
-                </div>
-              </div>
-              <div class="slide-stats">
-                <div class="hstat">
-                  <span class="hstat-n">100+</span>
-                  <span class="hstat-l">Designs</span>
-                </div>
-                <div class="hstat-div"></div>
-                <div class="hstat">
-                  <span class="hstat-n">500+</span>
-                  <span class="hstat-l">Happy Customers</span>
-                </div>
-                <div class="hstat-div"></div>
-                <div class="hstat">
-                  <span class="hstat-n">925</span>
-                  <span class="hstat-l">Silver Purity</span>
-                </div>
-              </div>
-            </div>
-            <div class="slide-deco deco-lines">
-              <div class="deco-l l1"></div>
-              <div class="deco-l l2"></div>
-              <div class="deco-l l3"></div>
-            </div>
+            <a routerLink="/products" class="ls-cta-btn">Shop Collection</a>
+            <p class="ls-free-ship">✓ Free shipping above ₹999</p>
           </div>
 
         </div>
 
-        <!-- Dots -->
-        <div class="carousel-dots">
-          <button class="dot" [class.active]="activeSlide === 0" (click)="goTo(0)"></button>
-          <button class="dot" [class.active]="activeSlide === 1" (click)="goTo(1)"></button>
-          <button class="dot" [class.active]="activeSlide === 2" (click)="goTo(2)"></button>
-        </div>
-
-        <!-- Arrows -->
-        <button class="carousel-arrow arrow-prev" (click)="prev()" aria-label="Previous">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-        </button>
-        <button class="carousel-arrow arrow-next" (click)="next()" aria-label="Next">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
-        </button>
-
-        <!-- Progress bar -->
-        <div class="carousel-progress">
-          <div class="progress-bar" [style.animation-duration]="autoDuration + 'ms'" [class.running]="autoRunning"></div>
-        </div>
-      </section>
-
-      <!-- ── Trust Bar ─────────────────────────── -->
-      <section class="trust-bar">
-        <div class="container trust-inner">
-          <div class="trust-item">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>925 Certified Silver</span>
+        <!-- BOTTOM TRUST STRIP -->
+        <div class="ls-strip">
+          <div class="ls-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Secure packaging</span>
           </div>
-          <div class="trust-divider"></div>
-          <div class="trust-item">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <rect x="1" y="3" width="15" height="13" rx="1"/>
-              <path d="M16 8h4l3 5v3h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-            </svg>
-            <span>Free Shipping ₹999+</span>
+          <div class="ls-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <span>30-Day returns</span>
           </div>
-          <div class="trust-divider"></div>
-          <div class="trust-item">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-              <polyline points="17 6 23 6 23 12"/>
-            </svg>
-            <span>30-Day Easy Returns</span>
+          <div class="ls-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>925 Hallmarked</span>
           </div>
-          <div class="trust-divider"></div>
-          <div class="trust-item">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <span>Handcrafted with Love</span>
+          <div class="ls-strip-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+            <span>Ships across India</span>
           </div>
         </div>
       </section>
 
-      <!-- ── Image Banners ────────────────────── -->
-      <section class="banners" *ngIf="banners.length > 0">
-        <div class="banner-card" *ngFor="let banner of banners">
-          <img [src]="banner.image" [alt]="banner.title" class="banner-img">
-          <div class="banner-info">
-            <h3>{{ banner.title }}</h3>
-            <p>{{ banner.description }}</p>
-            <span class="discount-badge" *ngIf="banner.discount_offer">{{ banner.discount_offer }}</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- ── Shop by Category ──────────────────── -->
-      <section class="categories-section">
+      <!-- ══ 2. CATEGORIES ═════════════════════════════════════════ -->
+      <section class="cat-section">
         <div class="container">
-          <div class="section-head">
+          <div class="sec-head">
             <h2>Shop by Category</h2>
-            <span class="gold-divider"></span>
-            <p class="section-sub">Discover our curated silver collections</p>
+            <div class="sec-line"></div>
+            <p class="sec-sub">Discover our handcrafted silver collections</p>
           </div>
-        </div>
-        <div class="category-scroll-wrap">
-          <div class="category-track">
-            <div class="category-tile" *ngFor="let cat of categories"
+          <div class="cat-grid">
+            <div class="cat-card" *ngFor="let cat of categories"
                  [routerLink]="['/products']" [queryParams]="{category: cat.id}">
-              <div class="cat-img-ring">
-                <img [src]="cat.image || 'assets/placeholder.jpg'" [alt]="cat.display_name" class="cat-img">
+              <div class="cat-img-wrap">
+                <img *ngIf="cat.image" [src]="cat.image" [alt]="cat.display_name" class="cat-img">
+                <div *ngIf="!cat.image" class="cat-img-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" width="32" height="32">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                  </svg>
+                </div>
+                <div class="cat-overlay">
+                  <span>Shop Now →</span>
+                </div>
               </div>
-              <p class="cat-name">{{ cat.display_name }}</p>
+              <div class="cat-info">
+                <p class="cat-name">{{ cat.display_name }}</p>
+                <p class="cat-count">{{ cat.products_count }} designs</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ── Featured Products ─────────────────── -->
-      <section class="featured-section">
+      <!-- ══ 3. ABOUT US ════════════════════════════════════════════ -->
+      <section class="about-section">
+        <div class="container about-inner">
+          <div class="about-img-col">
+            <div class="about-img-frame">
+              <div class="about-img-bg"></div>
+              <div class="about-badge">
+                <span class="about-badge-num">925</span>
+                <span class="about-badge-lbl">Hallmarked<br>Silver</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-text-col">
+            <p class="about-eyebrow">Our Story</p>
+            <h2 class="about-title">Crafted with Passion,<br>Worn with Pride</h2>
+            <p class="about-desc">Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handcrafted by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.</p>
+            <p class="about-desc">We blend centuries-old craftsmanship with modern design sensibilities to create jewellery that tells a story. From bridal sets to everyday wear, each Kasavelli piece is a work of art.</p>
+            <div class="about-stats">
+              <div class="astat">
+                <span class="astat-n">100+</span>
+                <span class="astat-l">Unique Designs</span>
+              </div>
+              <div class="astat-div"></div>
+              <div class="astat">
+                <span class="astat-n">500+</span>
+                <span class="astat-l">Happy Customers</span>
+              </div>
+              <div class="astat-div"></div>
+              <div class="astat">
+                <span class="astat-n">925</span>
+                <span class="astat-l">Silver Purity</span>
+              </div>
+            </div>
+            <a routerLink="/products" class="about-btn">View Collection</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 4. WHAT WE OFFER ══════════════════════════════════════ -->
+      <section class="offers-section">
         <div class="container">
-          <div class="section-head">
-            <h2>Featured Collection</h2>
-            <span class="gold-divider"></span>
-            <p class="section-sub">Bestsellers loved by our customers</p>
+          <div class="sec-head">
+            <h2>Why Choose Kasavelli</h2>
+            <div class="sec-line"></div>
+            <p class="sec-sub">Every piece is a promise of quality and craftsmanship</p>
+          </div>
+          <div class="offers-grid">
+            <div class="offer-card">
+              <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <h3>925 Certified Silver</h3>
+              <p>Every piece is hallmarked 925 sterling silver — certified pure, hypoallergenic, and safe for all skin types.</p>
+            </div>
+            <div class="offer-card">
+              <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </div>
+              <h3>Handpicked Designs</h3>
+              <p>Each design is curated by our artisans — blending traditional Indian motifs with contemporary aesthetics.</p>
+            </div>
+            <div class="offer-card">
+              <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                  <rect x="1" y="3" width="15" height="13" rx="1"/>
+                  <path d="M16 8h4l3 5v3h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                </svg>
+              </div>
+              <h3>Fast & Safe Delivery</h3>
+              <p>Free shipping above ₹999. Secure packaging ensures your jewellery arrives safely across India in 5–7 days.</p>
+            </div>
+            <div class="offer-card">
+              <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                  <polyline points="17 6 23 6 23 12"/>
+                </svg>
+              </div>
+              <h3>30-Day Returns</h3>
+              <p>Not happy? Return within 30 days — no questions asked. Your satisfaction is our highest priority.</p>
+            </div>
+            <div class="offer-card">
+              <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                  <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+              </div>
+              <h3>Perfect for Gifting</h3>
+              <p>Every order comes gift-ready with elegant packaging — ideal for birthdays, anniversaries, and festivities.</p>
+            </div>
+            <div class="offer-card">
+              <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <h3>Made in India</h3>
+              <p>Proudly handcrafted by Indian artisans — supporting traditional craft while delivering world-class quality.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ 5. NEW ARRIVALS ════════════════════════════════════════ -->
+      <section class="arrivals-section">
+        <div class="container">
+          <div class="sec-head">
+            <h2>New Arrivals</h2>
+            <div class="sec-line"></div>
+            <p class="sec-sub">Fresh designs just added to our collection</p>
           </div>
 
-          <div class="products-grid">
-            <div class="product-card" *ngFor="let p of featuredProducts" [routerLink]="['/products', p.id]">
-              <div class="product-img-wrap">
-                <img [src]="p.image" [alt]="p.name" class="product-img">
-                <span class="off-badge" *ngIf="p.discount_percentage > 0">{{ p.discount_percentage }}% OFF</span>
-                <div class="hover-overlay">
-                  <span class="quick-view">Quick View</span>
+          <div class="arrivals-grid" *ngIf="newArrivals.length > 0">
+            <div class="arrival-card" *ngFor="let p of newArrivals" [routerLink]="['/products', p.id]">
+              <div class="arrival-img-wrap">
+                <img *ngIf="p.image" [src]="p.image" [alt]="p.name" class="arrival-img">
+                <div *ngIf="!p.image" class="arrival-img-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="36" height="36">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+                <div class="arrival-badges">
+                  <span class="new-badge">New</span>
+                  <span class="off-badge" *ngIf="p.discount_percentage > 0">{{ p.discount_percentage }}% OFF</span>
+                </div>
+                <div class="arrival-hover">
+                  <span>Quick View</span>
                 </div>
               </div>
-              <div class="product-body">
-                <p class="prod-category">{{ p.category_name }}</p>
-                <h3 class="prod-title">{{ p.title }}</h3>
-                <p class="prod-purity">{{ p.purity }}</p>
-                <div class="prod-price">
+              <div class="arrival-body">
+                <p class="arrival-cat">{{ p.category_name }}</p>
+                <h3 class="arrival-name">{{ p.title }}</h3>
+                <div class="arrival-price">
                   <span class="price-strike" *ngIf="p.discounted_price">₹{{ p.price }}</span>
                   <span class="price-main">₹{{ p.final_price }}</span>
                 </div>
@@ -231,34 +284,12 @@ import { Product, Category, Banner } from '../../models/product.model';
             </div>
           </div>
 
-          <div class="view-all-wrap">
-            <a routerLink="/products" class="btn btn-outline btn-lg">View All Collections</a>
+          <div class="no-arrivals" *ngIf="newArrivals.length === 0">
+            <p>New designs coming soon — check back shortly!</p>
           </div>
-        </div>
-      </section>
 
-      <!-- ── Quality Promise ──────────────────── -->
-      <section class="promise-section">
-        <div class="container promise-inner">
-          <div class="promise-text">
-            <p class="promise-eyebrow">Our Promise</p>
-            <h2>Every Piece, A Work of Art</h2>
-            <p>At Kasavelli, each piece of jewellery is handcrafted by skilled artisans using 925 hallmarked silver. We blend traditional Indian craftsmanship with modern design sensibilities to create pieces that are truly timeless.</p>
-            <a routerLink="/products" class="btn btn-primary mt-3">Discover More</a>
-          </div>
-          <div class="promise-stats">
-            <div class="stat">
-              <span class="stat-num">925</span>
-              <span class="stat-label">Silver Purity</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num">100+</span>
-              <span class="stat-label">Unique Designs</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num">500+</span>
-              <span class="stat-label">Happy Customers</span>
-            </div>
+          <div class="arrivals-cta">
+            <a routerLink="/products" class="sec-btn">View All Collections</a>
           </div>
         </div>
       </section>
@@ -266,479 +297,453 @@ import { Product, Category, Banner } from '../../models/product.model';
     </div>
   `,
   styles: [`
-    .landing { background: var(--cream); }
-
-    /* ══════════════════════════════════════════
-       HERO CAROUSEL
-    ══════════════════════════════════════════ */
-    .hero-carousel {
-      position: relative;
-      height: 92vh;
-      min-height: 580px;
-      overflow: hidden;
-    }
-    .carousel-track {
-      display: flex;
-      height: 100%;
-      transition: transform 0.75s cubic-bezier(0.77, 0, 0.175, 1);
-      will-change: transform;
-    }
-    .carousel-slide {
-      flex: 0 0 100%;
-      width: 100%;
-      height: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
+    /* ══ CSS VARIABLES (fallback if global not set) ══ */
+    :host {
+      --royal: #551756;
+      --royal-dark: #3a0e3b;
+      --gold: #c9a84c;
+      --gold-light: #e8c547;
+      --cream: #f9f5ef;
+      --white: #ffffff;
+      --text: #1a1a2e;
+      --text-light: #6b6b7b;
     }
 
-    /* Slide colour themes */
-    .slide-1 {
-      background: linear-gradient(135deg, #3a0e3b 0%, #551756 40%, #7a2278 70%, #3a0e3b 100%);
+    /* ══ NOTIFICATION BAR ══ */
+    .notif-bar {
+      background: var(--royal-dark);
+      display: flex; align-items: center;
+      justify-content: center;
+      padding: 0.6rem 3rem 0.6rem 1rem;
+      position: relative; overflow: hidden;
     }
-    .slide-2 {
-      background: linear-gradient(135deg, #b8860b 0%, #d4a017 35%, #e8c547 65%, #c9951a 100%);
+    .notif-inner {
+      display: flex; align-items: center; gap: 0.75rem;
+      white-space: nowrap; overflow: hidden;
+      animation: marquee 28s linear infinite;
     }
-    .slide-3 {
-      background: linear-gradient(135deg, #0d4f4f 0%, #0a7c7c 40%, #12a3a3 70%, #0d5f5f 100%);
+    @keyframes marquee {
+      0%   { transform: translateX(30%); }
+      100% { transform: translateX(-100%); }
     }
+    .notif-text { font-size: 0.78rem; letter-spacing: 1px; color: #e8c547; font-weight: 500; }
+    .notif-icon { color: #e8c547; font-size: 0.65rem; flex-shrink: 0; }
+    .notif-close {
+      position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.1); border: none; border-radius: 50%;
+      width: 22px; height: 22px; font-size: 0.7rem;
+      color: rgba(232,197,71,0.8); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .notif-close:hover { background: rgba(255,255,255,0.2); color: #e8c547; }
 
-    /* Slide inner layout */
-    .slide-inner {
-      position: relative;
-      z-index: 2;
-      width: 100%;
+    /* ══ SHARED ══ */
+    .landing { background: #fff; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .sec-head { text-align: center; margin-bottom: 3rem; }
+    .sec-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      color: var(--royal-dark); font-weight: 700; letter-spacing: 0.5px;
+    }
+    .sec-line {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      margin: 0.75rem auto 0.75rem; border-radius: 2px;
+    }
+    .sec-sub { color: var(--text-light); font-size: 0.95rem; }
+
+    /* ══ 1. LEADSPACE ══ */
+    .leadspace {
+      background: #f5f0e8;
+      border-bottom: 1px solid #e0d5c0;
+    }
+    .ls-main {
+      display: grid;
+      grid-template-columns: 260px 1fr 220px;
+      min-height: 300px;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 3rem;
+      padding: 0 1.5rem;
     }
-    .slide-content { max-width: 600px; }
 
-    .slide-eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
+    /* LEFT — hero image or ornament */
+    .ls-left {
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden; position: relative;
     }
-    .slide-1 .slide-eyebrow { color: #e8c547; }
-    .slide-2 .slide-eyebrow { color: #551756; }
-    .slide-3 .slide-eyebrow { color: #e8f8f8; }
+    .ls-hero-img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      max-height: 300px;
+    }
+    .ls-hero-placeholder {
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 1.5rem; opacity: 0.75;
+    }
 
-    .slide-title {
+    /* CENTRE — main content */
+    .ls-centre {
+      padding: 2.2rem 2.5rem 1.8rem;
+      display: flex; flex-direction: column; justify-content: center;
+      border-left: 1px solid #ddd3bb; border-right: 1px solid #ddd3bb;
+    }
+    .ls-eyebrow {
+      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 0.75rem;
+    }
+    .ls-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: 2px;
-      margin: 0 0 1.5rem;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800; color: var(--royal-dark);
+      line-height: 1.15; letter-spacing: 0.5px;
+      margin: 0 0 0.75rem;
     }
-    .slide-1 .slide-title { color: #efebe1; }
-    .slide-2 .slide-title { color: #3a0e3b; }
-    .slide-3 .slide-title { color: #ffffff; }
-
-    .accent       { color: #e8c547; display: block; }
-    .accent-dark  { color: #551756; display: block; }
-    .accent-light { color: #7fffd4; display: block; }
-
-    .slide-sub {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      font-weight: 300;
-      margin-bottom: 2.5rem;
-      max-width: 480px;
+    .ls-divider {
+      width: 40px; height: 2px;
+      background: var(--gold); margin-bottom: 0.75rem;
     }
-    .slide-1 .slide-sub { color: rgba(239,235,225,0.8); }
-    .slide-2 .slide-sub { color: rgba(58,14,59,0.75); }
-    .slide-3 .slide-sub { color: rgba(255,255,255,0.8); }
-
-    .slide-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    /* Buttons */
-    .btn-gold {
-      background: #e8c547; color: #3a0e3b;
-      font-weight: 700; letter-spacing: 1.5px; font-size: 0.88rem;
-      text-transform: uppercase; border: none;
-      padding: 0.9rem 2rem; cursor: pointer;
-      text-decoration: none; display: inline-block;
-      transition: all 0.3s; border-radius: 2px;
+    .ls-tagline {
+      font-size: 0.82rem; color: #6b5e4e; line-height: 1.65;
+      margin-bottom: 0.75rem; max-width: 380px;
     }
-    .btn-gold:hover { background: #f5d560; transform: translateY(-2px); }
-
-    .btn-ghost {
-      background: transparent; color: rgba(239,235,225,0.9);
-      border: 2px solid rgba(239,235,225,0.4);
-      font-weight: 600; letter-spacing: 1.5px; font-size: 0.88rem;
-      text-transform: uppercase; padding: 0.9rem 2rem;
-      cursor: pointer; text-decoration: none; display: inline-block;
-      transition: all 0.3s; border-radius: 2px;
+    .ls-tag-highlight {
+      display: inline-block;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 1px;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 1.1rem;
     }
-    .btn-ghost:hover { border-color: #e8c547; color: #e8c547; }
-
-    .btn-royal {
-      background: #551756; color: #efebe1;
-      font-weight: 700; letter-spacing: 1.5px; font-size: 0.88rem;
-      text-transform: uppercase; border: none;
-      padding: 0.9rem 2rem; cursor: pointer;
-      text-decoration: none; display: inline-block;
-      transition: all 0.3s; border-radius: 2px;
+    .ls-feature-row {
+      display: flex; gap: 1rem; flex-wrap: wrap;
     }
-    .btn-royal:hover { background: #3a0e3b; transform: translateY(-2px); }
-
-    .btn-ghost-dark {
-      background: transparent; color: #551756;
-      border: 2px solid rgba(85,23,86,0.4);
-      font-weight: 600; letter-spacing: 1.5px; font-size: 0.88rem;
-      text-transform: uppercase; padding: 0.9rem 2rem;
-      cursor: pointer; text-decoration: none; display: inline-block;
-      transition: all 0.3s; border-radius: 2px;
+    .ls-feat-box {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      background: #fff; border: 1px solid #e5d9c0;
+      border-radius: 8px; padding: 0.75rem 0.9rem;
+      flex: 1; min-width: 140px;
+      color: var(--royal-dark);
     }
-    .btn-ghost-dark:hover { border-color: #551756; background: rgba(85,23,86,0.08); }
+    .ls-feat-box svg { flex-shrink: 0; margin-top: 2px; color: var(--gold); }
+    .ls-feat-box p { font-size: 0.75rem; color: #5a4e3c; line-height: 1.5; margin: 0; }
+    .ls-feat-box strong { color: var(--royal-dark); font-size: 0.8rem; }
 
-    .btn-light {
-      background: #ffffff; color: #0d4f4f;
-      font-weight: 700; letter-spacing: 1.5px; font-size: 0.88rem;
-      text-transform: uppercase; border: none;
-      padding: 0.9rem 2rem; cursor: pointer;
-      text-decoration: none; display: inline-block;
-      transition: all 0.3s; border-radius: 2px;
-    }
-    .btn-light:hover { background: #e0fafa; transform: translateY(-2px); }
-
-    .btn-ghost-light {
-      background: transparent; color: rgba(255,255,255,0.9);
-      border: 2px solid rgba(255,255,255,0.4);
-      font-weight: 600; letter-spacing: 1.5px; font-size: 0.88rem;
-      text-transform: uppercase; padding: 0.9rem 2rem;
-      cursor: pointer; text-decoration: none; display: inline-block;
-      transition: all 0.3s; border-radius: 2px;
-    }
-    .btn-ghost-light:hover { border-color: #7fffd4; color: #7fffd4; }
-
-    /* Slide 1 — badge */
-    .slide-badge-wrap { flex-shrink: 0; }
-    .slide-badge {
-      width: 160px; height: 160px;
-      border-radius: 50%;
-      border: 2px solid rgba(232,197,71,0.5);
+    /* RIGHT — brand + CTA */
+    .ls-right {
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(8px);
+      padding: 2rem 1rem; gap: 0.75rem;
+      text-align: center;
     }
-    .badge-num {
+    .ls-brand { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+    .ls-brand-icon { margin-bottom: 0.2rem; }
+    .ls-brand-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem; font-weight: 700;
-      color: #e8c547; line-height: 1;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--royal-dark); letter-spacing: 4px;
+      line-height: 1;
     }
-    .badge-lbl {
-      font-size: 0.72rem; letter-spacing: 2.5px;
-      text-transform: uppercase; color: rgba(239,235,225,0.7);
-      margin-top: 0.4rem;
+    .ls-brand-sub {
+      font-size: 0.62rem; letter-spacing: 3px; color: var(--gold);
+      font-weight: 600; text-transform: uppercase; margin: 0;
+    }
+    .ls-cta-btn {
+      display: inline-block;
+      background: var(--royal-dark); color: #efebe1;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 0.65rem 1.4rem;
+      border-radius: 3px; text-decoration: none;
+      transition: background 0.25s; margin-top: 0.5rem;
+      white-space: nowrap;
+    }
+    .ls-cta-btn:hover { background: var(--royal); }
+    .ls-free-ship {
+      font-size: 0.7rem; color: #7a6e5e; margin: 0;
     }
 
-    /* Slide 2 — ornament */
-    .slide-ornament { flex-shrink: 0; width: 220px; height: 220px; }
-    .ornament-svg { width: 100%; height: 100%; }
+    /* BOTTOM TRUST STRIP */
+    .ls-strip {
+      background: #ece5d6;
+      border-top: 1px solid #ddd3bb;
+      display: flex; align-items: center; justify-content: center;
+      gap: 2.5rem; padding: 0.65rem 1.5rem;
+      flex-wrap: wrap;
+    }
+    .ls-strip-item {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-size: 0.75rem; font-weight: 500; color: #5a4e3c;
+    }
+    .ls-strip-item svg { color: var(--royal-dark); flex-shrink: 0; }
 
-    /* Slide 3 — stats row */
-    .slide-stats {
+    /* ══ 2. CATEGORIES ══ */
+    .cat-section { padding: 5rem 0; background: #faf8f5; }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+    .cat-card {
+      border-radius: 12px; overflow: hidden;
+      background: #fff; cursor: pointer;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+    }
+    .cat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(85,23,86,0.14);
+    }
+    .cat-img-wrap {
+      position: relative; height: 180px; overflow: hidden;
+      background: #f0e8f0;
+    }
+    .cat-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .cat-card:hover .cat-img { transform: scale(1.08); }
+    .cat-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(85,23,86,0.3);
+    }
+    .cat-overlay {
+      position: absolute; inset: 0;
+      background: rgba(58,14,59,0.45);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .cat-overlay span {
+      color: var(--gold-light); font-size: 0.85rem;
+      font-weight: 600; letter-spacing: 1px;
+    }
+    .cat-card:hover .cat-overlay { opacity: 1; }
+    .cat-info { padding: 0.9rem 1rem; }
+    .cat-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--royal-dark); margin: 0 0 0.2rem;
+    }
+    .cat-count { font-size: 0.78rem; color: var(--text-light); margin: 0; }
+
+    /* ══ 3. ABOUT US ══ */
+    .about-section { padding: 5.5rem 0; background: #fff; }
+    .about-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .about-img-col { position: relative; }
+    .about-img-frame {
+      position: relative;
+      width: 100%; padding-bottom: 110%;
+      border-radius: 16px; overflow: hidden;
+    }
+    .about-img-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(145deg, #7a2278 0%, #3a0e3b 50%, #c9951a 100%);
+    }
+    /* Decorative offset box behind image */
+    .about-img-frame::before {
+      content: '';
+      position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px;
+      border: 2px solid rgba(201,148,26,0.35);
+      border-radius: 16px; z-index: 0;
+    }
+    .about-badge {
+      position: absolute; bottom: 1.5rem; right: -1rem;
+      background: #fff; border-radius: 12px;
+      padding: 0.75rem 1.25rem;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      display: flex; align-items: center; gap: 0.75rem; z-index: 2;
+      border: 1px solid rgba(201,148,26,0.2);
+    }
+    .about-badge-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
+    }
+    .about-badge-lbl { font-size: 0.72rem; color: var(--text-light); line-height: 1.4; }
+
+    .about-text-col { padding-right: 1rem; }
+    .about-eyebrow {
+      font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 1rem;
+    }
+    .about-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700; color: var(--royal-dark); line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .about-desc {
+      font-size: 0.95rem; color: var(--text-light);
+      line-height: 1.85; margin-bottom: 1rem;
+    }
+    .about-stats {
       display: flex; align-items: center; gap: 0;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 8px; padding: 1.5rem 2rem;
-      flex-shrink: 0;
+      margin: 2rem 0;
+      background: #faf8f5; border-radius: 10px; padding: 1.25rem 1.5rem;
     }
-    .hstat { text-align: center; padding: 0 2rem; }
-    .hstat-n {
+    .astat { text-align: center; padding: 0 1.5rem; flex: 1; }
+    .astat-n {
       display: block;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem; font-weight: 700;
-      color: #7fffd4; line-height: 1;
+      font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
-    .hstat-l {
-      font-size: 0.72rem; letter-spacing: 1.5px;
-      text-transform: uppercase; color: rgba(255,255,255,0.7);
-      margin-top: 0.4rem; display: block;
+    .astat-l { font-size: 0.72rem; color: var(--text-light); margin-top: 0.25rem; display: block; }
+    .astat-div { width: 1px; height: 36px; background: #e0d8e0; flex-shrink: 0; }
+    .about-btn {
+      display: inline-block;
+      background: var(--royal-dark); color: #efebe1;
+      font-weight: 600; font-size: 0.88rem; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 0.85rem 2rem;
+      border-radius: 3px; text-decoration: none;
+      transition: background 0.3s;
     }
-    .hstat-div { width: 1px; height: 50px; background: rgba(255,255,255,0.2); }
+    .about-btn:hover { background: var(--royal); }
 
-    /* Decorative shapes */
-    .slide-deco { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-
-    /* Circles for slide 1 */
-    .deco-c {
-      position: absolute; border-radius: 50%;
-      border: 1px solid rgba(232,197,71,0.12);
+    /* ══ 4. WHAT WE OFFER ══ */
+    .offers-section { padding: 5rem 0; background: #faf8f5; }
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
     }
-    .c1 { width: 500px; height: 500px; right: -150px; top: -100px; }
-    .c2 { width: 320px; height: 320px; right: -20px; bottom: -80px; border-color: rgba(232,197,71,0.08); }
-    .c3 { width: 180px; height: 180px; right: 200px; top: 60px; border-color: rgba(232,197,71,0.15); }
-
-    /* Diamonds for slide 2 */
-    .deco-d {
-      position: absolute;
-      transform: rotate(45deg);
-      border: 1px solid rgba(85,23,86,0.1);
+    .offer-card {
+      background: #fff; border-radius: 12px;
+      padding: 2rem 1.75rem;
+      border: 1px solid #f0eaee;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
-    .d1 { width: 350px; height: 350px; right: -80px; top: -80px; }
-    .d2 { width: 200px; height: 200px; left: -60px; bottom: -60px; border-color: rgba(85,23,86,0.07); }
-
-    /* Lines for slide 3 */
-    .deco-l {
-      position: absolute;
-      background: rgba(255,255,255,0.05);
-      transform: rotate(-30deg);
+    .offer-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(85,23,86,0.1);
+      border-color: rgba(201,148,26,0.3);
     }
-    .l1 { width: 3px; height: 100vh; right: 25%; top: -50%; }
-    .l2 { width: 2px; height: 100vh; right: 35%; top: -50%; }
-    .l3 { width: 1px; height: 100vh; right: 20%; top: -50%; }
-
-    /* Navigation dots */
-    .carousel-dots {
-      position: absolute; bottom: 1.75rem; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 0.6rem; z-index: 10;
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,0.35);
-      border: none; cursor: pointer; padding: 0;
-      transition: all 0.3s;
-    }
-    .dot.active { background: #e8c547; width: 28px; border-radius: 4px; }
-
-    /* Arrows */
-    .carousel-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff; cursor: pointer; z-index: 10;
+    .offer-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(85,23,86,0.08), rgba(85,23,86,0.04));
       display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s;
+      color: var(--royal-dark); margin-bottom: 1.25rem;
     }
-    .carousel-arrow:hover { background: rgba(232,197,71,0.3); border-color: #e8c547; }
-    .arrow-prev { left: 1.5rem; }
-    .arrow-next { right: 1.5rem; }
+    .offer-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 700;
+      color: var(--royal-dark); margin-bottom: 0.6rem;
+    }
+    .offer-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; margin: 0; }
 
-    /* Progress bar */
-    .carousel-progress {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 3px; background: rgba(255,255,255,0.1); z-index: 10;
-    }
-    .progress-bar {
-      height: 100%; background: #e8c547;
-      width: 0; transform-origin: left;
-    }
-    .progress-bar.running {
-      animation: progressFill linear forwards;
-    }
-    @keyframes progressFill {
-      from { width: 0; }
-      to   { width: 100%; }
-    }
-
-    /* ── Banners ─────────────────────────────── */
-    .banners {
+    /* ══ 5. NEW ARRIVALS ══ */
+    .arrivals-section { padding: 5rem 0; background: #fff; }
+    .arrivals-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 0;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem; margin-bottom: 3rem;
     }
-    .banner-card { position: relative; overflow: hidden; }
-    .banner-img {
-      width: 100%; height: 380px;
-      object-fit: cover; display: block;
-      transition: transform 0.5s ease;
+    .arrival-card {
+      background: #fff; border-radius: 10px; overflow: hidden;
+      border: 1px solid #f0eaee; cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      text-decoration: none; color: inherit; display: block;
     }
-    .banner-card:hover .banner-img { transform: scale(1.04); }
-    .banner-info {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(transparent, rgba(58,14,59,0.9));
-      padding: 2rem 1.75rem 1.5rem; color: var(--cream);
+    .arrival-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(85,23,86,0.12);
+      border-color: var(--gold);
     }
-    .banner-info h3 { color: var(--cream); font-size: 1.4rem; margin-bottom: 0.35rem; }
-    .banner-info p  { font-size: 0.9rem; opacity: 0.85; margin: 0 0 0.75rem; }
-
-    /* ── Trust Bar ────────────────────────────── */
-    .trust-bar { background: var(--royal); padding: 1.35rem 0; }
-    .trust-inner {
-      display: flex; align-items: center;
-      justify-content: center; gap: 0; flex-wrap: wrap;
+    .arrival-img-wrap {
+      position: relative; height: 260px; overflow: hidden;
+      background: #f5f0f5;
     }
-    .trust-item {
-      display: flex; align-items: center;
-      gap: 0.6rem; padding: 0.6rem 2rem;
-      color: var(--gold-light);
+    .arrival-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .arrival-card:hover .arrival-img { transform: scale(1.06); }
+    .arrival-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(85,23,86,0.2);
     }
-    .trust-item svg { flex-shrink: 0; }
-    .trust-item span {
-      font-size: 0.82rem; font-weight: 600;
-      letter-spacing: 1px; text-transform: uppercase;
-      color: var(--gold-light);
+    .arrival-badges {
+      position: absolute; top: 10px; left: 10px;
+      display: flex; flex-direction: column; gap: 5px;
     }
-    .trust-divider { width: 1px; height: 28px; background: rgba(202,178,115,0.3); }
-
-    /* ── Section Head ─────────────────────────── */
-    .section-head { text-align: center; margin-bottom: 2.5rem; }
-    .section-head h2 { font-size: 2.2rem; color: var(--royal); letter-spacing: 1px; }
-    .section-sub {
-      margin-top: 0.75rem; color: var(--text-light);
-      font-size: 0.95rem; letter-spacing: 0.5px;
+    .new-badge {
+      background: var(--royal-dark); color: var(--gold-light);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1px;
+      padding: 3px 9px; border-radius: 2px; text-transform: uppercase;
     }
-
-    /* ── Categories ───────────────────────────── */
-    .categories-section { padding: 4rem 0; background: var(--cream); }
-    .category-scroll-wrap {
-      overflow-x: auto; padding: 0.5rem 2rem 1.5rem;
-      scrollbar-width: thin; scrollbar-color: var(--gold) transparent;
-    }
-    .category-track { display: flex; gap: 2rem; width: max-content; padding: 0.5rem 0; }
-    .category-tile {
-      width: 140px; text-align: center;
-      cursor: pointer; transition: transform 0.3s ease; flex-shrink: 0;
-    }
-    .category-tile:hover { transform: translateY(-8px); }
-    .cat-img-ring {
-      width: 130px; height: 130px; border-radius: 50%;
-      overflow: hidden; margin: 0 auto 0.85rem;
-      border: 3px solid var(--gold); background: var(--white);
-      transition: border-color 0.3s, box-shadow 0.3s;
-    }
-    .category-tile:hover .cat-img-ring {
-      border-color: var(--royal);
-      box-shadow: 0 8px 24px rgba(85,23,86,0.2);
-    }
-    .cat-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
-    .category-tile:hover .cat-img { transform: scale(1.1); }
-    .cat-name {
-      font-size: 0.8rem; font-weight: 600;
-      color: var(--royal); letter-spacing: 1px; text-transform: uppercase;
-    }
-
-    /* ── Featured Products ────────────────────── */
-    .featured-section { padding: 4rem 0 3rem; background: var(--white); }
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 2rem; max-width: 1400px; margin: 0 auto;
-    }
-    .product-card {
-      background: var(--white); border: 1px solid var(--cream-dark);
-      border-radius: 4px; overflow: hidden;
-      transition: box-shadow 0.35s, border-color 0.35s, transform 0.35s;
-      cursor: pointer;
-    }
-    .product-card:hover {
-      box-shadow: 0 16px 40px rgba(85,23,86,0.12);
-      border-color: var(--gold); transform: translateY(-6px);
-    }
-    .product-img-wrap {
-      position: relative; height: 290px;
-      overflow: hidden; background: var(--cream);
-    }
-    .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease; }
-    .product-card:hover .product-img { transform: scale(1.07); }
     .off-badge {
-      position: absolute; top: 12px; left: 12px;
-      background: var(--royal); color: var(--gold-light);
-      font-size: 0.72rem; font-weight: 700;
-      padding: 0.3rem 0.65rem; border-radius: 2px;
-      letter-spacing: 0.5px; text-transform: uppercase;
+      background: #e63946; color: #fff;
+      font-size: 0.68rem; font-weight: 700;
+      padding: 3px 9px; border-radius: 2px; text-transform: uppercase;
     }
-    .hover-overlay {
+    .arrival-hover {
       position: absolute; inset: 0;
       background: rgba(58,14,59,0.35);
       display: flex; align-items: center; justify-content: center;
-      opacity: 0; transition: opacity 0.3s ease;
+      opacity: 0; transition: opacity 0.3s;
     }
-    .product-card:hover .hover-overlay { opacity: 1; }
-    .quick-view {
-      background: var(--gold); color: var(--royal-dark);
-      padding: 0.65rem 1.5rem; font-size: 0.8rem;
-      font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; border-radius: 2px;
+    .arrival-hover span {
+      background: var(--gold-light); color: var(--royal-dark);
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 0.6rem 1.4rem; border-radius: 2px;
     }
-    .product-body { padding: 1.1rem 1.25rem 1.4rem; }
-    .prod-category {
-      font-size: 0.72rem; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--text-light); margin-bottom: 0.35rem;
+    .arrival-card:hover .arrival-hover { opacity: 1; }
+    .arrival-body { padding: 1rem 1.1rem 1.25rem; }
+    .arrival-cat {
+      font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--text-light); margin: 0 0 0.3rem;
     }
-    .prod-title {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;
-      color: var(--royal); margin-bottom: 0.3rem; line-height: 1.3;
+    .arrival-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--royal-dark); margin: 0 0 0.6rem; line-height: 1.3;
     }
-    .prod-purity { font-size: 0.82rem; color: var(--text-light); margin-bottom: 0.75rem; }
-    .prod-price  { display: flex; align-items: center; gap: 0.65rem; }
-    .price-main  { font-size: 1.25rem; font-weight: 700; color: var(--royal); font-family: 'Jost', sans-serif; }
-    .price-strike { font-size: 0.9rem; color: var(--text-light); text-decoration: line-through; }
-    .view-all-wrap { text-align: center; margin-top: 3rem; }
+    .arrival-price { display: flex; align-items: center; gap: 0.5rem; }
+    .price-main { font-size: 1.15rem; font-weight: 700; color: var(--royal-dark); }
+    .price-strike { font-size: 0.85rem; color: var(--text-light); text-decoration: line-through; }
+    .no-arrivals { text-align: center; padding: 3rem; color: var(--text-light); font-size: 0.95rem; }
+    .arrivals-cta { text-align: center; }
+    .sec-btn {
+      display: inline-block;
+      border: 2px solid var(--royal-dark); color: var(--royal-dark);
+      font-weight: 700; font-size: 0.88rem; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 0.85rem 2.25rem;
+      border-radius: 3px; text-decoration: none;
+      transition: all 0.3s;
+    }
+    .sec-btn:hover { background: var(--royal-dark); color: #efebe1; }
 
-    /* ── Promise ──────────────────────────────── */
-    .promise-section { background: var(--royal-dark); padding: 5rem 0; }
-    .promise-inner {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 4rem; align-items: center;
-    }
-    .promise-eyebrow {
-      font-size: 0.75rem; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
-    }
-    .promise-text h2 { color: var(--cream); font-size: 2.2rem; margin-bottom: 1.25rem; }
-    .promise-text p  { color: rgba(239,235,225,0.7); line-height: 1.8; margin-bottom: 0; }
-    .promise-stats   { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    .stat {
-      text-align: center; padding: 2rem 1rem;
-      border: 1px solid rgba(202,178,115,0.25); border-radius: 4px;
-    }
-    .stat-num {
-      display: block; font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 0.5rem;
-    }
-    .stat-label {
-      font-size: 0.75rem; letter-spacing: 1.5px;
-      text-transform: uppercase; color: rgba(239,235,225,0.6);
-    }
-
-    /* ── Responsive ───────────────────────────── */
+    /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
-      .slide-inner { padding: 0 2rem; }
-      .slide-badge-wrap, .slide-ornament, .slide-stats { display: none; }
-      .promise-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-      .trust-divider { display: none; }
-      .trust-inner   { gap: 1rem; }
-      .trust-item    { padding: 0.5rem 1rem; }
+      .ls-main { grid-template-columns: 200px 1fr 180px; }
+      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
+      .about-text-col { padding-right: 0; }
+      .about-img-frame::before { display: none; }
+      .about-badge { right: 0; }
+    }
+    @media (max-width: 700px) {
+      .ls-main { grid-template-columns: 1fr; min-height: auto; }
+      .ls-left { display: none; }
+      .ls-centre { border-left: none; border-right: none; padding: 1.75rem 1rem 1.5rem; }
+      .ls-right { padding: 1rem; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+      .ls-strip { gap: 1.25rem; }
     }
     @media (max-width: 640px) {
-      .hero-carousel { height: 88vh; min-height: 520px; }
-      .slide-title   { font-size: clamp(2.4rem, 10vw, 3.5rem); }
-      .slide-actions { flex-direction: column; align-items: flex-start; }
-      .carousel-arrow { display: none; }
-      .products-grid  { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-      .promise-stats  { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .offers-grid { grid-template-columns: 1fr; }
+      .arrivals-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .about-stats { padding: 1rem; }
+      .astat { padding: 0 0.75rem; }
+      .astat-n { font-size: 1.6rem; }
     }
     @media (max-width: 400px) {
-      .products-grid { grid-template-columns: 1fr; }
+      .arrivals-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
     }
   `]
 })
-export class LandingComponent implements OnInit, OnDestroy {
+export class LandingComponent implements OnInit {
   categories: Category[] = [];
-  featuredProducts: Product[] = [];
-  banners: Banner[] = [];
-
-  activeSlide = 0;
-  readonly totalSlides = 3;
-  readonly autoDuration = 5000;
-  autoRunning = false;
-  private autoTimer: any;
+  newArrivals: Product[] = [];
+  heroBanner: Banner | null = null;
+  notifVisible = true;
 
   constructor(private productService: ProductService) {}
 
@@ -747,53 +752,16 @@ export class LandingComponent implements OnInit, OnDestroy {
       next: (d: any) => this.categories = Array.isArray(d) ? d : (d.results || []),
       error: (e) => console.error('Categories:', e)
     });
-    this.productService.getFeaturedProducts().subscribe({
-      next: (d: any) => this.featuredProducts = Array.isArray(d) ? d : (d.results || []),
-      error: (e) => console.error('Featured:', e)
+    this.productService.getNewArrivals().subscribe({
+      next: (d: any) => this.newArrivals = Array.isArray(d) ? d : (d.results || []),
+      error: (e) => console.error('New arrivals:', e)
     });
     this.productService.getBanners().subscribe({
-      next: (d: any) => this.banners = Array.isArray(d) ? d : (d.results || []),
+      next: (d: any) => {
+        const banners: Banner[] = Array.isArray(d) ? d : (d.results || []);
+        this.heroBanner = banners.length > 0 ? banners[0] : null;
+      },
       error: (e) => console.error('Banners:', e)
     });
-    this.startAuto();
-  }
-
-  ngOnDestroy(): void {
-    this.stopAuto();
-  }
-
-  goTo(index: number): void {
-    this.activeSlide = index;
-    this.restartAuto();
-  }
-
-  next(): void {
-    this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
-    this.restartAuto();
-  }
-
-  prev(): void {
-    this.activeSlide = (this.activeSlide - 1 + this.totalSlides) % this.totalSlides;
-    this.restartAuto();
-  }
-
-  private startAuto(): void {
-    this.autoRunning = false;
-    setTimeout(() => { this.autoRunning = true; }, 50);
-    this.autoTimer = setInterval(() => {
-      this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
-      this.autoRunning = false;
-      setTimeout(() => { this.autoRunning = true; }, 50);
-    }, this.autoDuration);
-  }
-
-  private stopAuto(): void {
-    clearInterval(this.autoTimer);
-    this.autoRunning = false;
-  }
-
-  private restartAuto(): void {
-    this.stopAuto();
-    this.startAuto();
   }
 }
