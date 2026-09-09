@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Product, Category, ProductReview, Banner } from '../models/product.model';
 
@@ -58,7 +59,10 @@ export class ProductService {
   }
 
   searchProducts(query: string): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/products/search/?q=${query}`);
+    // Use the main list endpoint with DRF SearchFilter — covers name, title, description, purity, category
+    return this.http.get<any>(`${this.apiUrl}/products/?search=${encodeURIComponent(query)}&page_size=8`).pipe(
+      map((res: any) => Array.isArray(res) ? res : (res.results || []))
+    );
   }
 
   getRelatedProducts(productId: number): Observable<Product[]> {
