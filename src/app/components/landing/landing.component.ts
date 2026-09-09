@@ -24,111 +24,14 @@ import { Product, Category, Banner } from '../../models/product.model';
 
       <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
       <section class="leadspace">
-
-        <!-- ── MOBILE HERO IMAGE (shown only on mobile, full width) ── -->
-        <div class="ls-mob-img" *ngIf="heroBanner?.image">
-          <img [src]="heroBanner!.image" alt="Kasavelli Silver Collection" class="ls-mob-photo">
-        </div>
-        <div class="ls-mob-img ls-mob-img--placeholder" *ngIf="!heroBanner?.image">
-          <div class="ls-mob-svg-bg">
-            <svg viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-              <rect width="360" height="220" fill="#3a0e3b"/>
-              <circle cx="180" cy="90" r="55" stroke="#c9a84c" stroke-width="2" fill="none" opacity="0.5"/>
-              <circle cx="180" cy="90" r="35" stroke="#c9a84c" stroke-width="1.5" fill="none" opacity="0.4"/>
-              <circle cx="180" cy="90" r="12" fill="#c9a84c" opacity="0.6"/>
-              <path d="M125 90 Q180 160 235 90" stroke="#c9a84c" stroke-width="1.5" fill="none" opacity="0.5"/>
-              <text x="180" y="180" text-anchor="middle" fill="#c9a84c" font-size="13" letter-spacing="6" opacity="0.7" font-family="serif">KASAVELLI</text>
-            </svg>
-          </div>
-        </div>
-
-        <!-- ── DESKTOP: 3-col horizontal banner ── -->
-        <div class="ls-main">
-
-          <!-- LEFT: brand photo -->
-          <div class="ls-left">
-            <img *ngIf="heroBanner?.image" [src]="heroBanner!.image" alt="Kasavelli Silver" class="ls-hero-img">
-            <div *ngIf="!heroBanner?.image" class="ls-hero-placeholder">
-              <svg viewBox="0 0 120 160" fill="none" width="90" height="120">
-                <ellipse cx="60" cy="30" rx="22" ry="22" stroke="#c9a84c" stroke-width="2.5" fill="none"/>
-                <path d="M38 30 Q20 70 30 120 Q60 150 90 120 Q100 70 82 30" stroke="#c9a84c" stroke-width="2" fill="none"/>
-                <circle cx="60" cy="30" r="6" fill="#c9a84c" opacity="0.7"/>
-                <path d="M50 55 Q60 75 70 55" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
-                <path d="M44 80 Q60 105 76 80" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
-              </svg>
-            </div>
-          </div>
-
-          <!-- CENTRE: headline + feature boxes -->
-          <div class="ls-centre">
-            <p class="ls-eyebrow">Handcrafted 925 Sterling Silver</p>
-            <h1 class="ls-title">A PIECE FOR YOU.<br>A PIECE FOR INDIA.</h1>
-            <div class="ls-divider"></div>
-            <p class="ls-tagline">Authentic silver jewellery that honours traditional craftsmanship and modern elegance.</p>
-            <div class="ls-tag-highlight" *ngIf="heroBanner?.discount_offer">{{ heroBanner!.discount_offer }}</div>
-            <div class="ls-feature-row">
-              <div class="ls-feat-box">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-                <p><strong>925 Hallmarked</strong><br>certified pure silver on every piece</p>
-              </div>
-              <div class="ls-feat-box">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
-                  <circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/>
-                </svg>
-                <p><strong>Artisan Made</strong><br>handcrafted by skilled Indian artisans</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- RIGHT: brand identity + CTA -->
-          <div class="ls-right">
-            <div class="ls-brand">
-              <div class="ls-brand-icon">
-                <svg viewBox="0 0 48 48" fill="none" width="52" height="52">
-                  <path d="M24 4 L40 14 L40 34 L24 44 L8 34 L8 14 Z" stroke="#551756" stroke-width="2.5" fill="rgba(85,23,86,0.06)"/>
-                  <path d="M24 12 L34 18 L34 30 L24 36 L14 30 L14 18 Z" stroke="#c9a84c" stroke-width="1.5" fill="none"/>
-                  <circle cx="24" cy="24" r="4" fill="#c9a84c"/>
-                </svg>
-              </div>
-              <p class="ls-brand-name">KASAVELLI</p>
-              <p class="ls-brand-sub">— SILVER JEWELLERY —</p>
-            </div>
-            <a routerLink="/products" class="ls-cta-btn">Shop Collection</a>
-            <p class="ls-free-ship">✓ Free shipping above ₹999</p>
-          </div>
-
-        </div>
-
-        <!-- ── MOBILE CONTENT BLOCK (shown below image on mobile) ── -->
-        <div class="ls-mob-content">
-          <p class="ls-eyebrow">Handcrafted 925 Sterling Silver</p>
-          <h1 class="ls-title">Pure Silver.<br>Timeless Craft.</h1>
-          <div class="ls-divider"></div>
-          <p class="ls-tagline">Handcrafted jewellery for every occasion — certified, authentic &amp; made in India.</p>
-          <div class="ls-tag-highlight" *ngIf="heroBanner?.discount_offer">{{ heroBanner!.discount_offer }}</div>
-          <a routerLink="/products" class="ls-cta-btn ls-mob-btn">Shop Collection</a>
-        </div>
-
-        <!-- BOTTOM TRUST STRIP -->
-        <div class="ls-strip">
-          <div class="ls-strip-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            <span>Secure packaging</span>
-          </div>
-          <div class="ls-strip-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            <span>30-Day returns</span>
-          </div>
-          <div class="ls-strip-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>925 Hallmarked</span>
-          </div>
-          <div class="ls-strip-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 5v3h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
-            <span>Ships across India</span>
-          </div>
+        <img src="assets/images/vanki-ring.webp" alt="Vanki Rings" class="ls-bg-img">
+        <div class="ls-overlay"></div>
+        <div class="ls-content">
+          <span class="ls-discount-badge">20% OFF — Limited Time</span>
+          <h1 class="ls-title">Vanki Rings</h1>
+          <p class="ls-desc">Traditional South Indian finger rings, handcrafted in 925 sterling silver.</p>
+          <p class="ls-desc">Worn with mehndi or bridal wear — a timeless symbol of grace.</p>
+          <a routerLink="/products" class="ls-shop-btn">Shop Now</a>
         </div>
       </section>
 
@@ -382,130 +285,61 @@ import { Product, Category, Banner } from '../../models/product.model';
 
     /* ══ 1. LEADSPACE ══ */
     .leadspace {
-      background: #f5f0e8;
-      border-bottom: 1px solid #e0d5c0;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      max-height: 70vh;
+      overflow: hidden;
+      display: flex; align-items: flex-end;
     }
-
-    /* Mobile hero image — hidden on desktop */
-    .ls-mob-img { display: none; }
-    .ls-mob-content { display: none; }
-
-    /* Desktop 3-col grid */
-    .ls-main {
-      display: grid;
-      grid-template-columns: 260px 1fr 220px;
-      min-height: 300px;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* LEFT — hero image */
-    .ls-left {
-      display: flex; align-items: flex-end; justify-content: center;
-      overflow: hidden; position: relative;
-    }
-    .ls-hero-img {
+    .ls-bg-img {
+      position: absolute; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover; object-position: top center;
-      max-height: 300px;
+      object-fit: cover; object-position: center center;
     }
-    .ls-hero-placeholder {
-      display: flex; align-items: flex-end; justify-content: center;
-      padding-bottom: 1.5rem; opacity: 0.75;
+    .ls-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(20,5,20,0.82) 0%,
+        rgba(20,5,20,0.45) 45%,
+        rgba(20,5,20,0.05) 100%
+      );
     }
-
-    /* CENTRE — main content */
-    .ls-centre {
-      padding: 2.2rem 2.5rem 1.8rem;
-      display: flex; flex-direction: column; justify-content: center;
-      border-left: 1px solid #ddd3bb; border-right: 1px solid #ddd3bb;
+    .ls-content {
+      position: relative; z-index: 2;
+      padding: 2.5rem 3rem;
+      max-width: 600px;
     }
-    .ls-eyebrow {
-      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); font-weight: 600; margin-bottom: 0.75rem;
+    .ls-discount-badge {
+      display: inline-block;
+      background: var(--gold-light); color: var(--royal-dark);
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 0.3rem 0.9rem;
+      border-radius: 2px; margin-bottom: 0.9rem;
     }
     .ls-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 800; color: var(--royal-dark);
-      line-height: 1.15; letter-spacing: 0.5px;
-      margin: 0 0 0.75rem;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      font-weight: 700; color: #fff;
+      line-height: 1.05; letter-spacing: 1px;
+      margin: 0 0 0.85rem; display: block;
     }
-    .ls-divider {
-      width: 40px; height: 2px;
-      background: var(--gold); margin-bottom: 0.75rem;
+    .ls-desc {
+      font-size: clamp(0.82rem, 1.6vw, 0.98rem);
+      color: rgba(255,255,255,0.82);
+      line-height: 1.65; margin: 0 0 0.3rem;
     }
-    .ls-tagline {
-      font-size: 0.82rem; color: #6b5e4e; line-height: 1.65;
-      margin-bottom: 0.75rem; max-width: 380px;
+    .ls-shop-btn {
+      display: inline-block; margin-top: 1.4rem;
+      background: #fff; color: var(--royal-dark);
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; padding: 0.7rem 2rem;
+      border-radius: 2px; text-decoration: none;
+      transition: background 0.25s, color 0.25s;
+      border: 2px solid #fff;
     }
-    .ls-tag-highlight {
-      display: inline-block;
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 1px;
-      color: var(--gold); text-transform: uppercase;
-      margin-bottom: 1.1rem;
-    }
-    .ls-feature-row {
-      display: flex; gap: 1rem; flex-wrap: wrap;
-    }
-    .ls-feat-box {
-      display: flex; align-items: flex-start; gap: 0.6rem;
-      background: #fff; border: 1px solid #e5d9c0;
-      border-radius: 8px; padding: 0.75rem 0.9rem;
-      flex: 1; min-width: 140px;
-      color: var(--royal-dark);
-    }
-    .ls-feat-box svg { flex-shrink: 0; margin-top: 2px; color: var(--gold); }
-    .ls-feat-box p { font-size: 0.75rem; color: #5a4e3c; line-height: 1.5; margin: 0; }
-    .ls-feat-box strong { color: var(--royal-dark); font-size: 0.8rem; }
-
-    /* RIGHT — brand + CTA */
-    .ls-right {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 2rem 1rem; gap: 0.75rem;
-      text-align: center;
-    }
-    .ls-brand { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
-    .ls-brand-icon { margin-bottom: 0.2rem; }
-    .ls-brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem; font-weight: 800;
-      color: var(--royal-dark); letter-spacing: 4px;
-      line-height: 1;
-    }
-    .ls-brand-sub {
-      font-size: 0.62rem; letter-spacing: 3px; color: var(--gold);
-      font-weight: 600; text-transform: uppercase; margin: 0;
-    }
-    .ls-cta-btn {
-      display: inline-block;
-      background: var(--royal-dark); color: #efebe1;
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; padding: 0.65rem 1.4rem;
-      border-radius: 3px; text-decoration: none;
-      transition: background 0.25s; margin-top: 0.5rem;
-      white-space: nowrap;
-    }
-    .ls-cta-btn:hover { background: var(--royal); }
-    .ls-free-ship {
-      font-size: 0.7rem; color: #7a6e5e; margin: 0;
-    }
-
-    /* BOTTOM TRUST STRIP */
-    .ls-strip {
-      background: #ece5d6;
-      border-top: 1px solid #ddd3bb;
-      display: flex; align-items: center; justify-content: center;
-      gap: 2.5rem; padding: 0.65rem 1.5rem;
-      flex-wrap: wrap;
-    }
-    .ls-strip-item {
-      display: flex; align-items: center; gap: 0.45rem;
-      font-size: 0.75rem; font-weight: 500; color: #5a4e3c;
-    }
-    .ls-strip-item svg { color: var(--royal-dark); flex-shrink: 0; }
+    .ls-shop-btn:hover { background: transparent; color: #fff; }
 
     /* ══ 2. CATEGORIES ══ */
     .cat-section { padding: 5rem 0; background: #faf8f5; }
@@ -751,53 +585,10 @@ import { Product, Category, Banner } from '../../models/product.model';
       .about-badge { right: 0; }
     }
 
-    /* ── MOBILE: swap to full-width stacked layout ── */
-    @media (max-width: 700px) {
-      /* Show mobile-specific elements */
-      .ls-mob-img {
-        display: block; width: 100%; overflow: hidden;
-        background: var(--royal-dark);
-      }
-      .ls-mob-photo {
-        width: 100%; display: block;
-        max-height: 56vw; object-fit: cover; object-position: center top;
-      }
-      .ls-mob-img--placeholder .ls-mob-svg-bg {
-        width: 100%; aspect-ratio: 16/7; display: block;
-      }
-      .ls-mob-content {
-        display: flex; flex-direction: column; align-items: center;
-        text-align: center; padding: 1.6rem 1.25rem 1.25rem;
-        background: #f5f0e8;
-      }
-      .ls-mob-content .ls-eyebrow { margin-bottom: 0.5rem; }
-      .ls-mob-content .ls-title {
-        font-size: clamp(1.8rem, 7vw, 2.4rem);
-        margin-bottom: 0.6rem;
-      }
-      .ls-mob-content .ls-tagline { margin-bottom: 0.6rem; }
-      .ls-mob-btn {
-        margin-top: 0.25rem; padding: 0.8rem 2.2rem;
-        font-size: 0.82rem;
-      }
-
-      /* Hide desktop 3-col layout entirely */
-      .ls-main { display: none; }
-
-      /* Trust strip compact on mobile */
-      .ls-strip {
-        gap: 0; padding: 0;
-        display: grid; grid-template-columns: 1fr 1fr;
-      }
-      .ls-strip-item {
-        padding: 0.65rem 0.75rem;
-        border-right: 1px solid #ddd3bb;
-        border-bottom: 1px solid #ddd3bb;
-        font-size: 0.72rem;
-      }
-      .ls-strip-item:nth-child(even) { border-right: none; }
-      .ls-strip-item:nth-child(3),
-      .ls-strip-item:nth-child(4) { border-bottom: none; }
+    /* Mobile leadspace */
+    @media (max-width: 600px) {
+      .leadspace { aspect-ratio: 3 / 4; max-height: 88vh; }
+      .ls-content { padding: 1.6rem 1.25rem; }
     }
 
     @media (max-width: 640px) {
