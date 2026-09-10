@@ -155,18 +155,55 @@ import { CartItem } from '../../models/product.model';
               Delivery Details
             </h3>
 
+            <!-- Row 1: Door / Flat number -->
             <div class="field-group">
-              <label class="field-label">Delivery Address</label>
-              <textarea
-                class="field-input"
-                [(ngModel)]="shippingAddress"
-                rows="3"
-                placeholder="House no., Street, City, PIN"
-              ></textarea>
+              <label class="field-label">Door / Flat No. <span class="req">*</span></label>
+              <input type="text" class="field-input" [(ngModel)]="addrDoor"
+                placeholder="e.g. 4B, 12/3A" autocomplete="address-line1">
             </div>
 
+            <!-- Row 2: Area / Street -->
             <div class="field-group">
-              <label class="field-label">Mobile Number</label>
+              <label class="field-label">Area / Street <span class="req">*</span></label>
+              <input type="text" class="field-input" [(ngModel)]="addrArea"
+                placeholder="Street name, Colony" autocomplete="address-line2">
+            </div>
+
+            <!-- Row 3: Locality / Landmark -->
+            <div class="field-group">
+              <label class="field-label">Locality / Landmark</label>
+              <input type="text" class="field-input" [(ngModel)]="addrLocality"
+                placeholder="Landmark or locality">
+            </div>
+
+            <!-- Row 4: PIN + City (side by side) -->
+            <div class="field-row-2">
+              <div class="field-group">
+                <label class="field-label">PIN Code <span class="req">*</span></label>
+                <input type="text" class="field-input" [(ngModel)]="addrPin"
+                  placeholder="6-digit PIN" maxlength="6" pattern="[0-9]{6}"
+                  autocomplete="postal-code">
+              </div>
+              <div class="field-group">
+                <label class="field-label">City <span class="req">*</span></label>
+                <input type="text" class="field-input" [(ngModel)]="addrCity"
+                  placeholder="City" autocomplete="address-level2">
+              </div>
+            </div>
+
+            <!-- Row 5: State dropdown -->
+            <div class="field-group">
+              <label class="field-label">State <span class="req">*</span></label>
+              <select class="field-input field-select" [(ngModel)]="addrState"
+                autocomplete="address-level1">
+                <option value="">— Select State —</option>
+                <option *ngFor="let s of indianStates" [value]="s">{{ s }}</option>
+              </select>
+            </div>
+
+            <!-- Mobile Number -->
+            <div class="field-group">
+              <label class="field-label">Mobile Number <span class="req">*</span></label>
               <div class="phone-wrap">
                 <span class="phone-prefix">+91</span>
                 <input
@@ -184,7 +221,7 @@ import { CartItem } from '../../models/product.model';
           <button
             class="pay-btn"
             (click)="proceedToCheckout()"
-            [disabled]="processing || !shippingAddress || !phoneNumber"
+            [disabled]="processing || !isAddressComplete || !phoneNumber"
           >
             <span *ngIf="!processing">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -557,6 +594,11 @@ import { CartItem } from '../../models/product.model';
     .shipping-title svg { color: var(--gold-dark); }
 
     .field-group { margin-bottom: 1rem; }
+    .field-row-2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+    }
+    .req { color: #c0392b; font-weight: 700; }
+    .field-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23551756' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.85rem center; padding-right: 2rem; }
     .field-label {
       display: block;
       font-size: 0.72rem;
@@ -695,9 +737,43 @@ import { CartItem } from '../../models/product.model';
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   cartTotal = 0;
-  shippingAddress = '';
   phoneNumber = '';
   processing = false;
+
+  // Structured address fields
+  addrDoor     = '';
+  addrArea     = '';
+  addrLocality = '';
+  addrPin      = '';
+  addrCity     = '';
+  addrState    = '';
+
+  readonly indianStates = [
+    'Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh',
+    'Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka',
+    'Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram',
+    'Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana',
+    'Tripura','Uttar Pradesh','Uttarakhand','West Bengal',
+    'Andaman & Nicobar Islands','Chandigarh','Dadra & Nagar Haveli and Daman & Diu',
+    'Delhi','Jammu & Kashmir','Ladakh','Lakshadweep','Puducherry'
+  ];
+
+  get isAddressComplete(): boolean {
+    return !!(this.addrDoor.trim() && this.addrArea.trim() &&
+              this.addrPin.trim().length === 6 && this.addrCity.trim() && this.addrState);
+  }
+
+  get shippingAddress(): string {
+    const parts = [
+      this.addrDoor.trim(),
+      this.addrArea.trim(),
+      this.addrLocality.trim(),
+      this.addrCity.trim(),
+      this.addrState,
+      `PIN: ${this.addrPin.trim()}`
+    ].filter(Boolean);
+    return parts.join(', ');
+  }
 
   constructor(
     private cartService: CartService,
