@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { PaymentService, RazorpayOrder } from '../../services/payment.service';
 import { AuthService } from '../../services/auth.service';
+import { SpinWheelService } from '../../services/spin-wheel.service';
 import { CartItem } from '../../models/product.model';
 
 @Component({
@@ -126,14 +127,21 @@ import { CartItem } from '../../models/product.model';
                 <span *ngIf="cartTotal < 999">₹99</span>
               </div>
               <div class="summary-line discount" *ngIf="hasDiscount">
-                <span>Savings</span>
+                <span>Product savings</span>
                 <span class="saving-amt">−₹{{ totalSavings }}</span>
+              </div>
+              <!-- Spin wheel discount row -->
+              <div class="summary-line spin-discount" *ngIf="spinDiscountPct > 0">
+                <span class="spin-label">
+                  <span class="spin-badge">🎰 {{ spinDiscountPct }}% Spin Offer</span>
+                </span>
+                <span class="saving-amt">−₹{{ spinDiscountAmount }}</span>
               </div>
             </div>
 
             <div class="summary-total">
               <span>Total</span>
-              <span>₹{{ cartTotal >= 999 ? cartTotal : cartTotal + 99 }}</span>
+              <span>₹{{ finalTotal }}</span>
             </div>
           </div>
 
@@ -183,7 +191,7 @@ import { CartItem } from '../../models/product.model';
                 <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
                 <line x1="1" y1="10" x2="23" y2="10"/>
               </svg>
-              Pay ₹{{ cartTotal >= 999 ? cartTotal : cartTotal + 99 }}
+              Pay ₹{{ finalTotal }}
             </span>
             <span class="pay-loading" *ngIf="processing">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -508,7 +516,14 @@ import { CartItem } from '../../models/product.model';
       letter-spacing: 0.5px;
     }
     .summary-line.discount { color: #2e7d32; }
+    .summary-line.spin-discount { color: #551756; }
     .saving-amt { font-weight: 700; }
+    .spin-badge {
+      display: inline-block;
+      background: #fdf5ff; border: 1px solid #d4a0d4;
+      color: #551756; font-size: 0.72rem; font-weight: 700;
+      padding: 0.15rem 0.5rem; border-radius: 20px;
+    }
 
     .summary-total {
       display: flex;
@@ -688,6 +703,7 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private paymentService: PaymentService,
     private authService: AuthService,
+    private spinService: SpinWheelService,
     private router: Router
   ) {}
 
@@ -719,6 +735,23 @@ export class CartComponent implements OnInit {
     }, 0);
   }
 
+  /** Spin wheel discount percentage (0 if no spin or Better Luck) */
+  get spinDiscountPct(): number {
+    return this.spinService.currentResult?.percentage ?? 0;
+  }
+
+  /** Amount deducted by spin wheel discount */
+  get spinDiscountAmount(): number {
+    if (!this.spinDiscountPct) return 0;
+    return Math.round(this.cartTotal * this.spinDiscountPct / 100);
+  }
+
+  /** Final total including shipping and spin discount */
+  get finalTotal(): number {
+    const shipping = this.cartTotal >= 999 ? 0 : 99;
+    return Math.max(0, this.cartTotal + shipping - this.spinDiscountAmount);
+  }
+
   increaseQty(item: CartItem): void {
     item.quantity++;
     this.cartService.updateCartItem(item.id, item.quantity).subscribe({
@@ -747,7 +780,8 @@ export class CartComponent implements OnInit {
     this.processing = true;
     this.paymentService.createOrder({
       shipping_address: this.shippingAddress,
-      phone_number: this.phoneNumber
+      phone_number: this.phoneNumber,
+      spin_discount_pct: this.spinDiscountPct
     }).subscribe({
       next: (razorpayOrder: RazorpayOrder) => this.initiatePayment(razorpayOrder),
       error: (err) => {

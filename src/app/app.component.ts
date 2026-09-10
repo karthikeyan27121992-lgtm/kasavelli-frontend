@@ -1,20 +1,22 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, catchError, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from './services/auth.service';
 import { CartService } from './services/cart.service';
 import { ProductService } from './services/product.service';
+import { SpinWheelService } from './services/spin-wheel.service';
+import { SpinWheelComponent } from './components/spin-wheel/spin-wheel.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { Product } from './models/product.model';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule, ChatbotComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule, SpinWheelComponent, ChatbotComponent],
   template: `
     <!-- ── Header ───────────────────────────── -->
     <header [class.scrolled]="scrolled">
@@ -259,6 +261,9 @@ import { Product } from './models/product.model';
 
     <!-- ── Chatbot ───────────────────────────── -->
     <app-chatbot></app-chatbot>
+
+    <!-- ── Spin Wheel (once per login session) ── -->
+    <app-spin-wheel *ngIf="showSpinWheel" (closed)="showSpinWheel = false"></app-spin-wheel>
   `,
   styles: [`
     /* ── Header ───────────────────────────────────── */
@@ -723,12 +728,16 @@ export class AppComponent {
   searchResults: Product[] = [];
   searching = false;
 
+  showSpinWheel = false;
+
   private searchSubject = new Subject<string>();
 
   constructor(
     public authService: AuthService,
     private cartService: CartService,
-    private productService: ProductService
+    private productService: ProductService,
+    private spinService: SpinWheelService,
+    private router: Router
   ) {
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
@@ -751,12 +760,23 @@ export class AppComponent {
       this.searching = false;
       this.searchResults = Array.isArray(results) ? results.slice(0, 8) : [];
     });
+
+    // Show spin wheel after navigating to home post-login
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe(() => {
+      if (this.authService.isAuthenticated && this.spinService.needsSpin) {
+        // Small delay so the page settles first
+        setTimeout(() => { this.showSpinWheel = true; }, 600);
+      }
+    });
   }
 
   get isAuthenticated(): boolean { return this.authService.isAuthenticated; }
   get isAdmin(): boolean { return this.authService.isAdmin; }
 
   logout(): void {
+    this.spinService.clear();          // reset spin so next login gets a fresh spin
     this.authService.logout();
     window.location.href = '/';
   }

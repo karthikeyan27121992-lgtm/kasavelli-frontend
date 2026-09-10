@@ -32,7 +32,7 @@ export class PaymentService {
 
   constructor(private http: HttpClient) { }
 
-  createOrder(orderData: { shipping_address: string, phone_number: string }): Observable<RazorpayOrder> {
+  createOrder(orderData: { shipping_address: string, phone_number: string, spin_discount_pct?: number }): Observable<RazorpayOrder> {
     return this.http.post<RazorpayOrder>(`${this.apiUrl}/create_order/`, orderData);
   }
 
