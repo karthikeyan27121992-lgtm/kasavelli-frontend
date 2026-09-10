@@ -172,6 +172,19 @@ import { Product } from './models/product.model';
       </div>
     </div>
 
+    <!-- ── Spin Discount Notification Bar ───────── -->
+    <div class="spin-notif" *ngIf="spinNotifVisible && spinResult && spinResult.percentage > 0">
+      <div class="spin-notif-inner">
+        <span class="spin-notif-icon">🎰</span>
+        <span class="spin-notif-text">
+          Your <strong>{{ spinResult.percentage }}% spin discount</strong> is active!
+          <span class="spin-notif-expiry" *ngIf="spinExpiryLabel">Expires {{ spinExpiryLabel }}</span>
+        </span>
+        <a routerLink="/cart" class="spin-notif-cta">Shop Now</a>
+        <button class="spin-notif-close" (click)="spinNotifVisible = false" aria-label="Dismiss">✕</button>
+      </div>
+    </div>
+
     <!-- ── Page Content ──────────────────────── -->
     <main>
       <router-outlet></router-outlet>
@@ -704,6 +717,57 @@ import { Product } from './models/product.model';
     }
     .sp-view-all:hover { background: #551756; color: #fff; }
 
+    /* ── Spin Discount Notification Bar ── */
+    .spin-notif {
+      background: linear-gradient(90deg, #3a0e3b 0%, #551756 50%, #3a0e3b 100%);
+      border-bottom: 2px solid #c9a84c;
+      position: sticky; top: 72px; z-index: 990;
+      animation: slideDown 0.35s ease;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+    .spin-notif-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.55rem 1.5rem;
+      flex-wrap: wrap;
+    }
+    .spin-notif-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .spin-notif-text {
+      flex: 1; font-size: 0.82rem; color: #fff;
+      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    }
+    .spin-notif-text strong { color: #e8c547; font-weight: 800; }
+    .spin-notif-expiry {
+      font-size: 0.72rem; color: rgba(232,197,71,0.75);
+      background: rgba(255,255,255,0.08);
+      padding: 0.15rem 0.5rem; border-radius: 20px;
+      white-space: nowrap;
+    }
+    .spin-notif-cta {
+      background: #c9a84c; color: #3a0e3b;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 0.35rem 1rem;
+      border-radius: 2px; text-decoration: none;
+      transition: background 0.2s; flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .spin-notif-cta:hover { background: #e8c547; }
+    .spin-notif-close {
+      background: rgba(255,255,255,0.1); border: none;
+      border-radius: 50%; width: 22px; height: 22px;
+      font-size: 0.65rem; color: rgba(232,197,71,0.8);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s; flex-shrink: 0;
+    }
+    .spin-notif-close:hover { background: rgba(255,255,255,0.22); color: #e8c547; }
+    @media (max-width: 600px) {
+      .spin-notif-inner { padding: 0.5rem 1rem; gap: 0.5rem; }
+      .spin-notif-text { font-size: 0.77rem; }
+    }
+
     /* ── Responsive ──────────────────────────────── */
     @media (max-width: 900px) {
       .desktop-nav { display: none; }
@@ -729,6 +793,22 @@ export class AppComponent {
   searching = false;
 
   showSpinWheel = false;
+  spinNotifVisible = true;
+
+  /** Reactive spin result from service */
+  get spinResult() { return this.spinService.currentResult; }
+
+  /** Human-readable expiry label, e.g. "in 18h 42m" */
+  get spinExpiryLabel(): string {
+    const expiresAt = this.spinResult?.expiresAt;
+    if (!expiresAt) return '';
+    const ms = new Date(expiresAt).getTime() - Date.now();
+    if (ms <= 0) return '';
+    const h = Math.floor(ms / 3600000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    if (h > 0) return `in ${h}h ${m}m`;
+    return `in ${m}m`;
+  }
 
   private searchSubject = new Subject<string>();
 
@@ -776,6 +856,9 @@ export class AppComponent {
           const needsSpin = this.spinService.loadFromUser(user);
           if (needsSpin) {
             setTimeout(() => { this.showSpinWheel = true; }, 600);
+          } else {
+            // Has active discount — ensure notification bar is visible
+            this.spinNotifVisible = true;
           }
         }
       }
@@ -786,7 +869,8 @@ export class AppComponent {
   get isAdmin(): boolean { return this.authService.isAdmin; }
 
   logout(): void {
-    this.spinService.clear();          // reset spin so next login gets a fresh spin
+    this.spinService.clear();
+    this.spinNotifVisible = true;  // reset so it shows again on next login
     this.authService.logout();
     window.location.href = '/';
   }
