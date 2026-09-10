@@ -5,6 +5,8 @@ export interface User {
   email?: string;
   role: 'user' | 'admin';
   date_joined: string;
+  spin_discount_pct: number;
+  spin_discount_expires_at: string | null;
 }
 
 export interface LoginRequest {

@@ -745,6 +745,11 @@ export class AppComponent {
       });
     }
 
+    // On app boot, if user is already logged in, refresh profile so spin fields are current
+    if (this.authService.isAuthenticated) {
+      this.authService.refreshCurrentUser();
+    }
+
     // Debounced live search
     this.searchSubject.pipe(
       debounceTime(320),
@@ -761,13 +766,18 @@ export class AppComponent {
       this.searchResults = Array.isArray(results) ? results.slice(0, 8) : [];
     });
 
-    // Show spin wheel after navigating to home post-login
+    // After every navigation, if user is logged in, check DB spin state and show wheel if needed
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)
     ).subscribe(() => {
-      if (this.authService.isAuthenticated && this.spinService.needsSpin) {
-        // Small delay so the page settles first
-        setTimeout(() => { this.showSpinWheel = true; }, 600);
+      if (this.authService.isAuthenticated) {
+        const user = this.authService.currentUserValue;
+        if (user) {
+          const needsSpin = this.spinService.loadFromUser(user);
+          if (needsSpin) {
+            setTimeout(() => { this.showSpinWheel = true; }, 600);
+          }
+        }
       }
     });
   }

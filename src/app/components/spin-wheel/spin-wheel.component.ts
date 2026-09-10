@@ -3,7 +3,9 @@ import {
   ElementRef, ViewChild, Output, EventEmitter
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SpinWheelService, SpinResult } from '../../services/spin-wheel.service';
+import { SpinWheelService } from '../../services/spin-wheel.service';
+import type { SpinResult } from '../../services/spin-wheel.service';
+import { AuthService } from '../../services/auth.service';
 
 interface Slice {
   label: string;
@@ -185,7 +187,10 @@ export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
   private currentAngle = 0;    // radians, current draw position
   private animFrameId = 0;
 
-  constructor(private spinService: SpinWheelService) {}
+  constructor(
+    private spinService: SpinWheelService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -229,13 +234,11 @@ export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.spinning = false;
         const won = this.slices[winIndex];
-        const spinResult: SpinResult = {
-          percentage: won.percentage,
-          label: won.label,
-          spunAt: Date.now()
-        };
-        this.spinService.saveResult(spinResult);
-        this.result = spinResult;
+        // Persist to DB, then refresh user profile so localStorage is in sync
+        this.spinService.saveResult(won.percentage, won.label).subscribe(() => {
+          this.authService.refreshCurrentUser();
+        });
+        this.result = { percentage: won.percentage, label: won.label, expiresAt: null };
       }
     };
 
@@ -243,10 +246,11 @@ export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   dismiss(): void {
-    // If user closes without spinning, record a "no discount" result so wheel doesn't show again
+    // If user closes without spinning, record pct=0 so wheel doesn't show again this login
     if (!this.result) {
-      const noSpin: SpinResult = { percentage: 0, label: 'No spin', spunAt: Date.now() };
-      this.spinService.saveResult(noSpin);
+      this.spinService.saveResult(0, 'No spin').subscribe(() => {
+        this.authService.refreshCurrentUser();
+      });
     }
     this.closed.emit();
   }

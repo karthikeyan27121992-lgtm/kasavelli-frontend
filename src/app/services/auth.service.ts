@@ -75,6 +75,17 @@ export class AuthService {
     return this.http.get<User>(`${this.apiUrl}/users/profile/`);
   }
 
+  /** Re-fetch profile from server and update localStorage + BehaviorSubject */
+  refreshCurrentUser(): void {
+    this.getProfile().subscribe({
+      next: (user) => {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      },
+      error: () => {}
+    });
+  }
+
   updateProfile(data: Partial<User>): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/users/update_profile/`, data)
       .pipe(
