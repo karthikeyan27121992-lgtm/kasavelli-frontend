@@ -49,7 +49,17 @@ import { Subscription } from 'rxjs';
         <div class="products-grid" *ngIf="!loading">
           <div class="product-card" *ngFor="let product of products">
             <div class="product-image-wrapper" [routerLink]="['/products', product.id]">
-              <img [src]="product.image" [alt]="product.title" class="product-image">
+              <img *ngIf="product.image; else noProductImg"
+                   [src]="product.image" [alt]="product.title" class="product-image">
+              <ng-template #noProductImg>
+                <div class="product-img-placeholder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="40" height="40">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                    <polyline points="21 15 16 10 5 21"/>
+                  </svg>
+                </div>
+              </ng-template>
               <div class="product-overlay" *ngIf="product.discount_percentage > 0">
                 <span class="discount-tag">{{ product.discount_percentage }}% OFF</span>
               </div>
@@ -222,6 +232,11 @@ import { Subscription } from 'rxjs';
       transition: transform 0.45s ease;
     }
     .product-card:hover .product-image { transform: scale(1.07); }
+    .product-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(85,23,86,0.25);
+    }
 
     .product-overlay {
       position: absolute;

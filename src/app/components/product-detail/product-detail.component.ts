@@ -16,9 +16,20 @@ import { Subscription } from 'rxjs';
     <div class="container" *ngIf="product">
       <div class="product-detail">
         <div class="product-images">
-          <img [src]="selectedImage" [alt]="product.name" class="main-image">
+          <ng-container *ngIf="selectedImage; else mainImgPlaceholder">
+            <img [src]="selectedImage" [alt]="product.name" class="main-image">
+          </ng-container>
+          <ng-template #mainImgPlaceholder>
+            <div class="main-img-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="64" height="64">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+          </ng-template>
           <div class="thumbnail-images">
-            <img [src]="product.image" (click)="selectImage(product.image)" class="thumbnail">
+            <img *ngIf="product.image" [src]="product.image" (click)="selectImage(product.image)" class="thumbnail">
             <img *ngIf="product.image_2" [src]="product.image_2" (click)="selectImage(product.image_2)" class="thumbnail">
             <img *ngIf="product.image_3" [src]="product.image_3" (click)="selectImage(product.image_3)" class="thumbnail">
           </div>
@@ -138,6 +149,12 @@ import { Subscription } from 'rxjs';
       transition: transform 0.4s ease;
     }
     .main-image:hover { transform: scale(1.02); }
+    .main-img-placeholder {
+      width: 100%; aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--cream); margin-bottom: 0.85rem;
+      color: rgba(85,23,86,0.25);
+    }
     .thumbnail-images { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     .thumbnail {
       width: 78px; height: 78px;
