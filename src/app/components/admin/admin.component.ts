@@ -865,9 +865,22 @@ export class AdminComponent implements OnInit {
   }
 
   editProduct(product: Product): void {
-    this.editingProduct = product;
-    this.productData = { ...product };
-    this.showProductModal = true;
+    // Fetch the full detail record so description, weight, stock_quantity etc. are all present
+    this.productService.getProductById(product.id).subscribe({
+      next: (detail) => {
+        this.editingProduct = detail;
+        this.productData = { ...detail };
+        this.selectedProductFile = null;
+        this.showProductModal = true;
+      },
+      error: () => {
+        // Fallback to list data if detail fetch fails
+        this.editingProduct = product;
+        this.productData = { ...product };
+        this.selectedProductFile = null;
+        this.showProductModal = true;
+      }
+    });
   }
 
   closeProductModal(): void {
