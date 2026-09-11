@@ -773,20 +773,41 @@ import {
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 960px) {
+      .ls-wrapper {
+        padding: 1rem 0.75rem;
+      }
       .ls-banner-card {
-        flex-direction: column;
-        min-height: auto;
+        flex-direction: row;
+        min-height: 420px;
       }
       .ls-content-pane {
-        clip-path: none;
-        padding: 2.5rem 1.75rem 2rem;
+        flex: 1.35;
+        padding: 2.2rem 2.2rem 2rem 2rem;
+        clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%);
       }
-      .ls-slant-divider, .ls-gold-accent-strip {
-        display: none;
+      .ls-slant-divider {
+        left: 51%;
+        width: 32px;
+        display: block;
+      }
+      .ls-gold-accent-strip {
+        left: 53.5%;
+        width: 5px;
+        display: block;
       }
       .ls-image-pane {
-        margin-left: 0;
-        height: 280px;
+        flex: 1;
+        margin-left: -6%;
+        height: auto;
+      }
+      .ls-title {
+        font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      }
+      .ls-desc {
+        font-size: 0.88rem;
+      }
+      .ls-desc-sub {
+        font-size: 0.82rem;
       }
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
       .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
@@ -794,33 +815,157 @@ import {
       .about-img-frame::before { display: none; }
       .about-badge { right: 0; }
     }
-    @media (max-width: 600px) {
+
+    @media (max-width: 680px) {
       .ls-wrapper {
-        padding: 0.75rem 0.5rem;
+        padding: 0.6rem 0.4rem;
       }
       .ls-banner-card {
+        flex-direction: row;
+        min-height: 360px;
         border-radius: 14px;
       }
       .ls-content-pane {
-        padding: 1.75rem 1.25rem 1.5rem;
+        flex: 1.45;
+        padding: 1.4rem 1.4rem 1.2rem 1.1rem;
+        clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+      }
+      .ls-brand-badge {
+        padding: 0.2rem 0.55rem;
+        margin-bottom: 0.75rem;
+      }
+      .ls-brand-text {
+        font-size: 0.62rem;
+        letter-spacing: 1.2px;
+      }
+      .ls-brand-sparkle {
+        font-size: 0.7rem;
+      }
+      .ls-header-group {
+        margin-bottom: 0.6rem;
+      }
+      .ls-eyebrow {
+        font-size: 0.65rem;
+        letter-spacing: 1.8px;
+        margin-bottom: 0.25rem;
       }
       .ls-title {
-        font-size: 2rem;
+        font-size: clamp(1.35rem, 5vw, 1.85rem);
+        line-height: 1.12;
+      }
+      .ls-desc {
+        font-size: 0.78rem;
+        line-height: 1.45;
+        margin-bottom: 0.2rem;
+      }
+      .ls-desc-sub {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 0.72rem;
+        line-height: 1.4;
+        margin-bottom: 0.8rem;
       }
       .ls-action-row {
-        gap: 1rem;
+        gap: 0.6rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.9rem;
+      }
+      .ls-offer-pill {
+        padding: 0.35rem 0.65rem;
+        gap: 0.35rem;
+      }
+      .ls-offer-val {
+        font-size: 1rem;
+      }
+      .ls-offer-txt {
+        font-size: 0.62rem;
+        max-width: 100px;
+        letter-spacing: 0.5px;
       }
       .ls-cta-btn {
-        width: 100%;
-        justify-content: center;
+        padding: 0.55rem 1.15rem;
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+        gap: 0.35rem;
+      }
+      .ls-cta-btn svg {
+        width: 14px;
+        height: 14px;
       }
       .ls-footer-tags {
-        flex-wrap: wrap;
-        gap: 0.75rem;
+        gap: 0.6rem;
+        padding-top: 0.6rem;
+      }
+      .ls-tag {
+        font-size: 0.62rem;
+        gap: 0.25rem;
+      }
+      .ls-dot {
+        font-size: 0.4rem;
+      }
+      .ls-slant-divider {
+        left: 49%;
+        width: 22px;
+        display: block;
+      }
+      .ls-gold-accent-strip {
+        left: 51.5%;
+        width: 3.5px;
+        display: block;
+      }
+      .ls-image-pane {
+        flex: 1;
+        margin-left: -8%;
+        height: auto;
       }
       .offers-grid { grid-template-columns: 1fr; }
       .arrivals-grid { grid-template-columns: 1fr; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 440px) {
+      .ls-banner-card {
+        min-height: 330px;
+      }
+      .ls-content-pane {
+        flex: 1.6;
+        padding: 1.1rem 1rem 0.9rem 0.85rem;
+        clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
+      }
+      .ls-title {
+        font-size: 1.25rem;
+      }
+      .ls-desc {
+        font-size: 0.72rem;
+        line-height: 1.35;
+      }
+      .ls-desc-sub {
+        display: none;
+      }
+      .ls-action-row {
+        margin-bottom: 0.6rem;
+      }
+      .ls-offer-pill {
+        display: none;
+      }
+      .ls-cta-btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.7rem;
+      }
+      .ls-slant-divider {
+        left: 46%;
+        width: 18px;
+      }
+      .ls-gold-accent-strip {
+        left: 48.5%;
+        width: 3px;
+      }
+      .ls-image-pane {
+        flex: 0.9;
+        margin-left: -10%;
+      }
     }
   `]
 })
