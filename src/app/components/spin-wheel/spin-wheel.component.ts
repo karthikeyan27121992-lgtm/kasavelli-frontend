@@ -115,7 +115,7 @@ const SLICES: Slice[] = [
       color: #c9a84c; font-weight: 700; margin: 0 0 0.4rem;
     }
     .sw-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.7rem; font-weight: 700;
       color: #3a0e3b; margin: 0 0 0.5rem;
     }
@@ -155,7 +155,7 @@ const SLICES: Slice[] = [
     .sw-result { padding: 0.5rem 0; }
     .sw-result-icon { font-size: 3rem; margin-bottom: 0.75rem; }
     .sw-result-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.6rem; font-weight: 700;
       color: #3a0e3b; margin: 0 0 0.6rem;
     }
@@ -312,7 +312,7 @@ export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Centre logo letter
     ctx.fillStyle = '#551756';
-    ctx.font = 'bold 14px "Cormorant Garamond", serif';
+    ctx.font = 'bold 13px "Montserrat", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('K', cx, cy);

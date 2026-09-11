@@ -128,7 +128,7 @@ import { Subscription } from 'rxjs';
     .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
 
     .page-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       color: var(--royal);
       font-size: 2.4rem;
       text-align: center;
@@ -176,7 +176,7 @@ import { Subscription } from 'rxjs';
       border: 1px solid var(--cream-dark);
       border-radius: 2px;
       font-size: 0.95rem;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       background: var(--cream);
       color: var(--text-dark);
       transition: border-color 0.3s;
@@ -260,7 +260,7 @@ import { Subscription } from 'rxjs';
       flex-grow: 1;
     }
     .product-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.15rem;
       color: var(--royal);
       margin-bottom: 0.3rem;
@@ -291,7 +291,7 @@ import { Subscription } from 'rxjs';
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--royal);
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
     }
     .price-original {
       font-size: 0.88rem;
@@ -318,7 +318,7 @@ import { Subscription } from 'rxjs';
       background: var(--royal);
       color: var(--cream);
       border: 2px solid var(--royal);
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 600;
       font-size: 0.82rem;
       letter-spacing: 1.5px;
@@ -359,13 +359,13 @@ import { Subscription } from 'rxjs';
       line-height: 1;
       cursor: pointer;
       transition: opacity 0.2s;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
     }
     .step-btn:hover { opacity: 0.82; }
     .step-qty {
       flex: 1;
       text-align: center;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
       font-size: 1rem;
       color: var(--royal);
@@ -397,7 +397,7 @@ import { Subscription } from 'rxjs';
       background: var(--royal);
       color: var(--cream);
       border: 2px solid var(--royal);
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 600;
       font-size: 0.82rem;
       letter-spacing: 1.5px;

@@ -169,7 +169,7 @@ import { Subscription } from 'rxjs';
     /* Info */
     .product-info {}
     .product-info h1 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 2rem;
       color: var(--royal);
       margin-bottom: 0.3rem;
@@ -189,7 +189,7 @@ import { Subscription } from 'rxjs';
       padding-bottom: 1.5rem;
       border-bottom: 1px solid var(--cream-dark);
     }
-    .price { font-size: 2rem; font-weight: 700; color: var(--royal); font-family: 'Jost', sans-serif; }
+    .price { font-size: 2rem; font-weight: 700; color: var(--royal); font-family: 'Montserrat', sans-serif; }
     .price-original { font-size: 1.1rem; color: var(--text-light); text-decoration: line-through; }
 
     .product-specs {
@@ -210,7 +210,7 @@ import { Subscription } from 'rxjs';
 
     .description { margin: 1.5rem 0; }
     .description h3 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.2rem;
       color: var(--royal);
       margin-bottom: 0.5rem;
@@ -243,14 +243,14 @@ import { Subscription } from 'rxjs';
       font-size: 1.4rem;
       cursor: pointer;
       transition: opacity 0.2s;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       line-height: 1;
     }
     .step-btn:hover { opacity: 0.82; }
     .step-qty {
       min-width: 52px;
       text-align: center;
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 700;
       font-size: 1.1rem;
       color: var(--royal);
@@ -265,7 +265,7 @@ import { Subscription } from 'rxjs';
       background: var(--royal);
       color: var(--cream);
       border: 2px solid var(--royal);
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 600;
       font-size: 0.9rem;
       letter-spacing: 1.5px;
@@ -279,7 +279,7 @@ import { Subscription } from 'rxjs';
 
     /* "View Bag" link after adding */
     .go-to-bag {
-      font-family: 'Jost', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.88rem;
       font-weight: 600;
       color: var(--gold);
@@ -310,7 +310,7 @@ import { Subscription } from 'rxjs';
     /* Related */
     .related-products { padding-top: 2rem; border-top: 1px solid var(--cream-dark); }
     .related-products h2 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.6rem;
       color: var(--royal);
       margin-bottom: 1.5rem;
@@ -330,7 +330,7 @@ import { Subscription } from 'rxjs';
     .card:hover .card-img { transform: scale(1.05); }
     .card-body { padding: 1rem; }
     .card-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1rem;
       color: var(--royal);
       margin-bottom: 0.3rem;

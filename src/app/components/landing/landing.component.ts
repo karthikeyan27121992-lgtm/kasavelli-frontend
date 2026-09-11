@@ -277,7 +277,7 @@ import { Product, Category, Banner } from '../../models/product.model';
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
     .sec-head { text-align: center; margin-bottom: 3rem; }
     .sec-head h2 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: clamp(1.8rem, 3.5vw, 2.4rem);
       color: var(--royal-dark); font-weight: 700; letter-spacing: 0.5px;
     }
@@ -330,7 +330,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--gold-light); font-weight: 700; margin: 0 0 1rem;
     }
     .ls-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: clamp(3rem, 5.5vw, 5rem);
       font-weight: 700; color: #fff;
       line-height: 1.0; letter-spacing: 1px;
@@ -351,7 +351,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       margin: 1.4rem 0 1.6rem;
     }
     .ls-offer-pct {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 2.2rem; font-weight: 800;
       color: var(--gold-light); line-height: 1;
     }
@@ -415,7 +415,7 @@ import { Product, Category, Banner } from '../../models/product.model';
     .cat-card:hover .cat-overlay { opacity: 1; }
     .cat-info { padding: 0.9rem 1rem; }
     .cat-name {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.05rem; font-weight: 700;
       color: var(--royal-dark); margin: 0 0 0.2rem;
     }
@@ -453,7 +453,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       border: 1px solid rgba(201,148,26,0.2);
     }
     .about-badge-num {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
     .about-badge-lbl { font-size: 0.72rem; color: var(--text-light); line-height: 1.4; }
@@ -464,7 +464,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--gold); font-weight: 600; margin-bottom: 1rem;
     }
     .about-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: clamp(1.8rem, 3vw, 2.6rem);
       font-weight: 700; color: var(--royal-dark); line-height: 1.2;
       margin-bottom: 1.5rem;
@@ -481,7 +481,7 @@ import { Product, Category, Banner } from '../../models/product.model';
     .astat { text-align: center; padding: 0 1.5rem; flex: 1; }
     .astat-n {
       display: block;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
     .astat-l { font-size: 0.72rem; color: var(--text-light); margin-top: 0.25rem; display: block; }
@@ -521,7 +521,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--royal-dark); margin-bottom: 1.25rem;
     }
     .offer-card h3 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.2rem; font-weight: 700;
       color: var(--royal-dark); margin-bottom: 0.6rem;
     }
@@ -588,7 +588,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--text-light); margin: 0 0 0.3rem;
     }
     .arrival-name {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1.1rem; font-weight: 700;
       color: var(--royal-dark); margin: 0 0 0.6rem; line-height: 1.3;
     }

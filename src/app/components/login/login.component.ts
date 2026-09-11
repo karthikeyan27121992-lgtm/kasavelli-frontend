@@ -140,7 +140,7 @@ import { LoginRequest } from '../../models/user.model';
 
     h2, h3 {
       color: var(--primary-purple);
-      font-family: 'Playfair Display', serif;
+      font-family: 'Montserrat', sans-serif;
       margin-bottom: 2rem;
       font-size: 2rem;
     }
@@ -161,7 +161,7 @@ import { LoginRequest } from '../../models/user.model';
       margin-bottom: 0.5rem;
       font-weight: 600;
       color: var(--primary-purple);
-      font-family: 'Lato', sans-serif;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .form-control {
@@ -169,7 +169,7 @@ import { LoginRequest } from '../../models/user.model';
       padding: 0.875rem;
       border: 2px solid rgba(139, 58, 98, 0.2);
       border-radius: 8px;
-      font-family: 'Lato', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 1rem;
       transition: all 0.3s ease;
     }
@@ -230,7 +230,7 @@ import { LoginRequest } from '../../models/user.model';
 
     p {
       color: var(--dark-gray);
-      font-family: 'Lato', sans-serif;
+      font-family: 'Montserrat', sans-serif;
     }
 
     a {
