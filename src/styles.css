@@ -1,5 +1,5 @@
 /* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* KASAVELLI Brand Palette */
 :root {
@@ -30,7 +30,7 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Montserrat', 'Arial', sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
   color: var(--text-dark);
   background-color: var(--cream);
   line-height: 1.65;
@@ -39,7 +39,7 @@ body {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--royal);
   font-weight: 700;
   letter-spacing: -0.3px;
@@ -51,7 +51,7 @@ h2 { font-size: 2.25rem; margin-bottom: 0.875rem; }
 h3 { font-size: 1.6rem;  margin-bottom: 0.75rem; }
 
 p, span, li {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   line-height: 1.7;
   color: var(--text-mid);
@@ -78,7 +78,7 @@ a:hover { color: var(--gold-dark); }
   padding: 0.8rem 1.75rem;
   border: none;
   border-radius: 2px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -129,7 +129,7 @@ a:hover { color: var(--gold-dark); }
   padding: 0.8rem 1rem;
   border: 1px solid var(--cream-dark);
   border-radius: 2px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   background: var(--white);
   color: var(--text-dark);

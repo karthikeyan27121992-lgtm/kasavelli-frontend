@@ -447,7 +447,7 @@ import { Product, Category } from '../../models/product.model';
     }
     .admin-header { margin-bottom: 1.25rem; }
     .admin-title {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: clamp(1.5rem, 4vw, 2rem);
       font-weight: 700;
       color: var(--royal);
@@ -494,7 +494,7 @@ import { Product, Category } from '../../models/product.model';
     }
     .section-bar-left { display: flex; align-items: baseline; gap: 0.6rem; }
     .section-title {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1.15rem; font-weight: 700;
       color: var(--royal); margin: 0;
     }
@@ -644,7 +644,7 @@ import { Product, Category } from '../../models/product.model';
     }
     .modal-header h3 {
       margin: 0;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1.2rem; font-weight: 700;
       color: var(--royal);
     }

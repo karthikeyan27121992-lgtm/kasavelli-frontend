@@ -316,7 +316,7 @@ import { Product } from './models/product.model';
       filter: brightness(0) invert(1);
     }
     .logo-text {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1.5rem;
       font-weight: 600;
       letter-spacing: 3px;
@@ -331,7 +331,7 @@ import { Product } from './models/product.model';
     }
     .desktop-nav a {
       color: rgba(239,235,225,0.85);
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 0.88rem;
       font-weight: 500;
       letter-spacing: 1.2px;
@@ -420,7 +420,7 @@ import { Product } from './models/product.model';
       color: rgba(239,235,225,0.85);
       padding: 0.75rem 1.5rem;
       text-decoration: none;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 0.9rem;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -463,7 +463,7 @@ import { Product } from './models/product.model';
     .footer-logo {
       display: flex; align-items: center; gap: 0.75rem;
       margin-bottom: 1rem;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--cream);
@@ -506,7 +506,7 @@ import { Product } from './models/product.model';
     .social-row svg { width: 16px; height: 16px; }
 
     .footer-col h4 {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1rem;
       color: var(--gold-light);
       letter-spacing: 2px;
@@ -601,7 +601,7 @@ import { Product } from './models/product.model';
       flex-shrink: 0;
     }
     .sp-title {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1.3rem; font-weight: 700;
       color: #1a1a2e; margin: 0;
     }
