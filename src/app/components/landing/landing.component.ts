@@ -25,23 +25,57 @@ import {
 
     <div class="landing">
 
-      <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
-      <section class="leadspace" *ngIf="leadspace?.is_active !== false">
-        <img [src]="leadspace?.image || 'assets/images/vanki-ring.webp'" [alt]="leadspace?.title || 'Vanki Rings'" class="ls-bg-img">
-        <div class="ls-gradient"></div>
-        <div class="ls-text">
-          <p class="ls-eyebrow">{{ leadspace?.eyebrow || 'New Collection · 2026' }}</p>
-          <h1 class="ls-title" [innerHTML]="formattedTitle"></h1>
-          <div class="ls-rule"></div>
-          <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian finger rings, handcrafted in 925 sterling silver.' }}</p>
-          <p class="ls-desc" *ngIf="leadspace?.desc_line2">{{ leadspace?.desc_line2 }}</p>
-          <div class="ls-offer" *ngIf="leadspace?.offer_pct || leadspace?.offer_label">
-            <span class="ls-offer-pct" *ngIf="leadspace?.offer_pct">{{ leadspace?.offer_pct }}</span>
-            <span class="ls-offer-label" *ngIf="leadspace?.offer_label">{{ leadspace?.offer_label }}</span>
+      <!-- ══ 1. LEADSPACE BANNER (Exact Layout: Split with Angular Ribbon & Image Side) ════ -->
+      <section class="ls-wrapper" *ngIf="leadspace?.is_active !== false">
+        <div class="ls-banner-card">
+          <!-- Left: Angular Content Area with Brand Graphics -->
+          <div class="ls-content-pane">
+            <div class="ls-brand-badge">
+              <span class="ls-brand-sparkle">✦</span>
+              <span class="ls-brand-text">KASAVELLI SILVER</span>
+            </div>
+
+            <div class="ls-header-group">
+              <p class="ls-eyebrow">{{ leadspace?.eyebrow || 'New Collection · 2026' }}</p>
+              <h1 class="ls-title" [innerHTML]="formattedTitle"></h1>
+            </div>
+
+            <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian finger rings, handcrafted in 925 sterling silver.' }}</p>
+            <p class="ls-desc ls-desc-sub" *ngIf="leadspace?.desc_line2">{{ leadspace?.desc_line2 }}</p>
+
+            <div class="ls-action-row">
+              <div class="ls-offer-pill" *ngIf="leadspace?.offer_pct || leadspace?.offer_label">
+                <span class="ls-offer-val" *ngIf="leadspace?.offer_pct">{{ leadspace?.offer_pct }}</span>
+                <span class="ls-offer-txt" *ngIf="leadspace?.offer_label">{{ leadspace?.offer_label }}</span>
+              </div>
+              <a [routerLink]="leadspace?.button_link || '/products'" class="ls-cta-btn">
+                <span>{{ leadspace?.button_text || 'Shop Now' }}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Footer Social / Trust Indicators -->
+            <div class="ls-footer-tags">
+              <span class="ls-tag"><span class="ls-dot">●</span> 925 Certified</span>
+              <span class="ls-tag"><span class="ls-dot">●</span> Free Shipping</span>
+              <span class="ls-tag"><span class="ls-dot">●</span> Easy Returns</span>
+            </div>
           </div>
-          <a [routerLink]="leadspace?.button_link || '/products'" class="ls-shop-btn">
-            {{ leadspace?.button_text || 'Shop Now' }}
-          </a>
+
+          <!-- Angular Cutout Separator & Slanted Accent Ribbons -->
+          <div class="ls-slant-divider"></div>
+          <div class="ls-gold-accent-strip"></div>
+
+          <!-- Right: Image Showcase Area -->
+          <div class="ls-image-pane">
+            <img [src]="leadspace?.image || 'assets/images/vanki-ring.webp'" 
+                 [alt]="leadspace?.title || 'Kasavelli Jewellery'" 
+                 class="ls-hero-img">
+            <div class="ls-image-overlay"></div>
+          </div>
         </div>
       </section>
 
@@ -218,9 +252,11 @@ import {
     /* ══ CSS VARIABLES ══ */
     :host {
       --royal: #551756;
-      --royal-dark: #3a0e3b;
+      --royal-mid: #3e0e3f;
+      --royal-dark: #2a072c;
       --gold: #c9a84c;
-      --gold-light: #e8c547;
+      --gold-light: #f5cf62;
+      --gold-dark: #a17822;
       --cream: #f9f5ef;
       --white: #ffffff;
       --text: #1a1a2e;
@@ -272,86 +308,233 @@ import {
     }
     .sec-sub { color: var(--text-light); font-size: 0.95rem; }
 
-    /* ══ 1. LEADSPACE ══ */
-    .leadspace {
+    /* ══ 1. EXACT LEADSPACE LAYOUT (From Reference Banner Template) ══ */
+    .ls-wrapper {
+      width: 100%;
+      background: #180319;
+      padding: 1.5rem 1rem;
+      display: flex;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    .ls-banner-card {
       position: relative;
       width: 100%;
+      max-width: 1260px;
       min-height: 480px;
-      max-height: 600px;
-      aspect-ratio: 16 / 7;
+      background: #250628;
+      border-radius: 20px;
       overflow: hidden;
-      display: flex; align-items: center;
+      display: flex;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(201, 168, 76, 0.25);
     }
-    .ls-bg-img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center 25%;
+
+    /* Left Content Pane (Angular Cut with dark maroon-purple gradient) */
+    .ls-content-pane {
+      position: relative;
+      flex: 1.25;
+      z-index: 3;
+      padding: 3.5rem 4.5rem 3.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(135deg, #300832 0%, #200422 65%, #18031a 100%);
+      clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
+      box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
     }
-    .ls-gradient {
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to right,
-        rgba(18, 4, 18, 0.80) 0%,
-        rgba(18, 4, 18, 0.60) 38%,
-        rgba(18, 4, 18, 0.15) 62%,
-        transparent 100%
-      );
+
+    /* Decorative Brand Logo/Sparkle Top */
+    .ls-brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(245, 207, 98, 0.12);
+      border: 1px solid rgba(245, 207, 98, 0.35);
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      width: fit-content;
+      margin-bottom: 1.5rem;
     }
-    .ls-text {
-      position: relative; z-index: 2;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 3rem 3rem 3rem 5vw;
-      max-width: 520px;
+    .ls-brand-sparkle {
+      color: var(--gold-light);
+      font-size: 0.85rem;
+    }
+    .ls-brand-text {
+      color: var(--gold-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Header Group */
+    .ls-header-group {
+      margin-bottom: 1.25rem;
     }
     .ls-eyebrow {
-      font-size: 0.68rem; letter-spacing: 3.5px; text-transform: uppercase;
-      color: var(--gold-light); font-weight: 700; margin: 0 0 1rem;
+      font-size: 0.78rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      font-weight: 700;
+      margin: 0 0 0.5rem;
     }
     .ls-title {
       font-family: 'Raleway', sans-serif;
-      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-      font-weight: 800; line-height: 1.05;
-      color: #efebe1; margin: 0 0 1.25rem;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: #ffffff;
+      margin: 0;
       letter-spacing: -0.5px;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
     }
-    .ls-rule {
-      width: 44px; height: 3px;
-      background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      border-radius: 2px; margin-bottom: 1.25rem;
-    }
+
+    /* Description Texts */
     .ls-desc {
-      color: rgba(239, 235, 225, 0.88);
-      font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.4rem;
+      color: rgba(249, 245, 239, 0.9);
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 0.4rem;
+      max-width: 520px;
       font-weight: 300;
     }
-    .ls-offer {
-      display: flex; align-items: baseline; gap: 0.5rem;
-      margin: 1.25rem 0 1.75rem;
+    .ls-desc-sub {
+      color: rgba(249, 245, 239, 0.75);
+      font-size: 0.92rem;
+      margin-bottom: 1.5rem;
     }
-    .ls-offer-pct {
+
+    /* Action Row: Offer & Button */
+    .ls-action-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .ls-offer-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px dashed var(--gold);
+      padding: 0.5rem 1.1rem;
+      border-radius: 8px;
+    }
+    .ls-offer-val {
       font-family: 'Raleway', sans-serif;
-      font-size: 1.6rem; font-weight: 800;
-      color: var(--gold-light); letter-spacing: -0.5px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold-light);
     }
-    .ls-offer-label {
-      font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      color: rgba(239, 235, 225, 0.75);
+    .ls-offer-txt {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      max-width: 140px;
+      line-height: 1.3;
     }
-    .ls-shop-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      align-self: flex-start;
-      background: #e8c547; color: #1a051c;
-      font-weight: 700; font-size: 0.82rem; letter-spacing: 2px;
-      text-transform: uppercase; padding: 0.85rem 2.25rem;
-      border-radius: 4px; text-decoration: none;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-      transition: all 0.25s ease;
+
+    .ls-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: linear-gradient(135deg, #f5cf62 0%, #c9a84c 100%);
+      color: #1a031d;
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.95rem 2.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(245, 207, 98, 0.35);
+      transition: all 0.3s ease;
     }
-    .ls-shop-btn:hover {
-      background: #f0d468;
+    .ls-cta-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 22px rgba(232, 197, 71, 0.4);
+      box-shadow: 0 12px 30px rgba(245, 207, 98, 0.5);
+      background: linear-gradient(135deg, #fae08c 0%, #dbba5d 100%);
+    }
+
+    /* Footer Trust Tags */
+    .ls-footer-tags {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      max-width: 480px;
+    }
+    .ls-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.76rem;
+      color: rgba(245, 207, 98, 0.9);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .ls-dot {
+      font-size: 0.5rem;
+      color: var(--gold);
+    }
+
+    /* Slanted Accent Ribbons */
+    .ls-slant-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 54%;
+      width: 45px;
+      background: linear-gradient(to bottom, #501154, #320836);
+      transform: skewX(-14deg);
+      z-index: 2;
+      opacity: 0.85;
+    }
+    .ls-gold-accent-strip {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 56.5%;
+      width: 6px;
+      background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
+      transform: skewX(-14deg);
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(245, 207, 98, 0.5);
+    }
+
+    /* Right Image Showcase Pane */
+    .ls-image-pane {
+      position: relative;
+      flex: 1;
+      min-height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      margin-left: -5%;
+    }
+    .ls-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      transition: transform 0.6s ease;
+    }
+    .ls-banner-card:hover .ls-hero-img {
+      transform: scale(1.03);
+    }
+    .ls-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(37, 6, 40, 0.5) 0%, transparent 60%);
+      pointer-events: none;
     }
 
     /* ══ 2. CATEGORIES ══ */
@@ -589,7 +772,22 @@ import {
     .sec-btn:hover { background: var(--royal-dark); color: #efebe1; }
 
     /* ══ RESPONSIVE ══ */
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
+      .ls-banner-card {
+        flex-direction: column;
+        min-height: auto;
+      }
+      .ls-content-pane {
+        clip-path: none;
+        padding: 2.5rem 1.75rem 2rem;
+      }
+      .ls-slant-divider, .ls-gold-accent-strip {
+        display: none;
+      }
+      .ls-image-pane {
+        margin-left: 0;
+        height: 280px;
+      }
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
       .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
       .about-text-col { padding-right: 0; }
@@ -597,6 +795,29 @@ import {
       .about-badge { right: 0; }
     }
     @media (max-width: 600px) {
+      .ls-wrapper {
+        padding: 0.75rem 0.5rem;
+      }
+      .ls-banner-card {
+        border-radius: 14px;
+      }
+      .ls-content-pane {
+        padding: 1.75rem 1.25rem 1.5rem;
+      }
+      .ls-title {
+        font-size: 2rem;
+      }
+      .ls-action-row {
+        gap: 1rem;
+      }
+      .ls-cta-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .ls-footer-tags {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
       .offers-grid { grid-template-columns: 1fr; }
       .arrivals-grid { grid-template-columns: 1fr; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
