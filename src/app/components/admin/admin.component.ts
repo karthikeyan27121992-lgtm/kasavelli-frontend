@@ -311,12 +311,25 @@ import { Product, Category } from '../../models/product.model';
 
               <div class="form-group">
                 <label class="form-label">Product Image</label>
-                <div *ngIf="editingProduct?.image" class="current-image-preview">
-                  <img [src]="editingProduct!.image" alt="Current image" class="preview-img">
-                  <small class="text-muted">Current image — upload a new file to replace it</small>
+                <!-- Current saved image (shown when editing) -->
+                <div *ngIf="productData.image && !selectedProductFile" class="current-image-preview">
+                  <img [src]="productData.image" alt="Current image" class="preview-img">
+                  <div class="preview-info">
+                    <span class="preview-label">Current image</span>
+                    <small class="preview-hint">Upload a new file below to replace it, or leave empty to keep this image.</small>
+                  </div>
+                </div>
+                <!-- New file preview (shown after selecting a file) -->
+                <div *ngIf="selectedProductFile" class="current-image-preview new-file">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <div class="preview-info">
+                    <span class="preview-label">New image selected</span>
+                    <small class="preview-hint">{{ selectedProductFile.name }}</small>
+                  </div>
+                  <button type="button" class="clear-file-btn" (click)="selectedProductFile = null" title="Remove selection">✕</button>
                 </div>
                 <input type="file" class="form-control" (change)="onFileSelect($event, 'product')" accept="image/*">
-                <small class="text-muted" *ngIf="!editingProduct">Required — upload a product image</small>
+                <small class="text-muted" *ngIf="!editingProduct">Upload a product image</small>
               </div>
 
               <div class="modal-footer">
@@ -376,9 +389,22 @@ import { Product, Category } from '../../models/product.model';
 
               <div class="form-group">
                 <label class="form-label">Category Image</label>
-                <div *ngIf="editingCategory?.image" class="current-image-preview">
-                  <img [src]="editingCategory!.image" alt="Current image" class="preview-img">
-                  <small class="text-muted">Current image — upload a new file to replace it</small>
+                <!-- Current saved image -->
+                <div *ngIf="categoryData.image && !selectedCategoryFile" class="current-image-preview">
+                  <img [src]="categoryData.image" alt="Current image" class="preview-img">
+                  <div class="preview-info">
+                    <span class="preview-label">Current image</span>
+                    <small class="preview-hint">Upload a new file below to replace it, or leave empty to keep this image.</small>
+                  </div>
+                </div>
+                <!-- New file preview -->
+                <div *ngIf="selectedCategoryFile" class="current-image-preview new-file">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  <div class="preview-info">
+                    <span class="preview-label">New image selected</span>
+                    <small class="preview-hint">{{ selectedCategoryFile.name }}</small>
+                  </div>
+                  <button type="button" class="clear-file-btn" (click)="selectedCategoryFile = null" title="Remove selection">✕</button>
                 </div>
                 <input type="file" class="form-control" (change)="onFileSelect($event, 'category')" accept="image/*">
                 <small class="text-muted" *ngIf="!editingCategory">Recommended: Square image for best display</small>
@@ -647,11 +673,25 @@ import { Product, Category } from '../../models/product.model';
       background: #faf8fc; border-radius: 8px;
       border: 1px solid var(--border);
     }
+    .current-image-preview.new-file {
+      background: #f0faf3; border-color: #a8d5b5;
+      color: var(--green);
+    }
     .preview-img {
       width: 64px; height: 64px;
       object-fit: cover; border-radius: 6px;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border); flex-shrink: 0;
     }
+    .preview-info { flex: 1; min-width: 0; }
+    .preview-label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .preview-hint  { display: block; font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+    .clear-file-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 1rem; padding: 0.25rem;
+      border-radius: 4px; transition: color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .clear-file-btn:hover { color: var(--red); background: var(--red-bg); }
 
     /* ── Keep existing btn classes working ── */
     .btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.55rem 1.1rem; border-radius: 6px; font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
@@ -854,14 +894,18 @@ export class AdminComponent implements OnInit {
     this.saving = true;
     const formData = new FormData();
 
+    // Image fields must only be appended when a new file is selected —
+    // sending the existing Cloudinary URL string would overwrite the stored image path.
+    const imageFields = ['image', 'image_2', 'image_3'];
+
     Object.keys(this.productData).forEach(key => {
+      if (imageFields.includes(key)) return;   // handled separately below
       const value = this.productData[key];
-      if (value !== null && value !== '' && value !== undefined) {
-        if (typeof value === 'boolean') {
-          formData.append(key, value ? 'true' : 'false');
-        } else {
-          formData.append(key, value.toString());
-        }
+      if (value === null || value === undefined) return;
+      if (typeof value === 'boolean') {
+        formData.append(key, value ? 'true' : 'false');
+      } else {
+        formData.append(key, value.toString());
       }
     });
 
@@ -958,14 +1002,15 @@ export class AdminComponent implements OnInit {
     this.saving = true;
     const formData = new FormData();
 
+    // Exclude 'image' — only append when a new file is chosen
     Object.keys(this.categoryData).forEach(key => {
+      if (key === 'image') return;
       const value = this.categoryData[key];
-      if (value !== null && value !== '' && value !== undefined) {
-        if (typeof value === 'boolean') {
-          formData.append(key, value ? 'true' : 'false');
-        } else {
-          formData.append(key, value.toString());
-        }
+      if (value === null || value === undefined) return;
+      if (typeof value === 'boolean') {
+        formData.append(key, value ? 'true' : 'false');
+      } else {
+        formData.append(key, value.toString());
       }
     });
 

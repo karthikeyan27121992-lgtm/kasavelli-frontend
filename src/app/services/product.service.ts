@@ -75,7 +75,7 @@ export class ProductService {
   }
 
   updateProduct(id: number, product: FormData): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/products/${id}/`, product);
+    return this.http.patch<Product>(`${this.apiUrl}/products/${id}/`, product);
   }
 
   deleteProduct(id: number): Observable<void> {
@@ -88,7 +88,7 @@ export class ProductService {
   }
 
   updateCategory(id: number, category: FormData): Observable<Category> {
-    return this.http.put<Category>(`${this.apiUrl}/categories/${id}/`, category);
+    return this.http.patch<Category>(`${this.apiUrl}/categories/${id}/`, category);
   }
 
   deleteCategory(id: number): Observable<void> {
