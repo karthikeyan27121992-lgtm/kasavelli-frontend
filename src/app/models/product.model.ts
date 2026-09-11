@@ -97,4 +97,72 @@ export interface Banner {
   end_date?: string;
 }
 
+export interface NotificationBar {
+  id: number;
+  text: string;
+  is_active: boolean;
+  display_order: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface LeadspaceBanner {
+  id: number;
+  eyebrow: string;
+  title: string;
+  desc_line1: string;
+  desc_line2?: string;
+  offer_pct?: string;
+  offer_label?: string;
+  button_text: string;
+  button_link: string;
+  image?: string;
+  image_url?: string;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface StorySection {
+  id: number;
+  eyebrow: string;
+  title: string;
+  paragraph_1: string;
+  paragraph_2?: string;
+  badge_number: string;
+  badge_label: string;
+  stat1_value: string;
+  stat1_label: string;
+  stat2_value: string;
+  stat2_label: string;
+  stat3_value: string;
+  stat3_label: string;
+  button_text: string;
+  button_link: string;
+  image?: string;
+  image_url?: string;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface WhyChooseCard {
+  id: number;
+  title: string;
+  description: string;
+  icon_type: string;
+  custom_icon_svg?: string;
+  display_order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface HomepageConfig {
+  notifications: NotificationBar[];
+  leadspace: LeadspaceBanner | null;
+  story: StorySection | null;
+  why_choose_cards: WhyChooseCard[];
+}
+
 // Made with Bob

@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
-import { Product, Category } from '../../models/product.model';
+import {
+  Product, Category, NotificationBar, LeadspaceBanner,
+  StorySection, WhyChooseCard
+} from '../../models/product.model';
 
 @Component({
   selector: 'app-admin',
@@ -14,7 +17,7 @@ import { Product, Category } from '../../models/product.model';
         <h2 class="admin-title">Admin Panel</h2>
       </div>
 
-      <!-- Tabs -->
+      <!-- Navigation Tabs -->
       <div class="admin-tabs">
         <button class="tab-btn" [class.active]="activeTab === 'products'" (click)="switchTab('products')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -24,9 +27,25 @@ import { Product, Category } from '../../models/product.model';
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
           Categories
         </button>
+        <button class="tab-btn" [class.active]="activeTab === 'notifications'" (click)="switchTab('notifications')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          Notification Bar
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'leadspace'" (click)="switchTab('leadspace')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Leadspace Banner
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'story'" (click)="switchTab('story')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Our Story
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'why-choose'" (click)="switchTab('why-choose')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          Why Choose Us
+        </button>
       </div>
 
-      <!-- ── Products Tab ── -->
+      <!-- ══════════════ 1. PRODUCTS TAB ══════════════ -->
       <div class="tab-content" *ngIf="activeTab === 'products'">
         <div class="section-bar">
           <div class="section-bar-left">
@@ -46,7 +65,6 @@ import { Product, Category } from '../../models/product.model';
           </select>
         </div>
 
-        <!-- Desktop table -->
         <div class="table-wrap" *ngIf="products.length > 0">
           <table class="admin-table">
             <thead>
@@ -93,47 +111,13 @@ import { Product, Category } from '../../models/product.model';
           </table>
         </div>
 
-        <!-- Mobile cards (≤640px) -->
-        <div class="card-list" *ngIf="products.length > 0">
-          <div class="item-card" *ngFor="let product of products">
-            <div class="card-img-col">
-              <img *ngIf="product.image; else noImgCard" [src]="product.image" [alt]="product.name" class="card-img">
-              <ng-template #noImgCard>
-                <div class="card-img-placeholder">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="28" height="28"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                </div>
-              </ng-template>
-            </div>
-            <div class="card-body">
-              <p class="card-name">{{ product.name }}</p>
-              <p class="card-meta">{{ product.category_name }}</p>
-              <div class="card-price-row">
-                <span class="card-price">₹{{ product.discounted_price || product.price }}</span>
-                <span class="card-orig" *ngIf="product.discounted_price">₹{{ product.price }}</span>
-                <span class="stock-badge" [class.in]="product.in_stock" [class.out]="!product.in_stock">
-                  {{ product.in_stock ? 'In Stock' : 'Out' }}
-                </span>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button class="btn-icon edit" (click)="editProduct(product)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="btn-icon del" (click)="deleteProduct(product.id)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
         <div class="empty-state" *ngIf="products.length === 0">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          <p>No products yet</p>
-          <button class="btn-add" (click)="openAddProductModal()">Add Your First Product</button>
+          <p>No products found</p>
+          <button class="btn-add" (click)="openAddProductModal()">Add Product</button>
         </div>
       </div>
 
-      <!-- ── Categories Tab ── -->
+      <!-- ══════════════ 2. CATEGORIES TAB ══════════════ -->
       <div class="tab-content" *ngIf="activeTab === 'categories'">
         <div class="section-bar">
           <div class="section-bar-left">
@@ -146,7 +130,6 @@ import { Product, Category } from '../../models/product.model';
           </button>
         </div>
 
-        <!-- Desktop table -->
         <div class="table-wrap" *ngIf="categories.length > 0">
           <table class="admin-table">
             <thead>
@@ -187,70 +170,348 @@ import { Product, Category } from '../../models/product.model';
             </tbody>
           </table>
         </div>
+      </div>
 
-        <!-- Mobile cards (≤640px) -->
-        <div class="card-list" *ngIf="categories.length > 0">
-          <div class="item-card" *ngFor="let category of categories">
-            <div class="card-img-col">
-              <img *ngIf="category.image; else noCatImgCard" [src]="category.image" [alt]="category.name" class="card-img">
-              <ng-template #noCatImgCard>
-                <div class="card-img-placeholder">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="28" height="28"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                </div>
-              </ng-template>
-            </div>
-            <div class="card-body">
-              <p class="card-name">{{ category.display_name }}</p>
-              <p class="card-meta">{{ category.name }}</p>
-              <div class="card-price-row">
-                <span class="stock-badge" [class.in]="category.is_active" [class.out]="!category.is_active">
-                  {{ category.is_active ? 'Active' : 'Inactive' }}
-                </span>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button class="btn-icon edit" (click)="editCategory(category)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="btn-icon del" (click)="deleteCategory(category.id)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-              </button>
-            </div>
+      <!-- ══════════════ 3. NOTIFICATION BAR TAB ══════════════ -->
+      <div class="tab-content" *ngIf="activeTab === 'notifications'">
+        <div class="section-bar">
+          <div class="section-bar-left">
+            <h3 class="section-title">Homepage Notification Bar</h3>
+            <span class="section-count">{{ notificationBars.length }} message{{ notificationBars.length !== 1 ? 's' : '' }}</span>
           </div>
+          <button class="btn-add" (click)="openAddNotificationModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Notification
+          </button>
         </div>
 
-        <div class="empty-state" *ngIf="categories.length === 0">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          <p>No categories yet</p>
-          <button class="btn-add" (click)="openAddCategoryModal()">Add Your First Category</button>
+        <div class="info-card">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>The active notification bar text will scroll at the top of the homepage. You can enable/disable items or add multiple announcements.</span>
+        </div>
+
+        <div class="table-wrap" *ngIf="notificationBars.length > 0">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Notification Text</th>
+                <th>Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let notif of notificationBars">
+                <td data-label="Order"><span class="order-badge">{{ notif.display_order }}</span></td>
+                <td data-label="Text"><span class="cell-primary">{{ notif.text }}</span></td>
+                <td data-label="Active">
+                  <span class="stock-badge" [class.in]="notif.is_active" [class.out]="!notif.is_active">
+                    {{ notif.is_active ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td data-label="Actions" class="actions-cell">
+                  <button class="btn-icon edit" (click)="editNotification(notif)" title="Edit">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit
+                  </button>
+                  <button class="btn-icon del" (click)="deleteNotification(notif.id)" title="Delete">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" *ngIf="notificationBars.length === 0">
+          <p>No notification text configured yet.</p>
+          <button class="btn-add" (click)="openAddNotificationModal()">Create First Notification</button>
         </div>
       </div>
 
-      <!-- Add/Edit Product Modal -->
+      <!-- ══════════════ 4. LEADSPACE BANNER TAB ══════════════ -->
+      <div class="tab-content" *ngIf="activeTab === 'leadspace'">
+        <div class="section-bar">
+          <div class="section-bar-left">
+            <h3 class="section-title">Leadspace Hero Banner</h3>
+            <span class="section-count">Edit the top hero section texts, discount badge, button, and banner image</span>
+          </div>
+        </div>
+
+        <div class="panel-form-card" *ngIf="leadspaceData">
+          <form (ngSubmit)="saveLeadspace()">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Eyebrow Tag</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.eyebrow" name="ls_eyebrow" placeholder="e.g. New Collection · 2026" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Main Title (Multi-line supported)</label>
+                <textarea class="form-control" [(ngModel)]="leadspaceData.title" name="ls_title" rows="2" placeholder="e.g. Vanki&#10;Rings" required></textarea>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Description Line 1</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.desc_line1" name="ls_desc1" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description Line 2</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.desc_line2" name="ls_desc2">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Offer Percentage / Tag</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.offer_pct" name="ls_offer_pct" placeholder="e.g. 20% OFF">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Offer Description Label</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.offer_label" name="ls_offer_lbl" placeholder="e.g. on all Vanki Rings · Limited Time">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Button Text</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.button_text" name="ls_btn_text" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Button Link</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.button_link" name="ls_btn_link" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Banner Image</label>
+              <div *ngIf="leadspaceData.image && !selectedLeadspaceFile" class="current-image-preview">
+                <img [src]="leadspaceData.image" alt="Current hero banner" class="preview-img">
+                <div class="preview-info">
+                  <span class="preview-label">Current Banner Image</span>
+                  <small class="preview-hint">Upload a new image below to replace it.</small>
+                </div>
+              </div>
+              <div *ngIf="selectedLeadspaceFile" class="current-image-preview new-file">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <div class="preview-info">
+                  <span class="preview-label">New image selected</span>
+                  <small class="preview-hint">{{ selectedLeadspaceFile.name }}</small>
+                </div>
+                <button type="button" class="clear-file-btn" (click)="selectedLeadspaceFile = null">✕</button>
+              </div>
+              <input type="file" class="form-control" (change)="onFileSelect($event, 'leadspace')" accept="image/*">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label checkbox-label">
+                <input type="checkbox" [(ngModel)]="leadspaceData.is_active" name="ls_is_active">
+                <span>Active (Display this banner on homepage)</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" [disabled]="saving">
+                {{ saving ? 'Saving Changes...' : 'Save Leadspace Banner' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ══════════════ 5. OUR STORY TAB ══════════════ -->
+      <div class="tab-content" *ngIf="activeTab === 'story'">
+        <div class="section-bar">
+          <div class="section-bar-left">
+            <h3 class="section-title">Our Story / About Section</h3>
+            <span class="section-count">Edit title, paragraphs, stat numbers, badges, and image</span>
+          </div>
+        </div>
+
+        <div class="panel-form-card" *ngIf="storyData">
+          <form (ngSubmit)="saveStory()">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Eyebrow</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.eyebrow" name="st_eyebrow" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Section Title</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.title" name="st_title" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Paragraph 1</label>
+              <textarea class="form-control" [(ngModel)]="storyData.paragraph_1" name="st_p1" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Paragraph 2</label>
+              <textarea class="form-control" [(ngModel)]="storyData.paragraph_2" name="st_p2" rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Badge Number (e.g. 925)</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.badge_number" name="st_bnum">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Badge Label (e.g. Hallmarked Silver)</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.badge_label" name="st_blbl">
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat-col">
+                <label class="form-label">Stat 1 Value</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.stat1_value" name="st_s1v" placeholder="100+">
+                <label class="form-label stat-lbl-field">Stat 1 Label</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.stat1_label" name="st_s1l" placeholder="Unique Designs">
+              </div>
+              <div class="stat-col">
+                <label class="form-label">Stat 2 Value</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.stat2_value" name="st_s2v" placeholder="500+">
+                <label class="form-label stat-lbl-field">Stat 2 Label</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.stat2_label" name="st_s2l" placeholder="Happy Customers">
+              </div>
+              <div class="stat-col">
+                <label class="form-label">Stat 3 Value</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.stat3_value" name="st_s3v" placeholder="925">
+                <label class="form-label stat-lbl-field">Stat 3 Label</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.stat3_label" name="st_s3l" placeholder="Silver Purity">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Button Text</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.button_text" name="st_btn_t">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Button Link</label>
+                <input type="text" class="form-control" [(ngModel)]="storyData.button_link" name="st_btn_l">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Story Image (Optional)</label>
+              <div *ngIf="storyData.image && !selectedStoryFile" class="current-image-preview">
+                <img [src]="storyData.image" alt="Current story image" class="preview-img">
+                <div class="preview-info">
+                  <span class="preview-label">Current Story Image</span>
+                  <small class="preview-hint">Upload a replacement image below.</small>
+                </div>
+              </div>
+              <div *ngIf="selectedStoryFile" class="current-image-preview new-file">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <div class="preview-info">
+                  <span class="preview-label">New image selected</span>
+                  <small class="preview-hint">{{ selectedStoryFile.name }}</small>
+                </div>
+                <button type="button" class="clear-file-btn" (click)="selectedStoryFile = null">✕</button>
+              </div>
+              <input type="file" class="form-control" (change)="onFileSelect($event, 'story')" accept="image/*">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label checkbox-label">
+                <input type="checkbox" [(ngModel)]="storyData.is_active" name="st_is_active">
+                <span>Active (Display Our Story on homepage)</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" [disabled]="saving">
+                {{ saving ? 'Saving Changes...' : 'Save Story Section' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ══════════════ 6. WHY CHOOSE US TAB ══════════════ -->
+      <div class="tab-content" *ngIf="activeTab === 'why-choose'">
+        <div class="section-bar">
+          <div class="section-bar-left">
+            <h3 class="section-title">Why Choose Kasavelli Cards</h3>
+            <span class="section-count">{{ whyCards.length }} card{{ whyCards.length !== 1 ? 's' : '' }}</span>
+          </div>
+          <button class="btn-add" (click)="openAddWhyCardModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Card
+          </button>
+        </div>
+
+        <div class="table-wrap" *ngIf="whyCards.length > 0">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Icon</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let card of whyCards">
+                <td data-label="Order"><span class="order-badge">{{ card.display_order }}</span></td>
+                <td data-label="Icon"><span class="cat-chip">{{ card.icon_type }}</span></td>
+                <td data-label="Title"><span class="cell-primary">{{ card.title }}</span></td>
+                <td data-label="Description"><span class="desc-text">{{ card.description }}</span></td>
+                <td data-label="Active">
+                  <span class="stock-badge" [class.in]="card.is_active" [class.out]="!card.is_active">
+                    {{ card.is_active ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td data-label="Actions" class="actions-cell">
+                  <button class="btn-icon edit" (click)="editWhyCard(card)" title="Edit">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit
+                  </button>
+                  <button class="btn-icon del" (click)="deleteWhyCard(card.id)" title="Delete">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" *ngIf="whyCards.length === 0">
+          <p>No cards configured yet.</p>
+          <button class="btn-add" (click)="openAddWhyCardModal()">Add First Card</button>
+        </div>
+      </div>
+
+      <!-- ══════════════ MODALS ══════════════ -->
+
+      <!-- 1. Product Modal -->
       <div class="modal-overlay" *ngIf="showProductModal" (click)="closeProductModal()">
         <div class="modal-content" (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h3>{{ editingProduct ? 'Edit Product' : 'Add New Product' }}</h3>
             <button class="close-btn" (click)="closeProductModal()">&times;</button>
           </div>
-
           <div class="modal-body">
-            <form (ngSubmit)="saveProduct()" #productForm="ngForm">
+            <form (ngSubmit)="saveProduct()">
               <div class="form-group">
                 <label class="form-label">Product Name</label>
                 <input type="text" class="form-control" [(ngModel)]="productData.name" name="name" required>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Title</label>
                 <input type="text" class="form-control" [(ngModel)]="productData.title" name="title" required>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Description</label>
-                <textarea class="form-control" [(ngModel)]="productData.description" name="description" rows="4" required></textarea>
+                <textarea class="form-control" [(ngModel)]="productData.description" name="description" rows="3" required></textarea>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Category</label>
                 <select class="form-control" [(ngModel)]="productData.category" name="category" required>
@@ -258,80 +519,57 @@ import { Product, Category } from '../../models/product.model';
                   <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.display_name }}</option>
                 </select>
               </div>
-
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Price</label>
                   <input type="number" class="form-control" [(ngModel)]="productData.price" name="price" required>
                 </div>
-
                 <div class="form-group">
                   <label class="form-label">Discounted Price</label>
                   <input type="number" class="form-control" [(ngModel)]="productData.discounted_price" name="discounted_price">
                 </div>
               </div>
-
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Weight (grams)</label>
                   <input type="number" class="form-control" [(ngModel)]="productData.weight" name="weight">
                 </div>
-
                 <div class="form-group">
                   <label class="form-label">Purity</label>
-                  <input type="text" class="form-control" [(ngModel)]="productData.purity" name="purity" value="925 Silver">
+                  <input type="text" class="form-control" [(ngModel)]="productData.purity" name="purity">
                 </div>
               </div>
-
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Stock Quantity</label>
                   <input type="number" class="form-control" [(ngModel)]="productData.stock_quantity" name="stock_quantity" required>
                 </div>
-
                 <div class="form-group">
                   <label class="form-label">Slug</label>
                   <input type="text" class="form-control" [(ngModel)]="productData.slug" name="slug" required>
                 </div>
               </div>
-
-              <div class="form-group">
-                <label class="form-label">
+              <div class="form-row">
+                <label class="form-label checkbox-label">
                   <input type="checkbox" [(ngModel)]="productData.in_stock" name="in_stock">
-                  In Stock
+                  <span>In Stock</span>
                 </label>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">
+                <label class="form-label checkbox-label">
                   <input type="checkbox" [(ngModel)]="productData.is_featured" name="is_featured">
-                  Featured Product
+                  <span>Featured</span>
                 </label>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Product Image</label>
-                <!-- Current saved image (shown when editing) -->
                 <div *ngIf="productData.image && !selectedProductFile" class="current-image-preview">
                   <img [src]="productData.image" alt="Current image" class="preview-img">
                   <div class="preview-info">
                     <span class="preview-label">Current image</span>
-                    <small class="preview-hint">Upload a new file below to replace it, or leave empty to keep this image.</small>
+                    <small class="preview-hint">Upload a replacement below, or keep existing.</small>
                   </div>
-                </div>
-                <!-- New file preview (shown after selecting a file) -->
-                <div *ngIf="selectedProductFile" class="current-image-preview new-file">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                  <div class="preview-info">
-                    <span class="preview-label">New image selected</span>
-                    <small class="preview-hint">{{ selectedProductFile.name }}</small>
-                  </div>
-                  <button type="button" class="clear-file-btn" (click)="selectedProductFile = null" title="Remove selection">✕</button>
                 </div>
                 <input type="file" class="form-control" (change)="onFileSelect($event, 'product')" accept="image/*">
-                <small class="text-muted" *ngIf="!editingProduct">Upload a product image</small>
               </div>
-
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeProductModal()">Cancel</button>
                 <button type="submit" class="btn btn-primary" [disabled]="saving">
@@ -343,18 +581,17 @@ import { Product, Category } from '../../models/product.model';
         </div>
       </div>
 
-      <!-- Add/Edit Category Modal -->
+      <!-- 2. Category Modal -->
       <div class="modal-overlay" *ngIf="showCategoryModal" (click)="closeCategoryModal()">
         <div class="modal-content" (click)="$event.stopPropagation()">
           <div class="modal-header">
             <h3>{{ editingCategory ? 'Edit Category' : 'Add New Category' }}</h3>
             <button class="close-btn" (click)="closeCategoryModal()">&times;</button>
           </div>
-
           <div class="modal-body">
-            <form (ngSubmit)="saveCategory()" #categoryForm="ngForm">
+            <form (ngSubmit)="saveCategory()">
               <div class="form-group">
-                <label class="form-label">Category Name</label>
+                <label class="form-label">Category Name (Slug)</label>
                 <select class="form-control" [(ngModel)]="categoryData.name" name="name" required [disabled]="!!editingCategory">
                   <option value="">Select Category</option>
                   <option value="chain-with-pendant">Chain with Pendant</option>
@@ -365,51 +602,28 @@ import { Product, Category } from '../../models/product.model';
                   <option value="anklets">Anklets</option>
                   <option value="bracelets">Bracelets</option>
                 </select>
-                <small class="text-muted" *ngIf="!editingCategory">Select from predefined categories</small>
-                <small class="text-muted" *ngIf="editingCategory">Category name cannot be changed</small>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Display Name</label>
                 <input type="text" class="form-control" [(ngModel)]="categoryData.display_name" name="display_name" required>
-                <small class="text-muted">User-friendly name (e.g., Chain with Pendant)</small>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Description</label>
                 <textarea class="form-control" [(ngModel)]="categoryData.description" name="description" rows="3"></textarea>
               </div>
-
               <div class="form-group">
-                <label class="form-label">
+                <label class="form-label checkbox-label">
                   <input type="checkbox" [(ngModel)]="categoryData.is_active" name="is_active">
-                  Active
+                  <span>Active</span>
                 </label>
               </div>
-
               <div class="form-group">
                 <label class="form-label">Category Image</label>
-                <!-- Current saved image -->
                 <div *ngIf="categoryData.image && !selectedCategoryFile" class="current-image-preview">
                   <img [src]="categoryData.image" alt="Current image" class="preview-img">
-                  <div class="preview-info">
-                    <span class="preview-label">Current image</span>
-                    <small class="preview-hint">Upload a new file below to replace it, or leave empty to keep this image.</small>
-                  </div>
-                </div>
-                <!-- New file preview -->
-                <div *ngIf="selectedCategoryFile" class="current-image-preview new-file">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                  <div class="preview-info">
-                    <span class="preview-label">New image selected</span>
-                    <small class="preview-hint">{{ selectedCategoryFile.name }}</small>
-                  </div>
-                  <button type="button" class="clear-file-btn" (click)="selectedCategoryFile = null" title="Remove selection">✕</button>
                 </div>
                 <input type="file" class="form-control" (change)="onFileSelect($event, 'category')" accept="image/*">
-                <small class="text-muted" *ngIf="!editingCategory">Recommended: Square image for best display</small>
               </div>
-
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="closeCategoryModal()">Cancel</button>
                 <button type="submit" class="btn btn-primary" [disabled]="saving">
@@ -420,409 +634,604 @@ import { Product, Category } from '../../models/product.model';
           </div>
         </div>
       </div>
+
+      <!-- 3. Notification Bar Modal -->
+      <div class="modal-overlay" *ngIf="showNotificationModal" (click)="closeNotificationModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ editingNotification ? 'Edit Notification' : 'Add Notification' }}</h3>
+            <button class="close-btn" (click)="closeNotificationModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="saveNotification()">
+              <div class="form-group">
+                <label class="form-label">Announcement Text</label>
+                <textarea class="form-control" [(ngModel)]="notificationData.text" name="notif_text" rows="3" placeholder="e.g. Free shipping on orders above ₹999 · 30-Day easy returns" required></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Display Order</label>
+                  <input type="number" class="form-control" [(ngModel)]="notificationData.display_order" name="notif_order" required>
+                </div>
+                <div class="form-group checkbox-align">
+                  <label class="form-label checkbox-label">
+                    <input type="checkbox" [(ngModel)]="notificationData.is_active" name="notif_active">
+                    <span>Active</span>
+                  </label>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeNotificationModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="saving">
+                  {{ saving ? 'Saving...' : (editingNotification ? 'Update Notification' : 'Add Notification') }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Why Choose Card Modal -->
+      <div class="modal-overlay" *ngIf="showWhyCardModal" (click)="closeWhyCardModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ editingWhyCard ? 'Edit Card' : 'Add Card' }}</h3>
+            <button class="close-btn" (click)="closeWhyCardModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="saveWhyCard()">
+              <div class="form-group">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" [(ngModel)]="whyCardData.title" name="wc_title" placeholder="e.g. 925 Certified Silver" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" [(ngModel)]="whyCardData.description" name="wc_desc" rows="3" required></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Icon Type</label>
+                  <select class="form-control" [(ngModel)]="whyCardData.icon_type" name="wc_icon" required>
+                    <option value="shield">Shield / Certified</option>
+                    <option value="heart">Heart / Handpicked</option>
+                    <option value="truck">Truck / Fast Delivery</option>
+                    <option value="returns">Trending / 30-Day Returns</option>
+                    <option value="gift">Gift / Packaging</option>
+                    <option value="sparkles">Sparkles / Made in India</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Display Order</label>
+                  <input type="number" class="form-control" [(ngModel)]="whyCardData.display_order" name="wc_order" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label checkbox-label">
+                  <input type="checkbox" [(ngModel)]="whyCardData.is_active" name="wc_active">
+                  <span>Active</span>
+                </label>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeWhyCardModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="saving">
+                  {{ saving ? 'Saving...' : (editingWhyCard ? 'Update Card' : 'Add Card') }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
     </div>
   `,
   styles: [`
-    /* ── CSS vars ── */
     :host {
-      --royal:      #3a0e3b;
-      --royal-mid:  #551756;
-      --gold:       #c9a84c;
+      --royal: #551756;
+      --royal-mid: #702072;
+      --royal-dark: #3a0e3b;
+      --gold: #c9a84c;
       --gold-light: #e8c547;
-      --cream:      #f9f5ef;
-      --border:     #ede8f0;
-      --text:       #2a1a2e;
-      --muted:      #7a6a7e;
-      --green:      #2e7d4f;
-      --green-bg:   #e8f5ee;
-      --red:        #c0392b;
-      --red-bg:     #fdecea;
+      --bg: #f8f6fa;
+      --card-bg: #ffffff;
+      --border: #e6dfec;
+      --text: #1a1a2e;
+      --muted: #6b6b7b;
+      --green: #15803d;
+      --green-bg: #dcfce7;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
     }
 
-    /* ── Page wrapper ── */
     .admin-wrap {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 1.5rem 1rem 4rem;
+      padding: 2rem 1.5rem 4rem;
     }
-    .admin-header { margin-bottom: 1.25rem; }
+
+    .admin-header {
+      margin-bottom: 1.5rem;
+    }
     .admin-title {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-size: 1.75rem;
       font-weight: 700;
-      color: var(--royal);
+      color: var(--royal-dark);
       margin: 0;
     }
 
-    /* ── Tabs ── */
+    /* Tabs */
     .admin-tabs {
       display: flex;
-      gap: 0;
-      margin-bottom: 1.5rem;
+      gap: 0.5rem;
       border-bottom: 2px solid var(--border);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 1px;
     }
     .tab-btn {
-      display: flex; align-items: center; gap: 0.45rem;
-      padding: 0.75rem 1.4rem;
-      background: none; border: none;
-      border-bottom: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
       margin-bottom: -2px;
-      cursor: pointer;
-      font-size: 0.9rem; font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 600;
       color: var(--muted);
-      transition: color 0.2s, border-color 0.2s;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
     }
-    .tab-btn:hover { color: var(--royal); }
-    .tab-btn.active { color: var(--royal); border-bottom-color: var(--gold); }
-
-    /* ── Tab content card ── */
-    .tab-content {
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 2px 12px rgba(58,14,59,0.06);
-      overflow: hidden;
+    .tab-btn:hover {
+      color: var(--royal);
+    }
+    .tab-btn.active {
+      color: var(--royal);
+      border-bottom-color: var(--royal);
     }
 
-    /* ── Section bar ── */
+    /* Section Bar */
     .section-bar {
-      display: flex; align-items: center;
+      display: flex;
       justify-content: space-between;
-      padding: 1.1rem 1.4rem;
-      border-bottom: 1px solid var(--border);
-      background: #fdfbff;
+      align-items: center;
+      margin-bottom: 1.25rem;
     }
-    .section-bar-left { display: flex; align-items: baseline; gap: 0.6rem; }
     .section-title {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.15rem; font-weight: 700;
-      color: var(--royal); margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--royal-dark);
+      margin: 0 0 0.25rem;
     }
     .section-count {
-      font-size: 0.75rem; color: var(--muted);
-      background: #f0ecf5; border-radius: 20px;
-      padding: 2px 10px;
+      font-size: 0.85rem;
+      color: var(--muted);
     }
 
-    /* ── Add button ── */
-    .btn-add {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: var(--royal); color: #f0e8d0;
-      border: none; border-radius: 6px;
-      padding: 0.55rem 1.1rem;
-      font-size: 0.82rem; font-weight: 700;
-      letter-spacing: 0.5px; cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
+    .info-card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1.15rem;
+      background: #fdf8e6;
+      border: 1px solid #f3e5ab;
+      border-radius: 8px;
+      color: #7a5e00;
+      font-size: 0.88rem;
+      margin-bottom: 1.25rem;
     }
-    .btn-add:hover { background: var(--royal-mid); }
 
-    /* ── Filter bar ── */
     .filter-bar {
-      padding: 0.85rem 1.4rem;
-      border-bottom: 1px solid var(--border);
-      background: #faf8fc;
+      margin-bottom: 1.25rem;
     }
     .filter-select {
-      width: 100%; max-width: 280px;
-      padding: 0.5rem 0.75rem;
+      padding: 0.55rem 1rem;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.88rem; color: var(--text);
-      background: #fff; outline: none;
+      background: #fff;
+      font-size: 0.9rem;
+      color: var(--text);
     }
-    .filter-select:focus { border-color: var(--royal-mid); }
 
-    /* ── Desktop table (hidden on mobile) ── */
-    .table-wrap { overflow-x: auto; }
-    .admin-table {
-      width: 100%; border-collapse: collapse;
-      font-size: 0.88rem;
+    .btn-add {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      background: var(--royal);
+      color: #efebe1;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
     }
-    .admin-table thead tr { background: #faf7fb; }
-    .admin-table th {
-      padding: 0.85rem 1rem;
+    .btn-add:hover {
+      background: var(--royal-mid);
+    }
+
+    /* Tables */
+    .table-wrap {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
       text-align: left;
-      font-size: 0.72rem; font-weight: 700;
-      letter-spacing: 0.8px; text-transform: uppercase;
-      color: var(--muted); border-bottom: 2px solid var(--border);
-      white-space: nowrap;
+    }
+    .admin-table th {
+      padding: 0.9rem 1rem;
+      background: #faf8fc;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      font-weight: 700;
     }
     .admin-table td {
-      padding: 0.85rem 1rem;
+      padding: 0.9rem 1rem;
       border-bottom: 1px solid var(--border);
-      vertical-align: middle; color: var(--text);
+      font-size: 0.9rem;
+      color: var(--text);
+      vertical-align: middle;
     }
-    .admin-table tbody tr:hover { background: #fdf9ff; }
-    .admin-table tbody tr:last-child td { border-bottom: none; }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
 
     .table-img {
-      width: 52px; height: 52px;
-      object-fit: cover; border-radius: 6px;
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      border-radius: 6px;
       border: 1px solid var(--border);
     }
     .no-img-placeholder {
-      width: 52px; height: 52px;
-      background: #f5f0f5;
-      border: 1px dashed #c8bccb;
+      width: 44px;
+      height: 44px;
       border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: #b0a0b5;
-    }
-    .cell-primary { font-weight: 600; color: var(--royal); }
-    .cat-chip {
-      background: #f0ecf8; color: var(--royal-mid);
-      padding: 3px 10px; border-radius: 20px;
-      font-size: 0.78rem; font-weight: 600;
-    }
-    .price-val { font-weight: 700; color: var(--royal); }
-    .price-disc { font-weight: 700; color: var(--green); }
-    .price-none { color: #bbb; }
-    .desc-text {
-      max-width: 180px;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; color: var(--muted); font-size: 0.83rem;
-    }
-
-    /* ── Stock / Active badge ── */
-    .stock-badge {
-      display: inline-block;
-      padding: 3px 10px; border-radius: 20px;
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3px;
-    }
-    .stock-badge.in  { background: var(--green-bg); color: var(--green); }
-    .stock-badge.out { background: var(--red-bg);   color: var(--red); }
-
-    /* ── Action buttons ── */
-    .actions-cell { white-space: nowrap; }
-    .btn-icon {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      padding: 0.35rem 0.7rem;
-      border: none; border-radius: 5px;
-      font-size: 0.78rem; font-weight: 600;
-      cursor: pointer; transition: background 0.18s;
-      margin-right: 0.4rem;
-    }
-    .btn-icon.edit { background: #f0ecf8; color: var(--royal-mid); }
-    .btn-icon.edit:hover { background: #e0d5f0; }
-    .btn-icon.del  { background: var(--red-bg); color: var(--red); }
-    .btn-icon.del:hover  { background: #f5c6c2; }
-
-    /* ── Mobile card list (hidden on desktop) ── */
-    .card-list { display: none; }
-
-    /* ── Empty state ── */
-    .empty-state {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 3.5rem 1rem; gap: 0.85rem;
+      background: #f5f0f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--muted);
     }
-    .empty-state p { font-size: 1rem; margin: 0; }
 
-    /* ── Modal ── */
+    .cell-primary {
+      font-weight: 600;
+      color: var(--royal-dark);
+    }
+    .cat-chip {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: #f3ecf5;
+      color: var(--royal);
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .order-badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      background: #f0ecf8;
+      color: var(--royal-dark);
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    .price-val { font-weight: 700; }
+    .price-disc { color: var(--green); font-weight: 700; }
+    .price-none { color: var(--muted); }
+    .desc-text {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      max-width: 300px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .stock-badge {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .stock-badge.in {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .stock-badge.out {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .actions-cell {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-icon.edit:hover {
+      background: #f5f0f5;
+      color: var(--royal);
+      border-color: var(--royal);
+    }
+    .btn-icon.del:hover {
+      background: var(--red-bg);
+      color: var(--red);
+      border-color: #fca5a5;
+    }
+
+    /* Panel Form Card for single-record sections */
+    .panel-form-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group.checkbox-align {
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 0.6rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--royal-dark);
+      margin-bottom: 0.4rem;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--royal);
+      cursor: pointer;
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: var(--text);
+      background: #faf8fc;
+      transition: border-color 0.2s, background 0.2s;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--royal);
+      background: #fff;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      background: #faf8fc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .stat-lbl-field {
+      margin-top: 0.6rem;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Modal styles */
     .modal-overlay {
-      position: fixed; inset: 0;
+      position: fixed;
+      inset: 0;
       background: rgba(0,0,0,0.5);
-      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 1000;
-      padding: 1rem;
+      padding: 1.5rem;
     }
     .modal-content {
       background: #fff;
       border-radius: 12px;
-      width: 100%; max-width: 580px;
-      max-height: 92vh; overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      max-width: 650px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
     .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      position: sticky; top: 0;
-      background: #fff; z-index: 1;
     }
     .modal-header h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--royal-dark);
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      font-size: 1.2rem; font-weight: 700;
-      color: var(--royal);
     }
     .close-btn {
-      background: none; border: none;
-      font-size: 1.6rem; cursor: pointer;
-      color: var(--muted); line-height: 1;
-      padding: 0.2rem 0.4rem; border-radius: 4px;
-      transition: background 0.15s, color 0.15s;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--muted);
+      cursor: pointer;
     }
-    .close-btn:hover { background: #f5f0f5; color: var(--royal); }
-    .modal-body { padding: 1.5rem; }
+    .modal-body {
+      padding: 1.5rem;
+    }
     .modal-footer {
-      display: flex; justify-content: flex-end; gap: 0.75rem;
-      padding-top: 1rem; border-top: 1px solid var(--border);
-      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1.25rem;
     }
 
-    /* ── Form helpers ── */
-    .form-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-    }
     .current-image-preview {
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 8px; padding: 10px;
-      background: #faf8fc; border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      padding: 10px;
+      background: #faf8fc;
+      border-radius: 8px;
       border: 1px solid var(--border);
     }
     .current-image-preview.new-file {
-      background: #f0faf3; border-color: #a8d5b5;
+      background: #f0faf3;
+      border-color: #a8d5b5;
       color: var(--green);
     }
     .preview-img {
-      width: 64px; height: 64px;
-      object-fit: cover; border-radius: 6px;
-      border: 1px solid var(--border); flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--border);
     }
     .preview-info { flex: 1; min-width: 0; }
-    .preview-label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-    .preview-hint  { display: block; font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+    .preview-label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .preview-hint { display: block; font-size: 0.75rem; color: var(--muted); }
     .clear-file-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 1rem; padding: 0.25rem;
-      border-radius: 4px; transition: color 0.15s, background 0.15s;
-      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 1rem;
     }
-    .clear-file-btn:hover { color: var(--red); background: var(--red-bg); }
 
-    /* ── Keep existing btn classes working ── */
-    .btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.55rem 1.1rem; border-radius: 6px; font-size: 0.88rem; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
-    .btn-primary { background: var(--royal); color: #f0e8d0; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.6rem 1.3rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary { background: var(--royal); color: #efebe1; }
     .btn-primary:hover { background: var(--royal-mid); }
-    .btn-secondary { background: #f0ecf8; color: var(--royal-mid); }
-    .btn-secondary:hover { background: #e0d5f0; }
-    .btn-danger { background: var(--red-bg); color: var(--red); }
-    .btn-danger:hover { background: #f5c6c2; }
+    .btn-secondary { background: #f0ecf8; color: var(--royal-dark); }
+    .btn-secondary:hover { background: #e2d8ee; }
 
-    /* ── MOBILE (≤640px) ── */
-    @media (max-width: 640px) {
-      .admin-wrap { padding: 1rem 0.75rem 3rem; }
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .empty-state p {
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
 
-      /* Hide desktop table, show cards */
-      .table-wrap { display: none; }
-      .card-list  { display: flex; flex-direction: column; gap: 0; }
-
-      /* Each card row */
-      .item-card {
-        display: flex; align-items: center; gap: 0.85rem;
-        padding: 0.9rem 1rem;
-        border-bottom: 1px solid var(--border);
-        transition: background 0.15s;
+    @media (max-width: 768px) {
+      .form-row, .stats-row {
+        grid-template-columns: 1fr;
       }
-      .item-card:last-child { border-bottom: none; }
-      .item-card:hover { background: #fdf9ff; }
-
-      /* Image column */
-      .card-img-col { flex-shrink: 0; }
-      .card-img {
-        width: 56px; height: 56px;
-        object-fit: cover; border-radius: 8px;
-        border: 1px solid var(--border);
-      }
-      .card-img-placeholder {
-        width: 56px; height: 56px;
-        background: #f5f0f5; border: 1px dashed #c8bccb;
-        border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        color: #b0a0b5;
-      }
-
-      /* Body */
-      .card-body { flex: 1; min-width: 0; }
-      .card-name {
-        font-weight: 700; font-size: 0.9rem;
-        color: var(--royal); margin: 0 0 0.15rem;
-        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-      }
-      .card-meta {
-        font-size: 0.75rem; color: var(--muted);
-        margin: 0 0 0.35rem;
-      }
-      .card-price-row {
-        display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;
-      }
-      .card-price { font-weight: 700; font-size: 0.88rem; color: var(--royal); }
-      .card-orig  { font-size: 0.78rem; color: var(--muted); text-decoration: line-through; }
-
-      /* Actions column */
-      .card-actions {
-        flex-shrink: 0;
-        display: flex; flex-direction: column; gap: 0.4rem;
-      }
-      .card-actions .btn-icon {
-        padding: 0.4rem; margin: 0;
-        width: 32px; height: 32px;
-        justify-content: center;
-        border-radius: 6px;
-      }
-
-      /* Section bar on mobile */
-      .section-bar { padding: 0.9rem 1rem; }
-      .section-title { font-size: 1rem; }
-      .btn-add { padding: 0.5rem 0.85rem; font-size: 0.78rem; }
-
-      /* Filter bar */
-      .filter-bar { padding: 0.75rem 1rem; }
-      .filter-select { max-width: 100%; }
-
-      /* Form row collapses */
-      .form-row { grid-template-columns: 1fr; }
-
-      /* Modal full-screen feel */
-      .modal-overlay { padding: 0; align-items: flex-end; }
-      .modal-content {
-        border-radius: 16px 16px 0 0;
-        max-height: 94vh; width: 100%; max-width: 100%;
+      .panel-form-card {
+        padding: 1.25rem;
       }
     }
   `]
 })
 export class AdminComponent implements OnInit {
-  activeTab: 'products' | 'categories' = 'products';
+  activeTab: 'products' | 'categories' | 'notifications' | 'leadspace' | 'story' | 'why-choose' = 'products';
+  
+  // Data lists
   products: Product[] = [];
   categories: Category[] = [];
-  selectedCategory = '';
+  notificationBars: NotificationBar[] = [];
+  whyCards: WhyChooseCard[] = [];
   
-  // Product modal
-  editingProduct: Product | null = null;
-  showProductModal = false;
-  productData: any = {
-    name: '',
-    title: '',
-    description: '',
-    category: '',
-    price: 0,
-    discounted_price: null,
-    weight: null,
-    purity: '925 Silver',
-    stock_quantity: 0,
-    slug: '',
-    in_stock: true,
-    is_featured: false,
-    is_active: true
-  };
-
-  // Category modal
-  editingCategory: Category | null = null;
-  showCategoryModal = false;
-  categoryData: any = {
-    name: '',
-    display_name: '',
-    description: '',
-    is_active: true
-  };
-
+  // Single-record forms
+  leadspaceData: LeadspaceBanner | null = null;
+  storyData: StorySection | null = null;
+  
+  selectedCategory = '';
   saving = false;
+
+  // Modals & form state
+  showProductModal = false;
+  editingProduct: Product | null = null;
+  productData: any = {
+    name: '', title: '', description: '', category: '',
+    price: 0, discounted_price: null, weight: null, purity: '925 Silver',
+    stock_quantity: 0, slug: '', in_stock: true, is_featured: false, is_active: true
+  };
   selectedProductFile: File | null = null;
+
+  showCategoryModal = false;
+  editingCategory: Category | null = null;
+  categoryData: any = { name: '', display_name: '', description: '', is_active: true };
   selectedCategoryFile: File | null = null;
+
+  showNotificationModal = false;
+  editingNotification: NotificationBar | null = null;
+  notificationData: any = { text: '', display_order: 1, is_active: true };
+
+  selectedLeadspaceFile: File | null = null;
+  selectedStoryFile: File | null = null;
+
+  showWhyCardModal = false;
+  editingWhyCard: WhyChooseCard | null = null;
+  whyCardData: any = {
+    title: '', description: '', icon_type: 'shield', display_order: 1, is_active: true
+  };
 
   constructor(private productService: ProductService) {}
 
@@ -831,24 +1240,17 @@ export class AdminComponent implements OnInit {
     this.loadProducts();
   }
 
-  switchTab(tab: 'products' | 'categories'): void {
+  switchTab(tab: 'products' | 'categories' | 'notifications' | 'leadspace' | 'story' | 'why-choose'): void {
     this.activeTab = tab;
-    if (tab === 'categories') {
-      this.loadCategories();
-    } else {
-      this.loadProducts();
-    }
+    if (tab === 'products') this.loadProducts();
+    else if (tab === 'categories') this.loadCategories();
+    else if (tab === 'notifications') this.loadNotifications();
+    else if (tab === 'leadspace') this.loadLeadspace();
+    else if (tab === 'story') this.loadStory();
+    else if (tab === 'why-choose') this.loadWhyCards();
   }
 
-  loadCategories(): void {
-    this.productService.getCategories().subscribe({
-      next: (data: Category[]) => {
-        this.categories = data;
-      },
-      error: (err) => console.error('Error loading categories:', err)
-    });
-  }
-
+  // ── 1. Products ──
   loadProducts(): void {
     const params = this.selectedCategory ? { category: this.selectedCategory } : {};
     this.productService.getProducts(params).subscribe({
@@ -857,15 +1259,18 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  // Product Modal Methods
   openAddProductModal(): void {
-    this.showProductModal = true;
     this.editingProduct = null;
-    this.resetProductForm();
+    this.productData = {
+      name: '', title: '', description: '', category: '',
+      price: 0, discounted_price: null, weight: null, purity: '925 Silver',
+      stock_quantity: 0, slug: '', in_stock: true, is_featured: false, is_active: true
+    };
+    this.selectedProductFile = null;
+    this.showProductModal = true;
   }
 
   editProduct(product: Product): void {
-    // Fetch the full detail record so description, weight, stock_quantity etc. are all present
     this.productService.getProductById(product.id).subscribe({
       next: (detail) => {
         this.editingProduct = detail;
@@ -874,7 +1279,6 @@ export class AdminComponent implements OnInit {
         this.showProductModal = true;
       },
       error: () => {
-        // Fallback to list data if detail fetch fails
         this.editingProduct = product;
         this.productData = { ...product };
         this.selectedProductFile = null;
@@ -885,34 +1289,16 @@ export class AdminComponent implements OnInit {
 
   closeProductModal(): void {
     this.showProductModal = false;
-    this.resetProductForm();
-  }
-
-  deleteProduct(id: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: () => {
-          alert('Product deleted successfully');
-          this.loadProducts();
-        },
-        error: (err) => {
-          console.error('Error deleting product:', err);
-          alert('Failed to delete product');
-        }
-      });
-    }
+    this.editingProduct = null;
   }
 
   saveProduct(): void {
     this.saving = true;
     const formData = new FormData();
-
-    // Image fields must only be appended when a new file is selected —
-    // sending the existing Cloudinary URL string would overwrite the stored image path.
     const imageFields = ['image', 'image_2', 'image_3'];
 
     Object.keys(this.productData).forEach(key => {
-      if (imageFields.includes(key)) return;   // handled separately below
+      if (imageFields.includes(key)) return;
       const value = this.productData[key];
       if (value === null || value === undefined) return;
       if (typeof value === 'boolean') {
@@ -926,12 +1312,12 @@ export class AdminComponent implements OnInit {
       formData.append('image', this.selectedProductFile, this.selectedProductFile.name);
     }
 
-    const request = this.editingProduct
+    const req = this.editingProduct
       ? this.productService.updateProduct(this.editingProduct.id, formData)
       : this.productService.createProduct(formData);
 
-    request.subscribe({
-      next: (response) => {
+    req.subscribe({
+      next: () => {
         this.saving = false;
         alert(this.editingProduct ? 'Product updated successfully' : 'Product added successfully');
         this.closeProductModal();
@@ -940,82 +1326,53 @@ export class AdminComponent implements OnInit {
       error: (err) => {
         this.saving = false;
         console.error('Error saving product:', err);
-        let errorMsg = 'Failed to save product';
-        if (err.error) {
-          if (typeof err.error === 'string') {
-            errorMsg += ': ' + err.error;
-          } else if (err.error.detail) {
-            errorMsg += ': ' + err.error.detail;
-          } else {
-            const errors = Object.keys(err.error).map(key =>
-              `${key}: ${Array.isArray(err.error[key]) ? err.error[key].join(', ') : err.error[key]}`
-            ).join('\n');
-            errorMsg += ':\n' + errors;
-          }
-        }
-        alert(errorMsg);
+        alert('Failed to save product');
       }
     });
   }
 
-  resetProductForm(): void {
-    this.editingProduct = null;
-    this.productData = {
-      name: '',
-      title: '',
-      description: '',
-      category: '',
-      price: 0,
-      discounted_price: null,
-      weight: null,
-      purity: '925 Silver',
-      stock_quantity: 0,
-      slug: '',
-      in_stock: true,
-      is_featured: false,
-      is_active: true
-    };
-    this.selectedProductFile = null;
+  deleteProduct(id: number): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(id).subscribe({
+        next: () => {
+          alert('Product deleted successfully');
+          this.loadProducts();
+        },
+        error: (err) => console.error('Error deleting product:', err)
+      });
+    }
   }
 
-  // Category Modal Methods
+  // ── 2. Categories ──
+  loadCategories(): void {
+    this.productService.getCategories().subscribe({
+      next: (data: Category[]) => this.categories = data,
+      error: (err) => console.error('Error loading categories:', err)
+    });
+  }
+
   openAddCategoryModal(): void {
-    this.showCategoryModal = true;
     this.editingCategory = null;
-    this.resetCategoryForm();
+    this.categoryData = { name: '', display_name: '', description: '', is_active: true };
+    this.selectedCategoryFile = null;
+    this.showCategoryModal = true;
   }
 
   editCategory(category: Category): void {
     this.editingCategory = category;
     this.categoryData = { ...category };
+    this.selectedCategoryFile = null;
     this.showCategoryModal = true;
   }
 
   closeCategoryModal(): void {
     this.showCategoryModal = false;
-    this.resetCategoryForm();
-  }
-
-  deleteCategory(id: number): void {
-    if (confirm('Are you sure you want to delete this category? This will affect all products in this category.')) {
-      this.productService.deleteCategory(id).subscribe({
-        next: () => {
-          alert('Category deleted successfully');
-          this.loadCategories();
-        },
-        error: (err) => {
-          console.error('Error deleting category:', err);
-          alert('Failed to delete category');
-        }
-      });
-    }
+    this.editingCategory = null;
   }
 
   saveCategory(): void {
     this.saving = true;
     const formData = new FormData();
-
-    // Exclude 'image' — only append when a new file is chosen
     Object.keys(this.categoryData).forEach(key => {
       if (key === 'image') return;
       const value = this.categoryData[key];
@@ -1031,12 +1388,12 @@ export class AdminComponent implements OnInit {
       formData.append('image', this.selectedCategoryFile, this.selectedCategoryFile.name);
     }
 
-    const request = this.editingCategory
+    const req = this.editingCategory
       ? this.productService.updateCategory(this.editingCategory.id, formData)
       : this.productService.createCategory(formData);
 
-    request.subscribe({
-      next: (response) => {
+    req.subscribe({
+      next: () => {
         this.saving = false;
         alert(this.editingCategory ? 'Category updated successfully' : 'Category added successfully');
         this.closeCategoryModal();
@@ -1045,42 +1402,291 @@ export class AdminComponent implements OnInit {
       error: (err) => {
         this.saving = false;
         console.error('Error saving category:', err);
-        let errorMsg = 'Failed to save category';
-        if (err.error) {
-          if (typeof err.error === 'string') {
-            errorMsg += ': ' + err.error;
-          } else if (err.error.detail) {
-            errorMsg += ': ' + err.error.detail;
-          } else {
-            const errors = Object.keys(err.error).map(key =>
-              `${key}: ${Array.isArray(err.error[key]) ? err.error[key].join(', ') : err.error[key]}`
-            ).join('\n');
-            errorMsg += ':\n' + errors;
-          }
-        }
-        alert(errorMsg);
+        alert('Failed to save category');
       }
     });
   }
 
-  resetCategoryForm(): void {
-    this.editingCategory = null;
-    this.categoryData = {
-      name: '',
-      display_name: '',
-      description: '',
-      is_active: true
-    };
-    this.selectedCategoryFile = null;
+  deleteCategory(id: number): void {
+    if (confirm('Are you sure you want to delete this category?')) {
+      this.productService.deleteCategory(id).subscribe({
+        next: () => {
+          alert('Category deleted successfully');
+          this.loadCategories();
+        },
+        error: (err) => console.error('Error deleting category:', err)
+      });
+    }
   }
 
-  onFileSelect(event: any, type: 'product' | 'category'): void {
-    if (event.target.files.length > 0) {
-      if (type === 'product') {
-        this.selectedProductFile = event.target.files[0];
-      } else {
-        this.selectedCategoryFile = event.target.files[0];
+  // ── 3. Notification Bars ──
+  loadNotifications(): void {
+    this.productService.getNotificationBars().subscribe({
+      next: (data) => this.notificationBars = data,
+      error: (err) => console.error('Error loading notifications:', err)
+    });
+  }
+
+  openAddNotificationModal(): void {
+    this.editingNotification = null;
+    this.notificationData = {
+      text: '',
+      display_order: this.notificationBars.length + 1,
+      is_active: true
+    };
+    this.showNotificationModal = true;
+  }
+
+  editNotification(notif: NotificationBar): void {
+    this.editingNotification = notif;
+    this.notificationData = { ...notif };
+    this.showNotificationModal = true;
+  }
+
+  closeNotificationModal(): void {
+    this.showNotificationModal = false;
+    this.editingNotification = null;
+  }
+
+  saveNotification(): void {
+    this.saving = true;
+    const req = this.editingNotification
+      ? this.productService.updateNotificationBar(this.editingNotification.id, this.notificationData)
+      : this.productService.createNotificationBar(this.notificationData);
+
+    req.subscribe({
+      next: () => {
+        this.saving = false;
+        alert(this.editingNotification ? 'Notification updated!' : 'Notification created!');
+        this.closeNotificationModal();
+        this.loadNotifications();
+      },
+      error: (err) => {
+        this.saving = false;
+        console.error('Error saving notification:', err);
+        alert('Failed to save notification');
       }
+    });
+  }
+
+  deleteNotification(id: number): void {
+    if (confirm('Are you sure you want to delete this notification text?')) {
+      this.productService.deleteNotificationBar(id).subscribe({
+        next: () => {
+          alert('Notification deleted successfully');
+          this.loadNotifications();
+        },
+        error: (err) => console.error('Error deleting notification:', err)
+      });
+    }
+  }
+
+  // ── 4. Leadspace Banner ──
+  loadLeadspace(): void {
+    this.productService.getLeadspaceBanners().subscribe({
+      next: (banners) => {
+        if (banners && banners.length > 0) {
+          this.leadspaceData = { ...banners[0] };
+        } else {
+          this.leadspaceData = {
+            id: 0,
+            eyebrow: 'New Collection · 2026',
+            title: 'Vanki\nRings',
+            desc_line1: 'Traditional South Indian finger rings, handcrafted in 925 sterling silver.',
+            desc_line2: 'Worn with mehndi or bridal wear — a timeless symbol of grace.',
+            offer_pct: '20% OFF',
+            offer_label: 'on all Vanki Rings · Limited Time',
+            button_text: 'Shop Now',
+            button_link: '/products',
+            is_active: true
+          };
+        }
+      },
+      error: (err) => console.error('Error loading leadspace:', err)
+    });
+  }
+
+  saveLeadspace(): void {
+    if (!this.leadspaceData) return;
+    this.saving = true;
+    const formData = new FormData();
+
+    Object.keys(this.leadspaceData).forEach(key => {
+      if (key === 'image' || key === 'id' || key === 'created_at' || key === 'updated_at') return;
+      const value = (this.leadspaceData as any)[key];
+      if (value !== null && value !== undefined) {
+        if (typeof value === 'boolean') {
+          formData.append(key, value ? 'true' : 'false');
+        } else {
+          formData.append(key, value.toString());
+        }
+      }
+    });
+
+    if (this.selectedLeadspaceFile) {
+      formData.append('image', this.selectedLeadspaceFile, this.selectedLeadspaceFile.name);
+    }
+
+    const req = this.leadspaceData.id
+      ? this.productService.updateLeadspaceBanner(this.leadspaceData.id, formData)
+      : this.productService.createLeadspaceBanner(formData);
+
+    req.subscribe({
+      next: (saved) => {
+        this.saving = false;
+        this.leadspaceData = saved;
+        this.selectedLeadspaceFile = null;
+        alert('Leadspace banner updated successfully!');
+      },
+      error: (err) => {
+        this.saving = false;
+        console.error('Error saving leadspace:', err);
+        alert('Failed to save leadspace banner');
+      }
+    });
+  }
+
+  // ── 5. Story Section ──
+  loadStory(): void {
+    this.productService.getStorySections().subscribe({
+      next: (stories) => {
+        if (stories && stories.length > 0) {
+          this.storyData = { ...stories[0] };
+        } else {
+          this.storyData = {
+            id: 0,
+            eyebrow: 'Our Story',
+            title: 'Crafted with Passion,\nWorn with Pride',
+            paragraph_1: 'Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making.',
+            paragraph_2: 'We blend centuries-old craftsmanship with modern design sensibilities.',
+            badge_number: '925',
+            badge_label: 'Hallmarked\nSilver',
+            stat1_value: '100+',
+            stat1_label: 'Unique Designs',
+            stat2_value: '500+',
+            stat2_label: 'Happy Customers',
+            stat3_value: '925',
+            stat3_label: 'Silver Purity',
+            button_text: 'View Collection',
+            button_link: '/products',
+            is_active: true
+          };
+        }
+      },
+      error: (err) => console.error('Error loading story:', err)
+    });
+  }
+
+  saveStory(): void {
+    if (!this.storyData) return;
+    this.saving = true;
+    const formData = new FormData();
+
+    Object.keys(this.storyData).forEach(key => {
+      if (key === 'image' || key === 'id' || key === 'created_at' || key === 'updated_at') return;
+      const value = (this.storyData as any)[key];
+      if (value !== null && value !== undefined) {
+        if (typeof value === 'boolean') {
+          formData.append(key, value ? 'true' : 'false');
+        } else {
+          formData.append(key, value.toString());
+        }
+      }
+    });
+
+    if (this.selectedStoryFile) {
+      formData.append('image', this.selectedStoryFile, this.selectedStoryFile.name);
+    }
+
+    const req = this.storyData.id
+      ? this.productService.updateStorySection(this.storyData.id, formData)
+      : this.productService.createStorySection(formData);
+
+    req.subscribe({
+      next: (saved) => {
+        this.saving = false;
+        this.storyData = saved;
+        this.selectedStoryFile = null;
+        alert('Our Story section updated successfully!');
+      },
+      error: (err) => {
+        this.saving = false;
+        console.error('Error saving story:', err);
+        alert('Failed to save story section');
+      }
+    });
+  }
+
+  // ── 6. Why Choose Cards ──
+  loadWhyCards(): void {
+    this.productService.getWhyChooseCards().subscribe({
+      next: (cards) => this.whyCards = cards,
+      error: (err) => console.error('Error loading why choose cards:', err)
+    });
+  }
+
+  openAddWhyCardModal(): void {
+    this.editingWhyCard = null;
+    this.whyCardData = {
+      title: '',
+      description: '',
+      icon_type: 'shield',
+      display_order: this.whyCards.length + 1,
+      is_active: true
+    };
+    this.showWhyCardModal = true;
+  }
+
+  editWhyCard(card: WhyChooseCard): void {
+    this.editingWhyCard = card;
+    this.whyCardData = { ...card };
+    this.showWhyCardModal = true;
+  }
+
+  closeWhyCardModal(): void {
+    this.showWhyCardModal = false;
+    this.editingWhyCard = null;
+  }
+
+  saveWhyCard(): void {
+    this.saving = true;
+    const req = this.editingWhyCard
+      ? this.productService.updateWhyChooseCard(this.editingWhyCard.id, this.whyCardData)
+      : this.productService.createWhyChooseCard(this.whyCardData);
+
+    req.subscribe({
+      next: () => {
+        this.saving = false;
+        alert(this.editingWhyCard ? 'Card updated!' : 'Card added!');
+        this.closeWhyCardModal();
+        this.loadWhyCards();
+      },
+      error: (err) => {
+        this.saving = false;
+        console.error('Error saving card:', err);
+        alert('Failed to save card');
+      }
+    });
+  }
+
+  deleteWhyCard(id: number): void {
+    if (confirm('Are you sure you want to delete this card?')) {
+      this.productService.deleteWhyChooseCard(id).subscribe({
+        next: () => {
+          alert('Card deleted successfully');
+          this.loadWhyCards();
+        },
+        error: (err) => console.error('Error deleting card:', err)
+      });
+    }
+  }
+
+  onFileSelect(event: any, type: 'product' | 'category' | 'leadspace' | 'story'): void {
+    if (event.target.files.length > 0) {
+      if (type === 'product') this.selectedProductFile = event.target.files[0];
+      else if (type === 'category') this.selectedCategoryFile = event.target.files[0];
+      else if (type === 'leadspace') this.selectedLeadspaceFile = event.target.files[0];
+      else if (type === 'story') this.selectedStoryFile = event.target.files[0];
     }
   }
 }

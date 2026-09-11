@@ -3,13 +3,17 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { Product, Category, ProductReview, Banner } from '../models/product.model';
+import {
+  Product, Category, ProductReview, Banner,
+  NotificationBar, LeadspaceBanner, StorySection, WhyChooseCard, HomepageConfig
+} from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   private apiUrl = `${environment.apiUrl}/products`;
+  private notifUrl = `${environment.apiUrl}/notifications`;
 
   constructor(private http: HttpClient) { }
 
@@ -106,7 +110,80 @@ export class ProductService {
 
   // Banners
   getBanners(): Observable<Banner[]> {
-    return this.http.get<Banner[]>(`${environment.apiUrl}/notifications/banners/`);
+    return this.http.get<Banner[]>(`${this.notifUrl}/banners/`);
+  }
+
+  // Homepage Dynamic Configuration
+  getHomepageConfig(): Observable<HomepageConfig> {
+    return this.http.get<HomepageConfig>(`${this.notifUrl}/homepage-config/`);
+  }
+
+  // Notification Bars (Admin & Client)
+  getNotificationBars(): Observable<NotificationBar[]> {
+    return this.http.get<NotificationBar[]>(`${this.notifUrl}/notification-bars/`);
+  }
+
+  createNotificationBar(data: Partial<NotificationBar>): Observable<NotificationBar> {
+    return this.http.post<NotificationBar>(`${this.notifUrl}/notification-bars/`, data);
+  }
+
+  updateNotificationBar(id: number, data: Partial<NotificationBar>): Observable<NotificationBar> {
+    return this.http.patch<NotificationBar>(`${this.notifUrl}/notification-bars/${id}/`, data);
+  }
+
+  deleteNotificationBar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.notifUrl}/notification-bars/${id}/`);
+  }
+
+  // Leadspace Banners (Admin & Client)
+  getLeadspaceBanners(): Observable<LeadspaceBanner[]> {
+    return this.http.get<LeadspaceBanner[]>(`${this.notifUrl}/leadspace-banners/`);
+  }
+
+  createLeadspaceBanner(data: FormData): Observable<LeadspaceBanner> {
+    return this.http.post<LeadspaceBanner>(`${this.notifUrl}/leadspace-banners/`, data);
+  }
+
+  updateLeadspaceBanner(id: number, data: FormData): Observable<LeadspaceBanner> {
+    return this.http.patch<LeadspaceBanner>(`${this.notifUrl}/leadspace-banners/${id}/`, data);
+  }
+
+  deleteLeadspaceBanner(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.notifUrl}/leadspace-banners/${id}/`);
+  }
+
+  // Story Section (Admin & Client)
+  getStorySections(): Observable<StorySection[]> {
+    return this.http.get<StorySection[]>(`${this.notifUrl}/story-sections/`);
+  }
+
+  createStorySection(data: FormData): Observable<StorySection> {
+    return this.http.post<StorySection>(`${this.notifUrl}/story-sections/`, data);
+  }
+
+  updateStorySection(id: number, data: FormData): Observable<StorySection> {
+    return this.http.patch<StorySection>(`${this.notifUrl}/story-sections/${id}/`, data);
+  }
+
+  deleteStorySection(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.notifUrl}/story-sections/${id}/`);
+  }
+
+  // Why Choose Cards (Admin & Client)
+  getWhyChooseCards(): Observable<WhyChooseCard[]> {
+    return this.http.get<WhyChooseCard[]>(`${this.notifUrl}/why-choose-cards/`);
+  }
+
+  createWhyChooseCard(data: Partial<WhyChooseCard>): Observable<WhyChooseCard> {
+    return this.http.post<WhyChooseCard>(`${this.notifUrl}/why-choose-cards/`, data);
+  }
+
+  updateWhyChooseCard(id: number, data: Partial<WhyChooseCard>): Observable<WhyChooseCard> {
+    return this.http.patch<WhyChooseCard>(`${this.notifUrl}/why-choose-cards/${id}/`, data);
+  }
+
+  deleteWhyChooseCard(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.notifUrl}/why-choose-cards/${id}/`);
   }
 }
 

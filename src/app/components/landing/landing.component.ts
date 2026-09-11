@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import { Product, Category, Banner } from '../../models/product.model';
+import {
+  Product, Category, Banner, NotificationBar,
+  LeadspaceBanner, StorySection, WhyChooseCard, HomepageConfig
+} from '../../models/product.model';
 
 @Component({
   selector: 'app-landing',
@@ -11,10 +14,10 @@ import { Product, Category, Banner } from '../../models/product.model';
   template: `
 
     <!-- ══ NOTIFICATION BAR ══════════════════════════════════════ -->
-    <div class="notif-bar" *ngIf="notifVisible">
+    <div class="notif-bar" *ngIf="notifVisible && activeNotificationText">
       <div class="notif-inner">
         <span class="notif-icon">✦</span>
-        <span class="notif-text">Free shipping on orders above ₹999 &nbsp;·&nbsp; 30-Day easy returns &nbsp;·&nbsp; 925 Hallmarked Silver — Certified &amp; Authentic &nbsp;·&nbsp; Handcrafted in India</span>
+        <span class="notif-text">{{ activeNotificationText }}</span>
         <span class="notif-icon">✦</span>
       </div>
       <button class="notif-close" (click)="notifVisible=false" aria-label="Close">✕</button>
@@ -23,20 +26,22 @@ import { Product, Category, Banner } from '../../models/product.model';
     <div class="landing">
 
       <!-- ══ 1. LEADSPACE ══════════════════════════════════════════ -->
-      <section class="leadspace">
-        <img src="assets/images/vanki-ring.webp" alt="Vanki Rings" class="ls-bg-img">
+      <section class="leadspace" *ngIf="leadspace?.is_active !== false">
+        <img [src]="leadspace?.image || 'assets/images/vanki-ring.webp'" [alt]="leadspace?.title || 'Vanki Rings'" class="ls-bg-img">
         <div class="ls-gradient"></div>
         <div class="ls-text">
-          <p class="ls-eyebrow">New Collection · 2026</p>
-          <h1 class="ls-title">Vanki<br>Rings</h1>
+          <p class="ls-eyebrow">{{ leadspace?.eyebrow || 'New Collection · 2026' }}</p>
+          <h1 class="ls-title" [innerHTML]="formattedTitle"></h1>
           <div class="ls-rule"></div>
-          <p class="ls-desc">Traditional South Indian finger rings, handcrafted in 925 sterling silver.</p>
-          <p class="ls-desc">Worn with mehndi or bridal wear — a timeless symbol of grace.</p>
-          <div class="ls-offer">
-            <span class="ls-offer-pct">20% OFF</span>
-            <span class="ls-offer-label">on all Vanki Rings · Limited Time</span>
+          <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian finger rings, handcrafted in 925 sterling silver.' }}</p>
+          <p class="ls-desc" *ngIf="leadspace?.desc_line2">{{ leadspace?.desc_line2 }}</p>
+          <div class="ls-offer" *ngIf="leadspace?.offer_pct || leadspace?.offer_label">
+            <span class="ls-offer-pct" *ngIf="leadspace?.offer_pct">{{ leadspace?.offer_pct }}</span>
+            <span class="ls-offer-label" *ngIf="leadspace?.offer_label">{{ leadspace?.offer_label }}</span>
           </div>
-          <a routerLink="/products" class="ls-shop-btn">Shop Now</a>
+          <a [routerLink]="leadspace?.button_link || '/products'" class="ls-shop-btn">
+            {{ leadspace?.button_text || 'Shop Now' }}
+          </a>
         </div>
       </section>
 
@@ -72,39 +77,42 @@ import { Product, Category, Banner } from '../../models/product.model';
       </section>
 
       <!-- ══ 3. ABOUT US ════════════════════════════════════════════ -->
-      <section class="about-section">
+      <section class="about-section" *ngIf="story?.is_active !== false">
         <div class="container about-inner">
           <div class="about-img-col">
             <div class="about-img-frame">
-              <div class="about-img-bg"></div>
-              <div class="about-badge">
-                <span class="about-badge-num">925</span>
-                <span class="about-badge-lbl">Hallmarked<br>Silver</span>
+              <img *ngIf="story?.image" [src]="story?.image" alt="Our Story" class="about-custom-img">
+              <div *ngIf="!story?.image" class="about-img-bg"></div>
+              <div class="about-badge" *ngIf="story?.badge_number">
+                <span class="about-badge-num">{{ story?.badge_number || '925' }}</span>
+                <span class="about-badge-lbl" [innerHTML]="formattedBadgeLabel"></span>
               </div>
             </div>
           </div>
           <div class="about-text-col">
-            <p class="about-eyebrow">Our Story</p>
-            <h2 class="about-title">Crafted with Passion,<br>Worn with Pride</h2>
-            <p class="about-desc">Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handcrafted by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.</p>
-            <p class="about-desc">We blend centuries-old craftsmanship with modern design sensibilities to create jewellery that tells a story. From bridal sets to everyday wear, each Kasavelli piece is a work of art.</p>
+            <p class="about-eyebrow">{{ story?.eyebrow || 'Our Story' }}</p>
+            <h2 class="about-title" [innerHTML]="formattedStoryTitle"></h2>
+            <p class="about-desc">{{ story?.paragraph_1 || 'Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handcrafted by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.' }}</p>
+            <p class="about-desc" *ngIf="story?.paragraph_2">{{ story?.paragraph_2 }}</p>
             <div class="about-stats">
               <div class="astat">
-                <span class="astat-n">100+</span>
-                <span class="astat-l">Unique Designs</span>
+                <span class="astat-n">{{ story?.stat1_value || '100+' }}</span>
+                <span class="astat-l">{{ story?.stat1_label || 'Unique Designs' }}</span>
               </div>
               <div class="astat-div"></div>
               <div class="astat">
-                <span class="astat-n">500+</span>
-                <span class="astat-l">Happy Customers</span>
+                <span class="astat-n">{{ story?.stat2_value || '500+' }}</span>
+                <span class="astat-l">{{ story?.stat2_label || 'Happy Customers' }}</span>
               </div>
               <div class="astat-div"></div>
               <div class="astat">
-                <span class="astat-n">925</span>
-                <span class="astat-l">Silver Purity</span>
+                <span class="astat-n">{{ story?.stat3_value || '925' }}</span>
+                <span class="astat-l">{{ story?.stat3_label || 'Silver Purity' }}</span>
               </div>
             </div>
-            <a routerLink="/products" class="about-btn">View Collection</a>
+            <a [routerLink]="story?.button_link || '/products'" class="about-btn">
+              {{ story?.button_text || 'View Collection' }}
+            </a>
           </div>
         </div>
       </section>
@@ -118,63 +126,39 @@ import { Product, Category, Banner } from '../../models/product.model';
             <p class="sec-sub">Every piece is a promise of quality and craftsmanship</p>
           </div>
           <div class="offers-grid">
-            <div class="offer-card">
+            <div class="offer-card" *ngFor="let card of whyCards">
               <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                <!-- Shield / Certified -->
+                <svg *ngIf="card.icon_type === 'shield'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
-              </div>
-              <h3>925 Certified Silver</h3>
-              <p>Every piece is hallmarked 925 sterling silver — certified pure, hypoallergenic, and safe for all skin types.</p>
-            </div>
-            <div class="offer-card">
-              <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                <!-- Heart / Handpicked -->
+                <svg *ngIf="card.icon_type === 'heart'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
                   <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
-              </div>
-              <h3>Handpicked Designs</h3>
-              <p>Each design is curated by our artisans — blending traditional Indian motifs with contemporary aesthetics.</p>
-            </div>
-            <div class="offer-card">
-              <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                <!-- Truck / Fast Delivery -->
+                <svg *ngIf="card.icon_type === 'truck'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
                   <rect x="1" y="3" width="15" height="13" rx="1"/>
                   <path d="M16 8h4l3 5v3h-7V8zM5.5 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm13 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                 </svg>
-              </div>
-              <h3>Fast & Safe Delivery</h3>
-              <p>Free shipping above ₹999. Secure packaging ensures your jewellery arrives safely across India in 5–7 days.</p>
-            </div>
-            <div class="offer-card">
-              <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                <!-- Trending / Returns -->
+                <svg *ngIf="card.icon_type === 'returns'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
                   <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
                   <polyline points="17 6 23 6 23 12"/>
                 </svg>
-              </div>
-              <h3>30-Day Returns</h3>
-              <p>Not happy? Return within 30 days — no questions asked. Your satisfaction is our highest priority.</p>
-            </div>
-            <div class="offer-card">
-              <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                <!-- Gift / Packaging -->
+                <svg *ngIf="card.icon_type === 'gift'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
                   <path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
                   <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                 </svg>
-              </div>
-              <h3>Perfect for Gifting</h3>
-              <p>Every order comes gift-ready with elegant packaging — ideal for birthdays, anniversaries, and festivities.</p>
-            </div>
-            <div class="offer-card">
-              <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
+                <!-- Sparkles / Made in India -->
+                <svg *ngIf="card.icon_type === 'sparkles'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28">
                   <circle cx="12" cy="12" r="10"/>
                   <path d="M12 6v6l4 2"/>
                 </svg>
               </div>
-              <h3>Made in India</h3>
-              <p>Proudly handcrafted by Indian artisans — supporting traditional craft while delivering world-class quality.</p>
+              <h3>{{ card.title }}</h3>
+              <p>{{ card.description }}</p>
             </div>
           </div>
         </div>
@@ -231,7 +215,7 @@ import { Product, Category, Banner } from '../../models/product.model';
     </div>
   `,
   styles: [`
-    /* ══ CSS VARIABLES (fallback if global not set) ══ */
+    /* ══ CSS VARIABLES ══ */
     :host {
       --royal: #551756;
       --royal-dark: #3a0e3b;
@@ -277,7 +261,7 @@ import { Product, Category, Banner } from '../../models/product.model';
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
     .sec-head { text-align: center; margin-bottom: 3rem; }
     .sec-head h2 {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-size: clamp(1.8rem, 3.5vw, 2.4rem);
       color: var(--royal-dark); font-weight: 700; letter-spacing: 0.5px;
     }
@@ -298,15 +282,11 @@ import { Product, Category, Banner } from '../../models/product.model';
       overflow: hidden;
       display: flex; align-items: center;
     }
-
-    /* Full-bleed background image */
     .ls-bg-img {
       position: absolute; inset: 0;
       width: 100%; height: 100%;
       object-fit: cover; object-position: center 25%;
     }
-
-    /* Gradient: opaque on the left where text sits, fades to transparent on the right */
     .ls-gradient {
       position: absolute; inset: 0;
       background: linear-gradient(
@@ -317,8 +297,6 @@ import { Product, Category, Banner } from '../../models/product.model';
         transparent 100%
       );
     }
-
-    /* Text floated to the left over the gradient */
     .ls-text {
       position: relative; z-index: 2;
       display: flex; flex-direction: column; justify-content: center;
@@ -330,72 +308,74 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--gold-light); font-weight: 700; margin: 0 0 1rem;
     }
     .ls-title {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(3rem, 5.5vw, 5rem);
-      font-weight: 700; color: #fff;
-      line-height: 1.0; letter-spacing: 1px;
-      margin: 0 0 1.1rem;
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 800; line-height: 1.05;
+      color: #efebe1; margin: 0 0 1.25rem;
+      letter-spacing: -0.5px;
     }
     .ls-rule {
-      width: 48px; height: 3px;
-      background: var(--gold-light); margin-bottom: 1.1rem;
-      border-radius: 2px;
+      width: 44px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 2px; margin-bottom: 1.25rem;
     }
     .ls-desc {
-      font-size: 0.88rem; color: rgba(255,255,255,0.82);
-      line-height: 1.7; margin: 0 0 0.35rem;
-      max-width: 340px;
+      color: rgba(239, 235, 225, 0.88);
+      font-size: 0.95rem; line-height: 1.6; margin: 0 0 0.4rem;
+      font-weight: 300;
     }
     .ls-offer {
-      display: flex; align-items: baseline; gap: 0.6rem;
-      margin: 1.4rem 0 1.6rem;
+      display: flex; align-items: baseline; gap: 0.5rem;
+      margin: 1.25rem 0 1.75rem;
     }
     .ls-offer-pct {
-      font-family: 'Inter', sans-serif;
-      font-size: 2.2rem; font-weight: 800;
-      color: var(--gold-light); line-height: 1;
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--gold-light); letter-spacing: -0.5px;
     }
     .ls-offer-label {
-      font-size: 0.73rem; color: rgba(255,255,255,0.7);
-      letter-spacing: 0.5px; line-height: 1.4;
-      max-width: 140px;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(239, 235, 225, 0.75);
     }
     .ls-shop-btn {
-      display: inline-block; align-self: flex-start;
-      background: var(--gold-light); color: var(--royal-dark);
-      font-size: 0.75rem; font-weight: 800; letter-spacing: 2.5px;
-      text-transform: uppercase; padding: 0.8rem 2.2rem;
-      border-radius: 2px; text-decoration: none;
-      border: 2px solid var(--gold-light);
-      transition: background 0.25s, color 0.25s, border-color 0.25s;
+      display: inline-flex; align-items: center; justify-content: center;
+      align-self: flex-start;
+      background: #e8c547; color: #1a051c;
+      font-weight: 700; font-size: 0.82rem; letter-spacing: 2px;
+      text-transform: uppercase; padding: 0.85rem 2.25rem;
+      border-radius: 4px; text-decoration: none;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      transition: all 0.25s ease;
     }
     .ls-shop-btn:hover {
-      background: transparent; color: var(--gold-light);
+      background: #f0d468;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(232, 197, 71, 0.4);
     }
 
     /* ══ 2. CATEGORIES ══ */
-    .cat-section { padding: 5rem 0; background: #faf8f5; }
+    .cat-section { padding: 5rem 0; background: #fff; }
     .cat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.5rem;
     }
     .cat-card {
-      border-radius: 12px; overflow: hidden;
-      background: #fff; cursor: pointer;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-      transition: transform 0.3s, box-shadow 0.3s;
-      text-decoration: none;
+      background: #faf8f5; border-radius: 12px; overflow: hidden;
+      cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid #f0eaee;
     }
     .cat-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(85,23,86,0.14);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(85,23,86,0.12);
+      border-color: var(--gold);
     }
     .cat-img-wrap {
       position: relative; height: 180px; overflow: hidden;
-      background: #f0e8f0;
+      background: #ede6ee;
     }
-    .cat-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .cat-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
     .cat-card:hover .cat-img { transform: scale(1.08); }
     .cat-img-placeholder {
       width: 100%; height: 100%;
@@ -404,56 +384,57 @@ import { Product, Category, Banner } from '../../models/product.model';
     }
     .cat-overlay {
       position: absolute; inset: 0;
-      background: rgba(58,14,59,0.45);
+      background: rgba(85,23,86,0.5);
       display: flex; align-items: center; justify-content: center;
       opacity: 0; transition: opacity 0.3s;
     }
-    .cat-overlay span {
-      color: var(--gold-light); font-size: 0.85rem;
-      font-weight: 600; letter-spacing: 1px;
-    }
     .cat-card:hover .cat-overlay { opacity: 1; }
-    .cat-info { padding: 0.9rem 1rem; }
+    .cat-overlay span {
+      color: #efebe1; font-weight: 700; font-size: 0.82rem;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .cat-info { padding: 1rem; text-align: center; }
     .cat-name {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.05rem; font-weight: 700;
+      font-weight: 700; font-size: 0.95rem;
       color: var(--royal-dark); margin: 0 0 0.2rem;
     }
     .cat-count { font-size: 0.78rem; color: var(--text-light); margin: 0; }
 
     /* ══ 3. ABOUT US ══ */
-    .about-section { padding: 5.5rem 0; background: #fff; }
+    .about-section { padding: 5rem 0; background: var(--cream); }
     .about-inner {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 5rem; align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
     }
-    .about-img-col { position: relative; }
     .about-img-frame {
-      position: relative;
-      width: 100%; padding-bottom: 110%;
-      border-radius: 16px; overflow: hidden;
+      position: relative; height: 420px; border-radius: 16px;
+      overflow: visible;
+    }
+    .about-img-frame::before {
+      content: ''; position: absolute; inset: -10px;
+      border: 2px solid var(--gold); border-radius: 20px;
+      opacity: 0.4; z-index: 0;
     }
     .about-img-bg {
-      position: absolute; inset: 0;
-      background: linear-gradient(145deg, #7a2278 0%, #3a0e3b 50%, #c9951a 100%);
+      width: 100%; height: 100%; border-radius: 14px;
+      background: linear-gradient(135deg, var(--royal-dark) 0%, var(--royal) 60%, #8a2a8c 100%);
+      position: relative; z-index: 1; overflow: hidden;
     }
-    /* Decorative offset box behind image */
-    .about-img-frame::before {
-      content: '';
-      position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px;
-      border: 2px solid rgba(201,148,26,0.35);
-      border-radius: 16px; z-index: 0;
+    .about-custom-img {
+      width: 100%; height: 100%; border-radius: 14px;
+      object-fit: cover; position: relative; z-index: 1;
     }
     .about-badge {
-      position: absolute; bottom: 1.5rem; right: -1rem;
-      background: #fff; border-radius: 12px;
+      position: absolute; bottom: 20px; right: -20px;
+      background: #fff; border-radius: 10px;
       padding: 0.75rem 1.25rem;
       box-shadow: 0 8px 28px rgba(0,0,0,0.12);
       display: flex; align-items: center; gap: 0.75rem; z-index: 2;
       border: 1px solid rgba(201,148,26,0.2);
     }
     .about-badge-num {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
     .about-badge-lbl { font-size: 0.72rem; color: var(--text-light); line-height: 1.4; }
@@ -464,7 +445,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--gold); font-weight: 600; margin-bottom: 1rem;
     }
     .about-title {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-size: clamp(1.8rem, 3vw, 2.6rem);
       font-weight: 700; color: var(--royal-dark); line-height: 1.2;
       margin-bottom: 1.5rem;
@@ -481,7 +462,7 @@ import { Product, Category, Banner } from '../../models/product.model';
     .astat { text-align: center; padding: 0 1.5rem; flex: 1; }
     .astat-n {
       display: block;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
     .astat-l { font-size: 0.72rem; color: var(--text-light); margin-top: 0.25rem; display: block; }
@@ -521,7 +502,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--royal-dark); margin-bottom: 1.25rem;
     }
     .offer-card h3 {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-size: 1.2rem; font-weight: 700;
       color: var(--royal-dark); margin-bottom: 0.6rem;
     }
@@ -588,7 +569,7 @@ import { Product, Category, Banner } from '../../models/product.model';
       color: var(--text-light); margin: 0 0 0.3rem;
     }
     .arrival-name {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Raleway', sans-serif;
       font-size: 1.1rem; font-weight: 700;
       color: var(--royal-dark); margin: 0 0 0.6rem; line-height: 1.3;
     }
@@ -609,49 +590,14 @@ import { Product, Category, Banner } from '../../models/product.model';
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 900px) {
-      .ls-main { grid-template-columns: 200px 1fr 180px; }
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
       .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
       .about-text-col { padding-right: 0; }
       .about-img-frame::before { display: none; }
       .about-badge { right: 0; }
     }
-
-    /* Mobile leadspace */
-    @media (max-width: 640px) {
-      .leadspace {
-        aspect-ratio: 3 / 4;
-        min-height: auto; max-height: 92vh;
-        align-items: flex-end;
-      }
-      .ls-gradient {
-        background: linear-gradient(
-          to top,
-          rgba(18,4,18,0.88) 0%,
-          rgba(18,4,18,0.55) 50%,
-          rgba(18,4,18,0.05) 100%
-        );
-      }
-      .ls-text {
-        padding: 1.75rem 1.5rem 2rem;
-        max-width: 100%;
-        align-items: center; text-align: center;
-      }
-      .ls-rule { margin-left: auto; margin-right: auto; }
-      .ls-desc { max-width: 100%; }
-      .ls-offer { justify-content: center; }
-      .ls-shop-btn { align-self: center; }
-    }
-
-    @media (max-width: 640px) {
-      .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    @media (max-width: 600px) {
       .offers-grid { grid-template-columns: 1fr; }
-      .arrivals-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-      .about-stats { padding: 1rem; }
-      .astat { padding: 0 0.75rem; }
-      .astat-n { font-size: 1.6rem; }
-    }
-    @media (max-width: 400px) {
       .arrivals-grid { grid-template-columns: 1fr; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -663,17 +609,43 @@ export class LandingComponent implements OnInit {
   heroBanner: Banner | null = null;
   notifVisible = true;
 
+  // Dynamic Homepage Sections
+  notificationBars: NotificationBar[] = [];
+  leadspace: LeadspaceBanner | null = null;
+  story: StorySection | null = null;
+  whyCards: WhyChooseCard[] = [];
+
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    // Load dynamic homepage config
+    this.productService.getHomepageConfig().subscribe({
+      next: (config: HomepageConfig) => {
+        if (config) {
+          this.notificationBars = config.notifications || [];
+          this.leadspace = config.leadspace;
+          this.story = config.story;
+          this.whyCards = (config.why_choose_cards && config.why_choose_cards.length > 0)
+            ? config.why_choose_cards
+            : this.getDefaultWhyCards();
+        }
+      },
+      error: (e) => {
+        console.error('Homepage config:', e);
+        this.whyCards = this.getDefaultWhyCards();
+      }
+    });
+
     this.productService.getCategories().subscribe({
       next: (d: any) => this.categories = Array.isArray(d) ? d : (d.results || []),
       error: (e) => console.error('Categories:', e)
     });
+
     this.productService.getNewArrivals().subscribe({
       next: (d: any) => this.newArrivals = Array.isArray(d) ? d : (d.results || []),
       error: (e) => console.error('New arrivals:', e)
     });
+
     this.productService.getBanners().subscribe({
       next: (d: any) => {
         const banners: Banner[] = Array.isArray(d) ? d : (d.results || []);
@@ -682,4 +654,39 @@ export class LandingComponent implements OnInit {
       error: (e) => console.error('Banners:', e)
     });
   }
+
+  get activeNotificationText(): string {
+    if (this.notificationBars.length > 0) {
+      return this.notificationBars.map(n => n.text).join('   ·   ');
+    }
+    return 'Free shipping on orders above ₹999  ·  30-Day easy returns  ·  925 Hallmarked Silver — Certified & Authentic  ·  Handcrafted in India';
+  }
+
+  get formattedTitle(): string {
+    const title = this.leadspace?.title || 'Vanki\nRings';
+    return title.replace(/\n/g, '<br>');
+  }
+
+  get formattedStoryTitle(): string {
+    const title = this.story?.title || 'Crafted with Passion,\nWorn with Pride';
+    return title.replace(/\n/g, '<br>');
+  }
+
+  get formattedBadgeLabel(): string {
+    const label = this.story?.badge_label || 'Hallmarked\nSilver';
+    return label.replace(/\n/g, '<br>');
+  }
+
+  private getDefaultWhyCards(): WhyChooseCard[] {
+    return [
+      { id: 1, title: '925 Certified Silver', description: 'Every piece is hallmarked 925 sterling silver — certified pure, hypoallergenic, and safe for all skin types.', icon_type: 'shield', display_order: 1, is_active: true },
+      { id: 2, title: 'Handpicked Designs', description: 'Each design is curated by our artisans — blending traditional Indian motifs with contemporary aesthetics.', icon_type: 'heart', display_order: 2, is_active: true },
+      { id: 3, title: 'Fast & Safe Delivery', description: 'Free shipping above ₹999. Secure packaging ensures your jewellery arrives safely across India in 5–7 days.', icon_type: 'truck', display_order: 3, is_active: true },
+      { id: 4, title: '30-Day Returns', description: 'Not happy? Return within 30 days — no questions asked. Your satisfaction is our highest priority.', icon_type: 'returns', display_order: 4, is_active: true },
+      { id: 5, title: 'Perfect for Gifting', description: 'Every order comes gift-ready with elegant packaging — ideal for birthdays, anniversaries, and festivities.', icon_type: 'gift', display_order: 5, is_active: true },
+      { id: 6, title: 'Made in India', description: 'Proudly handcrafted by Indian artisans — supporting traditional craft while delivering world-class quality.', icon_type: 'sparkles', display_order: 6, is_active: true },
+    ];
+  }
 }
+
+// Made with Bob
