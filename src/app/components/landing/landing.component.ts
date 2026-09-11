@@ -312,23 +312,28 @@ import {
     .ls-wrapper {
       width: 100%;
       background: #180319;
-      padding: 1.5rem 1rem;
+      padding: 0;
+      margin: 0;
       display: flex;
       justify-content: center;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     .ls-banner-card {
       position: relative;
       width: 100%;
-      max-width: 1260px;
-      min-height: 480px;
+      max-width: 100%;
+      min-height: 520px;
       background: #250628;
-      border-radius: 20px;
+      border-radius: 0;
       overflow: hidden;
       display: flex;
       box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-top: 1px solid rgba(201, 168, 76, 0.25);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.25);
+      border-left: none;
+      border-right: none;
     }
 
     /* Left Content Pane (Angular Cut with dark maroon-purple gradient) */
@@ -546,13 +551,27 @@ import {
     }
     .cat-card {
       background: #faf8f5; border-radius: 12px; overflow: hidden;
-      cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
-      border: 1px solid #f0eaee;
+      cursor: pointer; transition: all 0.35s ease;
+      position: relative;
+      border: 1.5px solid rgba(232, 197, 71, 0.45);
+      box-shadow: 0 4px 18px rgba(201, 168, 76, 0.12);
+    }
+    .cat-card::before {
+      content: '✦';
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      color: #f5cf62;
+      font-size: 0.7rem;
+      opacity: 0.75;
+      text-shadow: 0 0 6px rgba(245, 207, 98, 0.8);
+      z-index: 4;
+      pointer-events: none;
     }
     .cat-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 28px rgba(85,23,86,0.12);
-      border-color: var(--gold);
+      transform: translateY(-5px);
+      border-color: #f5cf62;
+      box-shadow: 0 10px 28px rgba(85,23,86,0.14), 0 0 16px rgba(245, 207, 98, 0.4);
     }
     .cat-img-wrap {
       position: relative; height: 180px; overflow: hidden;
@@ -670,13 +689,26 @@ import {
     .offer-card {
       background: #fff; border-radius: 12px;
       padding: 2rem 1.75rem;
-      border: 1px solid #f0eaee;
-      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      position: relative;
+      border: 1.5px solid rgba(232, 197, 71, 0.45);
+      box-shadow: 0 4px 18px rgba(201, 168, 76, 0.12);
+      transition: all 0.35s ease;
+    }
+    .offer-card::before {
+      content: '✦';
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      color: #f5cf62;
+      font-size: 0.72rem;
+      opacity: 0.75;
+      text-shadow: 0 0 6px rgba(245, 207, 98, 0.8);
+      pointer-events: none;
     }
     .offer-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 30px rgba(85,23,86,0.1);
-      border-color: rgba(201,148,26,0.3);
+      border-color: #f5cf62;
+      box-shadow: 0 10px 30px rgba(85,23,86,0.12), 0 0 18px rgba(245, 207, 98, 0.35);
     }
     .offer-icon {
       width: 52px; height: 52px; border-radius: 12px;
@@ -700,14 +732,29 @@ import {
     }
     .arrival-card {
       background: #fff; border-radius: 10px; overflow: hidden;
-      border: 1px solid #f0eaee; cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      border: 1.5px solid rgba(232, 197, 71, 0.45);
+      box-shadow: 0 4px 18px rgba(201, 168, 76, 0.12);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.35s ease;
       text-decoration: none; color: inherit; display: block;
+    }
+    .arrival-card::after {
+      content: '✦';
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      color: #f5cf62;
+      font-size: 0.72rem;
+      opacity: 0.85;
+      text-shadow: 0 0 8px rgba(245, 207, 98, 0.9);
+      z-index: 3;
+      pointer-events: none;
     }
     .arrival-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 12px 32px rgba(85,23,86,0.12);
-      border-color: var(--gold);
+      border-color: #f5cf62;
+      box-shadow: 0 12px 32px rgba(85,23,86,0.14), 0 0 20px rgba(245, 207, 98, 0.45);
     }
     .arrival-img-wrap {
       position: relative; height: 260px; overflow: hidden;
@@ -818,44 +865,44 @@ import {
 
     @media (max-width: 680px) {
       .ls-wrapper {
-        padding: 0.6rem 0.4rem;
+        padding: 0;
       }
       .ls-banner-card {
         flex-direction: row;
         min-height: 360px;
-        border-radius: 14px;
+        border-radius: 0;
       }
       .ls-content-pane {
-        flex: 1.45;
-        padding: 1.4rem 1.4rem 1.2rem 1.1rem;
-        clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+        flex: 1.05;
+        padding: 1.3rem 1.2rem 1.1rem 0.9rem;
+        clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
       }
       .ls-brand-badge {
-        padding: 0.2rem 0.55rem;
-        margin-bottom: 0.75rem;
-      }
-      .ls-brand-text {
-        font-size: 0.62rem;
-        letter-spacing: 1.2px;
-      }
-      .ls-brand-sparkle {
-        font-size: 0.7rem;
-      }
-      .ls-header-group {
+        padding: 0.18rem 0.5rem;
         margin-bottom: 0.6rem;
       }
-      .ls-eyebrow {
+      .ls-brand-text {
+        font-size: 0.58rem;
+        letter-spacing: 1px;
+      }
+      .ls-brand-sparkle {
         font-size: 0.65rem;
-        letter-spacing: 1.8px;
-        margin-bottom: 0.25rem;
+      }
+      .ls-header-group {
+        margin-bottom: 0.5rem;
+      }
+      .ls-eyebrow {
+        font-size: 0.62rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.2rem;
       }
       .ls-title {
-        font-size: clamp(1.35rem, 5vw, 1.85rem);
-        line-height: 1.12;
+        font-size: clamp(1.2rem, 4.5vw, 1.65rem);
+        line-height: 1.1;
       }
       .ls-desc {
-        font-size: 0.78rem;
-        line-height: 1.45;
+        font-size: 0.75rem;
+        line-height: 1.4;
         margin-bottom: 0.2rem;
       }
       .ls-desc-sub {
@@ -863,61 +910,61 @@ import {
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        font-size: 0.72rem;
-        line-height: 1.4;
-        margin-bottom: 0.8rem;
+        font-size: 0.7rem;
+        line-height: 1.35;
+        margin-bottom: 0.7rem;
       }
       .ls-action-row {
-        gap: 0.6rem;
-        margin-top: 0.25rem;
-        margin-bottom: 0.9rem;
+        gap: 0.5rem;
+        margin-top: 0.2rem;
+        margin-bottom: 0.8rem;
       }
       .ls-offer-pill {
-        padding: 0.35rem 0.65rem;
-        gap: 0.35rem;
+        padding: 0.3rem 0.55rem;
+        gap: 0.3rem;
       }
       .ls-offer-val {
-        font-size: 1rem;
+        font-size: 0.95rem;
       }
       .ls-offer-txt {
-        font-size: 0.62rem;
-        max-width: 100px;
-        letter-spacing: 0.5px;
+        font-size: 0.58rem;
+        max-width: 90px;
+        letter-spacing: 0.4px;
       }
       .ls-cta-btn {
-        padding: 0.55rem 1.15rem;
-        font-size: 0.72rem;
-        letter-spacing: 1px;
-        gap: 0.35rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.8px;
+        gap: 0.3rem;
       }
       .ls-cta-btn svg {
-        width: 14px;
-        height: 14px;
+        width: 13px;
+        height: 13px;
       }
       .ls-footer-tags {
-        gap: 0.6rem;
-        padding-top: 0.6rem;
+        gap: 0.5rem;
+        padding-top: 0.5rem;
       }
       .ls-tag {
-        font-size: 0.62rem;
-        gap: 0.25rem;
+        font-size: 0.58rem;
+        gap: 0.2rem;
       }
       .ls-dot {
-        font-size: 0.4rem;
+        font-size: 0.35rem;
       }
       .ls-slant-divider {
-        left: 49%;
-        width: 22px;
+        left: 45%;
+        width: 20px;
         display: block;
       }
       .ls-gold-accent-strip {
-        left: 51.5%;
-        width: 3.5px;
+        left: 47.5%;
+        width: 3px;
         display: block;
       }
       .ls-image-pane {
-        flex: 1;
-        margin-left: -8%;
+        flex: 1.25;
+        margin-left: -7%;
         height: auto;
       }
       .offers-grid { grid-template-columns: 1fr; }
@@ -930,41 +977,41 @@ import {
         min-height: 330px;
       }
       .ls-content-pane {
-        flex: 1.6;
-        padding: 1.1rem 1rem 0.9rem 0.85rem;
-        clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
+        flex: 1.05;
+        padding: 1rem 0.8rem 0.8rem 0.7rem;
+        clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%);
       }
       .ls-title {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
       }
       .ls-desc {
-        font-size: 0.72rem;
-        line-height: 1.35;
+        font-size: 0.68rem;
+        line-height: 1.3;
       }
       .ls-desc-sub {
         display: none;
       }
       .ls-action-row {
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.5rem;
       }
       .ls-offer-pill {
         display: none;
       }
       .ls-cta-btn {
-        padding: 0.5rem 0.9rem;
-        font-size: 0.7rem;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.65rem;
       }
       .ls-slant-divider {
-        left: 46%;
-        width: 18px;
+        left: 42%;
+        width: 16px;
       }
       .ls-gold-accent-strip {
-        left: 48.5%;
+        left: 44.5%;
         width: 3px;
       }
       .ls-image-pane {
-        flex: 0.9;
-        margin-left: -10%;
+        flex: 1.35;
+        margin-left: -8%;
       }
     }
   `]
