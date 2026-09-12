@@ -515,7 +515,7 @@ import {
     /* Left Text Content Side */
     .ls-text-side {
       flex: 1.15;
-      padding: 3.5rem 2rem 3.5rem clamp(1.5rem, 6vw, 4.5rem);
+      padding: 3.5rem 1.5rem 3.5rem clamp(1.5rem, 5vw, 4.5rem);
       background: linear-gradient(135deg, #2b0422 0%, #35072a 60%, #440936 100%);
       display: flex;
       flex-direction: column;
@@ -551,8 +551,8 @@ import {
       top: 0;
       bottom: 0;
       left: 0;
-      width: 120px;
-      background: linear-gradient(90deg, #440936 0%, rgba(68, 9, 54, 0.6) 50%, transparent 100%);
+      width: 100px;
+      background: linear-gradient(90deg, #440936 0%, rgba(68, 9, 54, 0.45) 50%, transparent 100%);
       pointer-events: none;
     }
 
@@ -996,16 +996,21 @@ import {
     /* ══ RESPONSIVE ══ */
     @media (max-width: 960px) {
       .ls-split-card {
-        min-height: 440px;
+        flex-direction: row;
+        min-height: 420px;
       }
       .ls-text-side {
-        padding: 2.5rem 1.5rem;
+        flex: 1.2;
+        padding: 2rem 1.25rem 2rem 1.5rem;
+      }
+      .ls-img-side {
+        flex: 1.1;
       }
       .ls-title {
-        font-size: clamp(2rem, 3.8vw, 2.8rem);
+        font-size: clamp(1.8rem, 3.5vw, 2.5rem);
       }
       .ls-desc {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
       .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
@@ -1014,35 +1019,112 @@ import {
       .about-badge { right: 0; }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 680px) {
       .ls-split-card {
-        flex-direction: column-reverse;
-        min-height: auto;
-      }
-      .ls-img-side {
-        width: 100%;
-        height: 280px;
-        flex: none;
-      }
-      .ls-img-feather {
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 60px;
-        background: linear-gradient(180deg, transparent 0%, #2b0422 100%);
+        flex-direction: row;
+        min-height: 380px;
       }
       .ls-text-side {
+        flex: 1.35;
+        padding: 1.25rem 0.75rem 1.25rem 0.9rem;
+        z-index: 2;
+      }
+      .ls-img-side {
+        flex: 1;
+        min-height: 100%;
+        display: block;
+      }
+      .ls-product-img {
         width: 100%;
-        padding: 2rem 1.5rem 2.5rem;
-        background: #2b0422;
+        height: 100%;
+        object-fit: cover;
+        object-position: center center;
+      }
+      .ls-img-feather {
+        width: 40px;
+        background: linear-gradient(90deg, #440936 0%, transparent 100%);
+      }
+      .ls-brand-badge {
+        padding: 0.2rem 0.55rem;
+        margin-bottom: 0.5rem;
+      }
+      .ls-brand-text {
+        font-size: 0.58rem;
+        letter-spacing: 1px;
+      }
+      .ls-brand-sparkle {
+        font-size: 0.65rem;
+      }
+      .ls-header-group {
+        margin-bottom: 0.4rem;
+      }
+      .ls-eyebrow {
+        font-size: 0.62rem;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.2rem;
       }
       .ls-title {
-        font-size: 2.2rem;
+        font-size: clamp(1.15rem, 4.4vw, 1.6rem);
+        line-height: 1.15;
+        word-break: break-word;
       }
       .ls-desc {
-        max-width: 100%;
+        font-size: clamp(0.68rem, 2.2vw, 0.78rem);
+        line-height: 1.35;
+        margin-bottom: 0.35rem;
+        word-break: break-word;
+      }
+      .ls-desc-sub {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 0.68rem;
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+      }
+      .ls-action-row {
+        gap: 0.4rem;
+        margin-top: 0.3rem;
+        margin-bottom: 0.65rem;
+      }
+      .ls-cta-btn {
+        padding: 0.5rem 0.95rem;
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+        gap: 0.3rem;
+      }
+      .ls-cta-btn svg {
+        width: 13px;
+        height: 13px;
+      }
+      .ls-offer-pill {
+        padding: 0.25rem 0.45rem;
+        gap: 0.25rem;
+      }
+      .ls-offer-val {
+        font-size: 0.85rem;
+      }
+      .ls-offer-txt {
+        font-size: 0.55rem;
+        max-width: 75px;
+      }
+      .ls-trust-row {
+        gap: 0.35rem 0.65rem;
+        padding-top: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .ls-trust-item {
+        font-size: 0.6rem;
+        gap: 0.25rem;
+        white-space: nowrap;
+      }
+      .ls-trust-icon {
+        width: 13px;
+        height: 13px;
+      }
+      .ls-trust-divider {
+        height: 12px;
       }
       .offers-grid { grid-template-columns: 1fr; }
       .arrivals-grid { grid-template-columns: 1fr; }
@@ -1050,34 +1132,47 @@ import {
     }
 
     @media (max-width: 440px) {
-      .ls-img-side {
-        height: 220px;
+      .ls-split-card {
+        min-height: 350px;
       }
       .ls-text-side {
-        padding: 1.5rem 1rem 2rem;
+        flex: 1.4;
+        padding: 1rem 0.6rem 1rem 0.75rem;
+      }
+      .ls-img-side {
+        flex: 0.95;
       }
       .ls-title {
-        font-size: 1.75rem;
+        font-size: clamp(1.05rem, 4.4vw, 1.3rem);
+        line-height: 1.15;
       }
       .ls-desc {
-        font-size: 0.82rem;
+        font-size: 0.66rem;
+        line-height: 1.3;
       }
       .ls-desc-sub {
         display: none;
       }
+      .ls-action-row {
+        margin-bottom: 0.4rem;
+      }
+      .ls-offer-pill {
+        display: none;
+      }
       .ls-cta-btn {
-        padding: 0.65rem 1.35rem;
-        font-size: 0.74rem;
+        padding: 0.45rem 0.8rem;
+        font-size: 0.65rem;
       }
       .ls-trust-row {
-        gap: 0.5rem;
+        gap: 0.25rem 0.5rem;
+        padding-top: 0.35rem;
       }
       .ls-trust-item {
-        font-size: 0.68rem;
+        font-size: 0.55rem;
       }
       .ls-trust-icon {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
       }
     }
   `]
