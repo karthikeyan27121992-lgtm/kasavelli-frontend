@@ -23,8 +23,8 @@
     </g>
   </defs>
 
-  <!-- Solid Background: Rich Magenta/Plum -->
-  <rect width="100%" height="100%" fill="#8f225e" rx="30"/>
+  <!-- Solid Background: Harmonized Royal Dark Purple -->
+  <rect width="100%" height="100%" fill="#3a0e3b" rx="30"/>
 
   <!-- Orbital Ellipse 1 (Rotated -35 deg) -->
   <ellipse cx="250" cy="250" rx="205" ry="195" fill="none" stroke="#13361e" stroke-width="2.5" transform="rotate(-30 250 250)" stroke-dasharray="140 16 190 20 180 18"/>

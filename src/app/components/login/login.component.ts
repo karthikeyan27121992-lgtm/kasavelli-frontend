@@ -17,7 +17,6 @@ import { LoginRequest } from '../../models/user.model';
         <!-- Brand Header with Logo -->
         <div class="auth-brand">
           <img src="assets/images/kasavelli-logo.svg" alt="Kasavelli 925" class="auth-logo-img">
-          <h1 class="auth-brand-title">KASAVELLI</h1>
           <p class="auth-brand-subtitle">Pure 925 Sterling Silver Jewellery</p>
         </div>
 
@@ -196,24 +195,16 @@ import { LoginRequest } from '../../models/user.model';
     /* Brand Header */
     .auth-brand {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
     .auth-logo-img {
-      width: 72px;
-      height: 72px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       border: 2px solid var(--gold);
-      box-shadow: 0 4px 16px rgba(85, 23, 86, 0.25);
+      box-shadow: 0 6px 20px rgba(58, 14, 59, 0.25);
       object-fit: cover;
-      margin-bottom: 0.85rem;
-    }
-    .auth-brand-title {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: 4px;
-      color: var(--royal-dark);
-      margin: 0 0 0.25rem;
+      margin-bottom: 0.6rem;
     }
     .auth-brand-subtitle {
       font-size: 0.82rem;
@@ -318,19 +309,19 @@ import { LoginRequest } from '../../models/user.model';
     /* Submit Button (High visibility) */
     .btn-submit {
       width: 100%;
-      padding: 0.95rem 1.5rem;
+      padding: 1rem 1.5rem;
       margin-top: 0.75rem;
-      background: linear-gradient(135deg, #551756 0%, #3a0e3b 100%);
+      background: var(--royal);
       color: #ffffff !important;
-      border: 1.5px solid rgba(232, 197, 71, 0.4);
+      border: 1.5px solid rgba(232, 197, 71, 0.5);
       border-radius: 10px;
       font-family: inherit;
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(58, 14, 59, 0.28);
+      box-shadow: 0 6px 20px rgba(58, 14, 59, 0.35);
       transition: all 0.25s ease;
       display: flex;
       align-items: center;
@@ -338,9 +329,9 @@ import { LoginRequest } from '../../models/user.model';
     }
 
     .btn-submit:hover:not(:disabled) {
-      background: linear-gradient(135deg, #6e2370 0%, #551756 100%);
+      background: var(--royal-dark);
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(58, 14, 59, 0.35);
+      box-shadow: 0 8px 26px rgba(58, 14, 59, 0.45);
       border-color: var(--gold-light);
     }
 
@@ -422,11 +413,8 @@ import { LoginRequest } from '../../models/user.model';
         border-radius: 16px;
       }
       .auth-logo-img {
-        width: 60px;
-        height: 60px;
-      }
-      .auth-brand-title {
-        font-size: 1.25rem;
+        width: 72px;
+        height: 72px;
       }
     }
   `]

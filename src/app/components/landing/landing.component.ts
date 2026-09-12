@@ -266,8 +266,8 @@ import {
     /* ══ CSS VARIABLES ══ */
     :host {
       --royal: #551756;
-      --royal-mid: #3e0e3f;
-      --royal-dark: #2a072c;
+      --royal-mid: #6e2370;
+      --royal-dark: #3a0e3b;
       --gold: #c9a84c;
       --gold-light: #f5cf62;
       --gold-dark: #a17822;
@@ -451,7 +451,7 @@ import {
     /* ══ 1. EXACT LEADSPACE LAYOUT (From Reference Banner Template) ══ */
     .ls-wrapper {
       width: 100%;
-      background: #180319;
+      background: var(--royal-dark);
       padding: 0;
       margin: 0;
       display: flex;
@@ -465,7 +465,7 @@ import {
       width: 100%;
       max-width: 100%;
       min-height: 520px;
-      background: #250628;
+      background: var(--royal-dark);
       border-radius: 0;
       overflow: hidden;
       display: flex;
@@ -476,7 +476,7 @@ import {
       border-right: none;
     }
 
-    /* Left Content Pane (Angular Cut with dark maroon-purple gradient) */
+    /* Left Content Pane (Angular Cut with unified royal-dark to royal gradient) */
     .ls-content-pane {
       position: relative;
       flex: 1.25;
@@ -485,7 +485,7 @@ import {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: linear-gradient(135deg, #300832 0%, #200422 65%, #18031a 100%);
+      background: linear-gradient(135deg, #3a0e3b 0%, #2e092f 65%, #240625 100%);
       clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
       box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
     }
