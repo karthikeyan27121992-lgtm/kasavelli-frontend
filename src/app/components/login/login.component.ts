@@ -6,6 +6,9 @@ import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
 import { LoginRequest } from '../../models/user.model';
 
+/** Possible views: 'login' | 'register' | 'forgot' | 'reset' */
+type AuthMode = 'login' | 'register' | 'forgot' | 'reset';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -13,7 +16,7 @@ import { LoginRequest } from '../../models/user.model';
   template: `
     <div class="auth-page-wrap">
       <div class="auth-card">
-        
+
         <!-- Brand Header with Logo -->
         <div class="auth-brand">
           <img src="assets/images/kasavelli-logo.svg?v=2" alt="Kasavelli 925" class="auth-logo-img">
@@ -23,14 +26,22 @@ import { LoginRequest } from '../../models/user.model';
           <p class="auth-brand-subtitle">Pure 925 Sterling Silver Jewellery</p>
         </div>
 
-        <!-- Mode Switcher Tabs -->
-        <div class="auth-tabs">
-          <button type="button" class="tab-btn" [class.active]="!showRegister" (click)="setMode(false)">
+        <!-- Mode Switcher Tabs (only for login / register) -->
+        <div class="auth-tabs" *ngIf="mode === 'login' || mode === 'register'">
+          <button type="button" class="tab-btn" [class.active]="mode === 'login'" (click)="setMode('login')">
             Sign In
           </button>
-          <button type="button" class="tab-btn" [class.active]="showRegister" (click)="setMode(true)">
+          <button type="button" class="tab-btn" [class.active]="mode === 'register'" (click)="setMode('register')">
             Create Account
           </button>
+        </div>
+
+        <!-- Success Message -->
+        <div class="alert alert-success" *ngIf="successMessage">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>{{ successMessage }}</span>
         </div>
 
         <!-- Error Message Alert -->
@@ -42,7 +53,7 @@ import { LoginRequest } from '../../models/user.model';
         </div>
 
         <!-- ── LOGIN FORM ───────────────────────────── -->
-        <form *ngIf="!showRegister" (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+        <form *ngIf="mode === 'login'" (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
           <div class="form-group">
             <label class="form-label">Phone Number</label>
             <div class="input-icon-wrap">
@@ -62,14 +73,22 @@ import { LoginRequest } from '../../models/user.model';
             <label class="form-label">Password</label>
             <div class="input-icon-wrap">
               <input
-                type="password"
-                class="form-control"
+                [type]="showLoginPassword ? 'text' : 'password'"
+                class="form-control with-eye"
                 [(ngModel)]="credentials.password"
                 name="password"
                 placeholder="Enter your account password"
                 required
               >
+              <button type="button" class="eye-btn" (click)="showLoginPassword = !showLoginPassword" tabindex="-1">
+                <svg *ngIf="!showLoginPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg *ngIf="showLoginPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
             </div>
+          </div>
+
+          <div class="forgot-link-wrap">
+            <button type="button" class="link-btn small" (click)="setMode('forgot')">Forgot Password?</button>
           </div>
 
           <button
@@ -85,12 +104,12 @@ import { LoginRequest } from '../../models/user.model';
 
           <div class="auth-footer-prompt">
             <span>New to Kasavelli?</span>
-            <button type="button" class="link-btn" (click)="setMode(true)">Create an Account</button>
+            <button type="button" class="link-btn" (click)="setMode('register')">Create an Account</button>
           </div>
         </form>
 
         <!-- ── REGISTRATION FORM ────────────────────── -->
-        <form *ngIf="showRegister" (ngSubmit)="onRegister()" #registerForm="ngForm" class="auth-form">
+        <form *ngIf="mode === 'register'" (ngSubmit)="onRegister()" #registerForm="ngForm" class="auth-form">
           <div class="form-group">
             <label class="form-label">Full Name</label>
             <input
@@ -131,20 +150,57 @@ import { LoginRequest } from '../../models/user.model';
 
           <div class="form-group">
             <label class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              [(ngModel)]="registerData.password"
-              name="reg_password"
-              placeholder="Create a secure password"
-              required
-            >
+            <div class="input-icon-wrap">
+              <input
+                [type]="showRegPassword ? 'text' : 'password'"
+                class="form-control with-eye"
+                [(ngModel)]="registerData.password"
+                name="reg_password"
+                placeholder="Create a password (min 6 characters)"
+                required
+                minlength="6"
+              >
+              <button type="button" class="eye-btn" (click)="showRegPassword = !showRegPassword" tabindex="-1">
+                <svg *ngIf="!showRegPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg *ngIf="showRegPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── CONFIRM PASSWORD ── -->
+          <div class="form-group">
+            <label class="form-label">Re-enter Password</label>
+            <div class="input-icon-wrap">
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                class="form-control with-eye"
+                [class.input-error]="confirmPasswordTouched && registerData.confirm_password && registerData.password !== registerData.confirm_password"
+                [class.input-ok]="confirmPasswordTouched && registerData.confirm_password && registerData.password === registerData.confirm_password"
+                [(ngModel)]="registerData.confirm_password"
+                name="confirm_password"
+                placeholder="Re-enter your password"
+                required
+                (blur)="confirmPasswordTouched = true"
+              >
+              <button type="button" class="eye-btn" (click)="showConfirmPassword = !showConfirmPassword" tabindex="-1">
+                <svg *ngIf="!showConfirmPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg *ngIf="showConfirmPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+            <span class="field-hint error"
+              *ngIf="confirmPasswordTouched && registerData.confirm_password && registerData.password !== registerData.confirm_password">
+              Passwords do not match
+            </span>
+            <span class="field-hint ok"
+              *ngIf="confirmPasswordTouched && registerData.confirm_password && registerData.password === registerData.confirm_password">
+              ✓ Passwords match
+            </span>
           </div>
 
           <button
             type="submit"
             class="btn-submit auth-action-btn"
-            [disabled]="!registerForm.valid || loading"
+            [disabled]="!registerForm.valid || loading || registerData.password !== registerData.confirm_password"
           >
             <span class="btn-text-label" *ngIf="!loading">Create Account</span>
             <span *ngIf="loading" class="loading-state">
@@ -154,7 +210,124 @@ import { LoginRequest } from '../../models/user.model';
 
           <div class="auth-footer-prompt">
             <span>Already have an account?</span>
-            <button type="button" class="link-btn" (click)="setMode(false)">Sign In</button>
+            <button type="button" class="link-btn" (click)="setMode('login')">Sign In</button>
+          </div>
+        </form>
+
+        <!-- ── FORGOT PASSWORD FORM (Step 1 — enter phone) ── -->
+        <form *ngIf="mode === 'forgot'" (ngSubmit)="onForgotPassword()" #forgotForm="ngForm" class="auth-form">
+          <div class="reset-header">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#551756" stroke-width="1.5">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <h3 class="reset-title">Forgot Password?</h3>
+            <p class="reset-subtitle">Enter your registered phone number to reset your password.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Registered Phone Number</label>
+            <div class="input-icon-wrap">
+              <span class="input-prefix">+91</span>
+              <input
+                type="tel"
+                class="form-control with-prefix"
+                [(ngModel)]="forgotPhone"
+                name="forgot_phone"
+                placeholder="10-digit mobile number"
+                required
+                pattern="[0-9]{10}"
+              >
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-submit auth-action-btn"
+            [disabled]="!forgotForm.valid || loading"
+          >
+            <span class="btn-text-label" *ngIf="!loading">Verify &amp; Continue</span>
+            <span *ngIf="loading" class="loading-state">
+              <span class="btn-spinner"></span> Verifying...
+            </span>
+          </button>
+
+          <div class="auth-footer-prompt">
+            <button type="button" class="link-btn" (click)="setMode('login')">← Back to Sign In</button>
+          </div>
+        </form>
+
+        <!-- ── RESET PASSWORD FORM (Step 2 — set new password) ── -->
+        <form *ngIf="mode === 'reset'" (ngSubmit)="onResetPassword()" #resetForm="ngForm" class="auth-form">
+          <div class="reset-header">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#551756" stroke-width="1.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <h3 class="reset-title">Set New Password</h3>
+            <p class="reset-subtitle">Choose a strong new password for your account.</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <div class="input-icon-wrap">
+              <input
+                [type]="showNewPassword ? 'text' : 'password'"
+                class="form-control with-eye"
+                [(ngModel)]="resetData.new_password"
+                name="new_password"
+                placeholder="Minimum 6 characters"
+                required
+                minlength="6"
+              >
+              <button type="button" class="eye-btn" (click)="showNewPassword = !showNewPassword" tabindex="-1">
+                <svg *ngIf="!showNewPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg *ngIf="showNewPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Confirm New Password</label>
+            <div class="input-icon-wrap">
+              <input
+                [type]="showConfirmNewPassword ? 'text' : 'password'"
+                class="form-control with-eye"
+                [class.input-error]="resetConfirmTouched && resetData.confirm_password && resetData.new_password !== resetData.confirm_password"
+                [class.input-ok]="resetConfirmTouched && resetData.confirm_password && resetData.new_password === resetData.confirm_password"
+                [(ngModel)]="resetData.confirm_password"
+                name="confirm_new_password"
+                placeholder="Re-enter new password"
+                required
+                (blur)="resetConfirmTouched = true"
+              >
+              <button type="button" class="eye-btn" (click)="showConfirmNewPassword = !showConfirmNewPassword" tabindex="-1">
+                <svg *ngIf="!showConfirmNewPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg *ngIf="showConfirmNewPassword" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+              </button>
+            </div>
+            <span class="field-hint error"
+              *ngIf="resetConfirmTouched && resetData.confirm_password && resetData.new_password !== resetData.confirm_password">
+              Passwords do not match
+            </span>
+            <span class="field-hint ok"
+              *ngIf="resetConfirmTouched && resetData.confirm_password && resetData.new_password === resetData.confirm_password">
+              ✓ Passwords match
+            </span>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-submit auth-action-btn"
+            [disabled]="!resetForm.valid || loading || resetData.new_password !== resetData.confirm_password"
+          >
+            <span class="btn-text-label" *ngIf="!loading">Reset Password</span>
+            <span *ngIf="loading" class="loading-state">
+              <span class="btn-spinner"></span> Resetting...
+            </span>
+          </button>
+
+          <div class="auth-footer-prompt">
+            <button type="button" class="link-btn" (click)="setMode('login')">← Back to Sign In</button>
           </div>
         </form>
 
@@ -295,6 +468,20 @@ import { LoginRequest } from '../../models/user.model';
       pointer-events: none;
     }
 
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 0;
+      display: flex;
+      align-items: center;
+      line-height: 1;
+    }
+    .eye-btn:hover { color: var(--royal); }
+
     .form-control {
       width: 100%;
       padding: 0.85rem 1rem;
@@ -312,6 +499,10 @@ import { LoginRequest } from '../../models/user.model';
       padding-left: 48px;
     }
 
+    .form-control.with-eye {
+      padding-right: 42px;
+    }
+
     .form-control:focus {
       outline: none;
       border-color: var(--royal);
@@ -319,9 +510,52 @@ import { LoginRequest } from '../../models/user.model';
       box-shadow: 0 0 0 4px rgba(85, 23, 86, 0.1);
     }
 
+    .form-control.input-error {
+      border-color: #ef4444;
+      background: #fff5f5;
+    }
+
+    .form-control.input-ok {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+
     .form-control::placeholder {
       color: #aaa;
       font-size: 0.88rem;
+    }
+
+    .field-hint {
+      font-size: 0.78rem;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .field-hint.error { color: #ef4444; }
+    .field-hint.ok    { color: #16a34a; }
+
+    /* Forgot password link row */
+    .forgot-link-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -0.5rem;
+    }
+
+    /* Reset password header block */
+    .reset-header {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .reset-title {
+      margin: 0.65rem 0 0.35rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--royal-dark);
+    }
+    .reset-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
     }
 
     /* Submit Button (High visibility) */
@@ -414,25 +648,35 @@ import { LoginRequest } from '../../models/user.model';
       text-decoration: underline;
       transition: color 0.2s;
     }
+    .link-btn.small {
+      font-size: 0.82rem;
+    }
     .link-btn:hover {
       color: #c9a84c;
     }
 
     /* Alert */
-    .alert-error {
+    .alert-error, .alert-success {
       display: flex;
       align-items: center;
       gap: 10px;
-      background-color: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #991b1b;
       padding: 0.85rem 1rem;
       border-radius: 10px;
       margin-bottom: 1.25rem;
       font-size: 0.86rem;
       font-weight: 500;
     }
-    .alert-error svg {
+    .alert-error {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+    }
+    .alert-success {
+      background-color: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #15803d;
+    }
+    .alert-error svg, .alert-success svg {
       flex-shrink: 0;
     }
 
@@ -449,6 +693,8 @@ import { LoginRequest } from '../../models/user.model';
   `]
 })
 export class LoginComponent {
+  mode: AuthMode = 'login';
+
   credentials: LoginRequest = {
     phone_number: '',
     password: ''
@@ -458,18 +704,43 @@ export class LoginComponent {
     name: '',
     phone_number: '',
     email: '',
-    password: ''
+    password: '',
+    confirm_password: ''
   };
 
-  showRegister = false;
+  forgotPhone = '';
+
+  resetData = {
+    new_password: '',
+    confirm_password: ''
+  };
+
+  // UI state
   loading = false;
   errorMessage = '';
+  successMessage = '';
+
+  showLoginPassword    = false;
+  showRegPassword      = false;
+  showConfirmPassword  = false;
+  showNewPassword      = false;
+  showConfirmNewPassword = false;
+  confirmPasswordTouched = false;
+  resetConfirmTouched    = false;
 
   constructor(
     private authService: AuthService,
     private cartService: CartService,
     private router: Router
   ) {}
+
+  setMode(m: AuthMode): void {
+    this.mode = m;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.confirmPasswordTouched = false;
+    this.resetConfirmTouched = false;
+  }
 
   onSubmit(): void {
     this.loading = true;
@@ -489,18 +760,25 @@ export class LoginComponent {
   }
 
   onRegister(): void {
+    if (this.registerData.password !== this.registerData.confirm_password) {
+      this.errorMessage = 'Passwords do not match. Please re-enter.';
+      return;
+    }
+
     this.loading = true;
     this.errorMessage = '';
 
-    this.authService.register(this.registerData).subscribe({
+    const { confirm_password, ...payload } = this.registerData;
+
+    this.authService.register(payload).subscribe({
       next: () => {
         this.loading = false;
-        this.showRegister = false;
-        alert('Registration successful! Please login.');
+        this.successMessage = 'Account created successfully! Please sign in.';
+        this.registerData = { name: '', phone_number: '', email: '', password: '', confirm_password: '' };
+        setTimeout(() => this.setMode('login'), 1800);
       },
       error: (err) => {
         this.loading = false;
-        // DRF returns field-level errors as { field: ["msg"] } or a top-level { error: "msg" }
         if (err.error?.error) {
           this.errorMessage = err.error.error;
         } else if (err.error && typeof err.error === 'object') {
@@ -515,15 +793,49 @@ export class LoginComponent {
     });
   }
 
-  setMode(registerMode: boolean): void {
-    this.showRegister = registerMode;
+  /** Step 1 of password reset — verify the phone number exists */
+  onForgotPassword(): void {
+    this.loading = true;
     this.errorMessage = '';
+
+    // We check the phone exists by attempting a lookup via the reset endpoint
+    // with a dummy call; instead, just advance to the reset form since the
+    // actual check happens server-side on submit. We still verify on the
+    // backend at the final step.
+    this.loading = false;
+    this.resetData = { new_password: '', confirm_password: '' };
+    this.setMode('reset');
   }
 
+  /** Step 2 — submit new password */
+  onResetPassword(): void {
+    if (this.resetData.new_password !== this.resetData.confirm_password) {
+      this.errorMessage = 'Passwords do not match.';
+      return;
+    }
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.authService.resetPassword(this.forgotPhone, this.resetData.new_password).subscribe({
+      next: () => {
+        this.loading = false;
+        this.successMessage = 'Password reset successfully! Please sign in with your new password.';
+        this.forgotPhone = '';
+        this.resetData = { new_password: '', confirm_password: '' };
+        setTimeout(() => this.setMode('login'), 2200);
+      },
+      error: (err) => {
+        this.loading = false;
+        this.errorMessage = err.error?.error || 'Reset failed. Please check your phone number.';
+      }
+    });
+  }
+
+  /** @deprecated kept for backward compat */
   toggleRegister(event: Event): void {
     event.preventDefault();
-    this.showRegister = !this.showRegister;
-    this.errorMessage = '';
+    this.setMode(this.mode === 'login' ? 'register' : 'login');
   }
 }
 

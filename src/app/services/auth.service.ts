@@ -48,6 +48,10 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/users/`, data);
   }
 
+  resetPassword(phone_number: string, new_password: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/users/reset_password/`, { phone_number, new_password });
+  }
+
   logout(): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('accessToken');
