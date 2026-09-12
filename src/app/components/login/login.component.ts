@@ -17,6 +17,10 @@ import { LoginRequest } from '../../models/user.model';
         <!-- Brand Header with Logo -->
         <div class="auth-brand">
           <img src="assets/images/kasavelli-logo.svg" alt="Kasavelli 925" class="auth-logo-img">
+          <div class="auth-brand-names">
+            <span class="auth-brand-title">KASAVELLI</span>
+            <span class="auth-brand-by">by Saranya</span>
+          </div>
           <p class="auth-brand-subtitle">Pure 925 Sterling Silver Jewellery</p>
         </div>
 
@@ -71,10 +75,10 @@ import { LoginRequest } from '../../models/user.model';
 
           <button
             type="submit"
-            class="btn-submit"
+            class="btn-submit auth-action-btn"
             [disabled]="!loginForm.valid || loading"
           >
-            <span *ngIf="!loading">Sign In</span>
+            <span class="btn-text-label" *ngIf="!loading">Sign In</span>
             <span *ngIf="loading" class="loading-state">
               <span class="btn-spinner"></span> Signing in...
             </span>
@@ -140,10 +144,10 @@ import { LoginRequest } from '../../models/user.model';
 
           <button
             type="submit"
-            class="btn-submit"
+            class="btn-submit auth-action-btn"
             [disabled]="!registerForm.valid || loading"
           >
-            <span *ngIf="!loading">Create Account</span>
+            <span class="btn-text-label" *ngIf="!loading">Create Account</span>
             <span *ngIf="loading" class="loading-state">
               <span class="btn-spinner"></span> Creating account...
             </span>
@@ -195,19 +199,40 @@ import { LoginRequest } from '../../models/user.model';
     /* Brand Header */
     .auth-brand {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
     .auth-logo-img {
-      width: 88px;
-      height: 88px;
+      width: 84px;
+      height: 84px;
       border-radius: 50%;
       border: 2px solid var(--gold);
       box-shadow: 0 6px 20px rgba(58, 14, 59, 0.25);
       object-fit: cover;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .auth-brand-names {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 0.35rem;
+    }
+    .auth-brand-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      color: var(--royal-dark);
+      text-transform: uppercase;
+    }
+    .auth-brand-by {
+      font-family: 'Great Vibes', 'Alex Brush', cursive, serif;
+      font-size: 1.15rem;
+      color: var(--gold);
+      letter-spacing: 1.5px;
     }
     .auth-brand-subtitle {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       letter-spacing: 0.5px;
       margin: 0;
@@ -307,35 +332,46 @@ import { LoginRequest } from '../../models/user.model';
     }
 
     /* Submit Button (High visibility) */
-    .btn-submit {
+    .btn-submit.auth-action-btn {
       width: 100%;
-      padding: 1rem 1.5rem;
+      padding: 1.05rem 1.5rem;
       margin-top: 0.75rem;
-      background: var(--royal);
+      background: #551756 !important;
       color: #ffffff !important;
-      border: 1.5px solid rgba(232, 197, 71, 0.5);
+      border: 1.5px solid #e8c547 !important;
       border-radius: 10px;
-      font-family: inherit;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
       font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
+      font-weight: 800;
+      letter-spacing: 2px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 6px 20px rgba(58, 14, 59, 0.35);
+      box-shadow: 0 6px 22px rgba(85, 23, 86, 0.4);
       transition: all 0.25s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
 
-    .btn-submit:hover:not(:disabled) {
-      background: var(--royal-dark);
+    .btn-submit.auth-action-btn .btn-text-label {
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 1.02rem;
+      letter-spacing: 2px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+      display: inline-block;
+    }
+
+    .btn-submit.auth-action-btn:hover:not(:disabled) {
+      background: #3a0e3b !important;
+      color: #ffffff !important;
       transform: translateY(-2px);
-      box-shadow: 0 8px 26px rgba(58, 14, 59, 0.45);
-      border-color: var(--gold-light);
+      box-shadow: 0 8px 28px rgba(58, 14, 59, 0.55);
+      border-color: #f5cf62 !important;
     }
 
-    .btn-submit:disabled {
+    .btn-submit.auth-action-btn:disabled {
       opacity: 0.65;
       cursor: not-allowed;
       box-shadow: none;
