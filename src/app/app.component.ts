@@ -25,7 +25,7 @@ import { Product } from './models/product.model';
         <!-- Logo -->
         <a routerLink="/" class="logo">
           <img src="assets/images/kasavelli-logo.svg" alt="KASAVELLI" class="logo-img">
-          <span class="logo-by-tag">by Saranya</span>
+          <span class="logo-title">KASAVELLI</span>
         </a>
 
         <!-- Desktop Nav -->
@@ -198,7 +198,7 @@ import { Product } from './models/product.model';
         <div class="footer-col brand-col">
           <div class="footer-logo">
             <img src="assets/images/kasavelli-logo.svg" alt="KASAVELLI" class="footer-logo-img">
-            <span class="footer-by-tag">by Saranya</span>
+            <span class="footer-logo-title">KASAVELLI</span>
           </div>
           <p class="tagline">Premium 925 Silver Collection</p>
           <p class="footer-desc">Exquisite handcrafted silver jewellery, ethically sourced and made to last a lifetime.</p>
@@ -281,52 +281,55 @@ import { Product } from './models/product.model';
   styles: [`
     /* ── Header ───────────────────────────────────── */
     header {
-      background: var(--royal-dark);
+      background: linear-gradient(135deg, #400732 0%, #881e62 55%, #a8276f 100%);
       position: sticky;
       top: 0;
       z-index: 1000;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 25px rgba(64, 7, 50, 0.35);
+      border-bottom: 1px solid rgba(232, 197, 71, 0.2);
+      transition: all 0.3s ease;
     }
     header.scrolled {
-      background: var(--royal);
-      box-shadow: 0 4px 20px rgba(58, 14, 59, 0.4);
+      background: linear-gradient(135deg, #350529 0%, #751753 60%, #941f61 100%);
+      box-shadow: 0 6px 30px rgba(53, 5, 41, 0.5);
     }
 
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
     }
 
     /* Logo */
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       text-decoration: none;
       color: #ffffff;
-      transition: opacity 0.2s;
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
-    .logo:hover { opacity: 0.92; color: #ffffff; }
+    .logo:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
     .logo-img {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      border: none;
-      box-shadow: none;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
       object-fit: contain;
     }
-    .logo-by-tag {
-      font-family: 'Great Vibes', 'Alex Brush', 'Playfair Display', cursive, serif;
-      font-size: 1.55rem;
-      font-weight: 400;
-      letter-spacing: 1.5px;
-      color: #e8c547;
-      line-height: 1;
-      padding-top: 4px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    .logo-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
     }
 
     /* Desktop Nav */
@@ -467,23 +470,22 @@ import { Product } from './models/product.model';
       border-bottom: 1px solid rgba(202,178,115,0.15);
     }
     .footer-logo {
-      display: flex; align-items: center; gap: 0.75rem;
+      display: flex; align-items: center; gap: 0.8rem;
       margin-bottom: 1rem;
     }
     .footer-logo-img {
-      width: 46px; height: 46px;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      border: none;
-      box-shadow: none;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       object-fit: contain;
     }
-    .footer-by-tag {
-      font-family: 'Great Vibes', 'Alex Brush', cursive, serif;
-      font-size: 1.45rem;
-      color: #e8c547;
-      letter-spacing: 1.5px;
-      line-height: 1;
-      padding-top: 4px;
+    .footer-logo-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ffffff;
     }
     .tagline {
       font-size: 0.78rem;

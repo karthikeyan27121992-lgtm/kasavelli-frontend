@@ -265,9 +265,11 @@ import {
   styles: [`
     /* ══ CSS VARIABLES ══ */
     :host {
-      --royal: #551756;
-      --royal-mid: #6e2370;
-      --royal-dark: #3a0e3b;
+      --royal: #881e62;
+      --royal-mid: #631248;
+      --royal-dark: #400732;
+      --royal-deep: #300424;
+      --royal-light: #b8337a;
       --gold: #c9a84c;
       --gold-light: #f5cf62;
       --gold-dark: #a17822;
@@ -279,7 +281,7 @@ import {
 
     /* ══ NOTIFICATION BAR (SMOOTH FADE & SLIDE) ══ */
     .notif-bar {
-      background: #551756;
+      background: linear-gradient(90deg, #400732 0%, #881e62 50%, #400732 100%);
       color: #ffffff;
       min-height: 38px;
       display: flex;
@@ -455,7 +457,7 @@ import {
     /* ══ 1. EXACT LEADSPACE LAYOUT (From Reference Banner Template) ══ */
     .ls-wrapper {
       width: 100%;
-      background: var(--royal-dark);
+      background: #400732;
       padding: 0;
       margin: 0;
       display: flex;
@@ -469,7 +471,7 @@ import {
       width: 100%;
       max-width: 100%;
       min-height: 520px;
-      background: var(--royal-dark);
+      background: #400732;
       border-radius: 0;
       overflow: hidden;
       display: flex;
@@ -480,7 +482,7 @@ import {
       border-right: none;
     }
 
-    /* Left Content Pane (Angular Cut with unified royal-dark to royal gradient) */
+    /* Left Content Pane (Angular Cut with rich brand gradient from logo) */
     .ls-content-pane {
       position: relative;
       flex: 1.25;
@@ -489,7 +491,7 @@ import {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: linear-gradient(135deg, #3a0e3b 0%, #2e092f 65%, #240625 100%);
+      background: linear-gradient(135deg, #38072e 0%, #631248 45%, #881e62 85%, #b8337a 100%);
       clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
       box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
     }
@@ -643,7 +645,7 @@ import {
       bottom: 0;
       left: 54%;
       width: 45px;
-      background: linear-gradient(to bottom, #501154, #320836);
+      background: linear-gradient(to bottom, #881e62, #400732);
       transform: skewX(-14deg);
       z-index: 2;
       opacity: 0.85;

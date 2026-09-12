@@ -3,14 +3,17 @@
 
 /* KASAVELLI Brand Palette */
 :root {
-  --royal:       #551756;   /* deep royal purple */
-  --gold:        #cab273;   /* antique gold      */
-  --cream:       #efebe1;   /* warm cream        */
-  --royal-dark:  #3a0e3b;   /* darker royal      */
-  --royal-mid:   #6e2370;   /* mid-tone purple   */
-  --gold-dark:   #a08a4a;   /* darker gold       */
-  --gold-light:  #ddc99a;   /* lighter gold      */
-  --cream-dark:  #ddd6c6;   /* darker cream      */
+  --royal:       #881e62;   /* rich brand magenta/purple */
+  --royal-dark:  #4a0a38;   /* deep rich magenta dark    */
+  --royal-deep:  #300424;   /* deep shadow tone          */
+  --royal-light: #b8337a;   /* luminous highlight magenta*/
+  --brand-grad:  linear-gradient(135deg, #400732 0%, #881e62 55%, #b8337a 100%);
+  --brand-radial: radial-gradient(circle at 80% 20%, #b8337a 0%, #881e62 50%, #400732 100%);
+  --gold:        #cab273;   /* antique gold              */
+  --cream:       #efebe1;   /* warm cream                */
+  --gold-dark:   #a08a4a;   /* darker gold               */
+  --gold-light:  #ddc99a;   /* lighter gold              */
+  --cream-dark:  #ddd6c6;   /* darker cream              */
   --white:       #ffffff;
   --text-dark:   #2a1a2e;   /* near-black with purple tint */
   --text-mid:    #5a4a5e;

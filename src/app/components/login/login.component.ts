@@ -19,7 +19,6 @@ import { LoginRequest } from '../../models/user.model';
           <img src="assets/images/kasavelli-logo.svg" alt="Kasavelli 925" class="auth-logo-img">
           <div class="auth-brand-names">
             <span class="auth-brand-title">KASAVELLI</span>
-            <span class="auth-brand-by">by Saranya</span>
           </div>
           <p class="auth-brand-subtitle">Pure 925 Sterling Silver Jewellery</p>
         </div>
@@ -202,12 +201,11 @@ import { LoginRequest } from '../../models/user.model';
       margin-bottom: 1.75rem;
     }
     .auth-logo-img {
-      width: 84px;
-      height: 84px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      border: 2px solid var(--gold);
-      box-shadow: 0 6px 20px rgba(58, 14, 59, 0.25);
-      object-fit: cover;
+      box-shadow: 0 6px 20px rgba(64, 7, 50, 0.25);
+      object-fit: contain;
       margin-bottom: 0.5rem;
     }
     .auth-brand-names {
@@ -224,12 +222,6 @@ import { LoginRequest } from '../../models/user.model';
       letter-spacing: 3.5px;
       color: var(--royal-dark);
       text-transform: uppercase;
-    }
-    .auth-brand-by {
-      font-family: 'Great Vibes', 'Alex Brush', cursive, serif;
-      font-size: 1.15rem;
-      color: var(--gold);
-      letter-spacing: 1.5px;
     }
     .auth-brand-subtitle {
       font-size: 0.8rem;
