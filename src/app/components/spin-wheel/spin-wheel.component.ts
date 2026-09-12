@@ -52,24 +52,28 @@ const SLICES: Slice[] = [
           </button>
         </div>
 
-        <!-- Result -->
-        <div class="sw-result" *ngIf="result">
-          <div class="sw-result-icon" [class.lucky]="result.percentage > 0">
-            {{ result.percentage > 0 ? '🎉' : '😊' }}
-          </div>
-          <h3 class="sw-result-title" *ngIf="result.percentage > 0">
+        <!-- Result — Won -->
+        <div class="sw-result" *ngIf="result && result.percentage > 0">
+          <div class="sw-result-icon lucky">🎉</div>
+          <h3 class="sw-result-title">
             You won <span>{{ result.label }}</span>!
           </h3>
-          <h3 class="sw-result-title sw-no-luck" *ngIf="result.percentage === 0">
-            Better Luck Next Time!
-          </h3>
-          <p class="sw-result-sub" *ngIf="result.percentage > 0">
+          <p class="sw-result-sub">
             Your <strong>{{ result.percentage }}% discount</strong> has been applied to your cart automatically.
-          </p>
-          <p class="sw-result-sub" *ngIf="result.percentage === 0">
-            No worries — our products are already the best value around!
+            Valid for 24 hours.
           </p>
           <button class="sw-done-btn" (click)="dismiss()">Start Shopping</button>
+        </div>
+
+        <!-- Result — Better Luck: show wheel again with Try Again -->
+        <div class="sw-result" *ngIf="result && result.percentage === 0">
+          <div class="sw-result-icon">😊</div>
+          <h3 class="sw-result-title sw-no-luck">Better Luck Next Time!</h3>
+          <p class="sw-result-sub">Don't give up — spin again for a chance to win!</p>
+          <button class="sw-spin-btn sw-tryagain-btn" (click)="tryAgain()">
+            🔄 &nbsp;Spin Again
+          </button>
+          <button class="sw-skip-btn" (click)="dismiss()">No thanks, skip</button>
         </div>
 
       </div>
@@ -174,6 +178,28 @@ const SLICES: Slice[] = [
       cursor: pointer; transition: background 0.25s;
     }
     .sw-done-btn:hover { background: #3a0e3b; }
+
+    .sw-tryagain-btn {
+      display: inline-block;
+      margin: 0 auto 0.75rem;
+      background: #551756; color: #e8c547;
+      border: none; border-radius: 50px;
+      padding: 0.75rem 2.2rem;
+      font-size: 0.85rem; font-weight: 800; letter-spacing: 1.5px;
+      cursor: pointer; transition: background 0.25s, transform 0.1s;
+    }
+    .sw-tryagain-btn:hover { background: #3a0e3b; transform: scale(1.04); }
+
+    .sw-skip-btn {
+      display: block;
+      background: none; border: none;
+      color: #aaa; font-size: 0.78rem;
+      cursor: pointer; margin: 0 auto;
+      text-decoration: underline;
+      font-family: inherit;
+      transition: color 0.2s;
+    }
+    .sw-skip-btn:hover { color: #888; }
   `]
 })
 export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -263,10 +289,26 @@ export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
     this.animFrameId = requestAnimationFrame(animate);
   }
 
+  /** User won nothing — reset wheel so they can spin again immediately */
+  tryAgain(): void {
+    this.result = null;
+    this.spinning = false;
+    // Redraw the wheel in its current position
+    setTimeout(() => this.drawWheel(this.currentAngle), 50);
+  }
+
   dismiss(): void {
-    // If user closes without spinning, record pct=0 so wheel doesn't show again this login
+    // Only record pct=0 (blocking re-show) if they closed WITHOUT ever spinning
+    // OR if they deliberately skipped after a Better Luck result.
+    // If they won a discount, the DB already has pct>0 saved by saveResult().
     if (!this.result) {
       this.spinService.saveResult(0, 'No spin').subscribe(() => {
+        this.authService.refreshCurrentUser();
+      });
+    } else if (this.result.percentage === 0) {
+      // Dismissed after Better Luck — save pct=0 so wheel doesn't re-popup
+      // on the NEXT page navigation within this session, but clears after 24h.
+      this.spinService.saveResult(0, 'Better Luck').subscribe(() => {
         this.authService.refreshCurrentUser();
       });
     }
