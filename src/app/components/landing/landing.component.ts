@@ -776,8 +776,12 @@ import {
       border: 1px solid rgba(201,148,26,0.2);
     }
     .about-badge-num {
-      font-family: 'Raleway', sans-serif;
-      font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--royal-dark);
+      line-height: 1;
+      letter-spacing: -0.5px;
     }
     .about-badge-lbl { font-size: 0.72rem; color: var(--text-light); line-height: 1.4; }
 
@@ -804,8 +808,12 @@ import {
     .astat { text-align: center; padding: 0 1.5rem; flex: 1; }
     .astat-n {
       display: block;
-      font-family: 'Raleway', sans-serif;
-      font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--royal-dark);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
     }
     .astat-l { font-size: 0.72rem; color: var(--text-light); margin-top: 0.25rem; display: block; }
     .astat-div { width: 1px; height: 36px; background: #e0d8e0; flex-shrink: 0; }

@@ -272,8 +272,8 @@ import { Product } from './models/product.model';
       </div>
     </footer>
 
-    <!-- ── Chatbot ───────────────────────────── -->
-    <app-chatbot></app-chatbot>
+    <!-- ── Chatbot (Disabled for now) ────────── -->
+    <!-- <app-chatbot></app-chatbot> -->
 
     <!-- ── Spin Wheel (once per login session) ── -->
     <app-spin-wheel *ngIf="showSpinWheel" (closed)="showSpinWheel = false"></app-spin-wheel>
