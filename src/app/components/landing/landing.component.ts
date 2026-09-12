@@ -13,7 +13,7 @@ import {
   imports: [CommonModule, RouterLink],
   template: `
 
-    <!-- ══ NOTIFICATION BAR (3D SPIN FLIP LIST) ═════════════════════════ -->
+    <!-- ══ NOTIFICATION BAR (SMOOTH FADE & SLIDE) ═══════════════════════ -->
     <div class="notif-bar" *ngIf="notifVisible && notificationList.length > 0">
       <button class="notif-nav-arrow notif-prev" (click)="prevNotif()" aria-label="Previous announcement" *ngIf="notificationList.length > 1">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
@@ -22,7 +22,7 @@ import {
       </button>
 
       <div class="notif-stage">
-        <div class="notif-spin-card" [class.spinning]="isSpinning">
+        <div class="notif-item" [class.visible]="notifVisibleState">
           <span class="notif-tag" *ngIf="currentNotif.tag">{{ currentNotif.tag }}</span>
           <span class="notif-text">{{ currentNotif.text }}</span>
         </div>
@@ -277,23 +277,21 @@ import {
       --text-light: #6b6b7b;
     }
 
-    /* ══ NOTIFICATION BAR (3D SPIN FLIP LIST) ══ */
+    /* ══ NOTIFICATION BAR (SMOOTH FADE & SLIDE) ══ */
     .notif-bar {
-      background: #2b052d;
-      background: linear-gradient(90deg, #1d031e 0%, #3a093b 30%, #551756 50%, #3a093b 70%, #1d031e 100%);
+      background: #551756;
       color: #ffffff;
-      min-height: 42px;
-      height: 42px;
+      min-height: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      padding: 0 50px;
+      padding: 0 52px;
       overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       z-index: 100;
-      border-bottom: 1.5px solid rgba(232, 197, 71, 0.45);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+      border-bottom: 1.5px solid rgba(232, 197, 71, 0.35);
     }
 
     .notif-stage {
@@ -303,62 +301,43 @@ import {
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 700px;
       text-align: center;
-      overflow: visible;
+      overflow: hidden;
+      position: relative;
     }
 
-    .notif-spin-card {
+    .notif-item {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      font-size: 0.85rem;
-      line-height: 1.25;
+      font-size: 0.83rem;
+      line-height: 1.3;
       letter-spacing: 0.3px;
       white-space: nowrap;
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
     }
 
-    .notif-spin-card.spinning {
-      animation: spinFlip3D 0.55s cubic-bezier(0.2, 0.85, 0.35, 1.2) forwards;
-    }
-
-    @keyframes spinFlip3D {
-      0% {
-        opacity: 0;
-        transform: rotateX(-90deg) translateY(18px) scale(0.9);
-      }
-      60% {
-        opacity: 1;
-        transform: rotateX(15deg) translateY(-3px) scale(1.02);
-      }
-      100% {
-        opacity: 1;
-        transform: rotateX(0deg) translateY(0) scale(1);
-      }
+    .notif-item.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .notif-tag {
-      font-weight: 800;
-      color: #3a0e3b;
-      background: linear-gradient(135deg, #f5cf62 0%, #e8c547 50%, #c9a84c 100%);
+      font-weight: 700;
+      color: #e8c547;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      letter-spacing: 0.6px;
+      font-size: 0.76rem;
       flex-shrink: 0;
       display: inline-block;
     }
 
     .notif-text {
-      font-weight: 600;
+      font-weight: 500;
       color: #ffffff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
       display: inline-block;
     }
 
@@ -1189,9 +1168,9 @@ export class LandingComponent implements OnInit, OnDestroy {
   story: StorySection | null = null;
   whyCards: WhyChooseCard[] = [];
 
-  // Notification 3D spin rotation state
+  // Notification smooth rotation state
   activeNotifIndex = 0;
-  isSpinning = true;
+  notifVisibleState = true;
   private notifTimer: any = null;
 
   constructor(private productService: ProductService) {}
@@ -1245,27 +1224,27 @@ export class LandingComponent implements OnInit, OnDestroy {
     if (this.notifTimer) clearInterval(this.notifTimer);
     this.notifTimer = setInterval(() => {
       this.nextNotif();
-    }, 4000);
+    }, 4500);
   }
 
   nextNotif(): void {
     const list = this.notificationList;
     if (list.length <= 1) return;
-    this.isSpinning = false;
+    this.notifVisibleState = false;
     setTimeout(() => {
       this.activeNotifIndex = (this.activeNotifIndex + 1) % list.length;
-      this.isSpinning = true;
-    }, 30);
+      this.notifVisibleState = true;
+    }, 350);
   }
 
   prevNotif(): void {
     const list = this.notificationList;
     if (list.length <= 1) return;
-    this.isSpinning = false;
+    this.notifVisibleState = false;
     setTimeout(() => {
       this.activeNotifIndex = (this.activeNotifIndex - 1 + list.length) % list.length;
-      this.isSpinning = true;
-    }, 30);
+      this.notifVisibleState = true;
+    }, 350);
   }
 
   /**
