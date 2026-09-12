@@ -25,10 +25,7 @@ import { Product } from './models/product.model';
         <!-- Logo -->
         <a routerLink="/" class="logo">
           <img src="assets/images/kasavelli-logo.svg" alt="KASAVELLI" class="logo-img">
-          <div class="logo-text-group">
-            <span class="logo-text">KASAVELLI</span>
-            <span class="logo-sub-tag">by Saranya</span>
-          </div>
+          <span class="logo-by-tag">by Saranya</span>
         </a>
 
         <!-- Desktop Nav -->
@@ -201,10 +198,7 @@ import { Product } from './models/product.model';
         <div class="footer-col brand-col">
           <div class="footer-logo">
             <img src="assets/images/kasavelli-logo.svg" alt="KASAVELLI" class="footer-logo-img">
-            <div class="footer-logo-group">
-              <span class="footer-logo-title">KASAVELLI</span>
-              <span class="footer-logo-sub">by Saranya</span>
-            </div>
+            <span class="footer-by-tag">by Saranya</span>
           </div>
           <p class="tagline">Premium 925 Silver Collection</p>
           <p class="footer-desc">Exquisite handcrafted silver jewellery, ethically sourced and made to last a lifetime.</p>
@@ -310,43 +304,29 @@ import { Product } from './models/product.model';
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 0.75rem;
       text-decoration: none;
       color: #ffffff;
       transition: opacity 0.2s;
     }
-    .logo:hover { opacity: 0.9; color: #ffffff; }
+    .logo:hover { opacity: 0.92; color: #ffffff; }
     .logo-img {
-      width: 46px;
-      height: 46px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
-      border: 1.5px solid rgba(232, 197, 71, 0.5);
-      object-fit: cover;
+      border: none;
+      box-shadow: none;
+      object-fit: contain;
     }
-    .logo-text-group {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      line-height: 1;
-    }
-    .logo-text {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      color: #ffffff;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-    }
-    .logo-sub-tag {
+    .logo-by-tag {
       font-family: 'Great Vibes', 'Alex Brush', 'Playfair Display', cursive, serif;
-      font-size: 0.98rem;
+      font-size: 1.55rem;
       font-weight: 400;
       letter-spacing: 1.5px;
       color: #e8c547;
-      margin-top: 2px;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      line-height: 1;
+      padding-top: 4px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     }
 
     /* Desktop Nav */
@@ -487,34 +467,23 @@ import { Product } from './models/product.model';
       border-bottom: 1px solid rgba(202,178,115,0.15);
     }
     .footer-logo {
-      display: flex; align-items: center; gap: 0.85rem;
+      display: flex; align-items: center; gap: 0.75rem;
       margin-bottom: 1rem;
     }
-    .footer-logo-group {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-    }
-    .footer-logo-title {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-    .footer-logo-sub {
-      font-family: 'Great Vibes', 'Alex Brush', cursive, serif;
-      font-size: 0.95rem;
-      color: #e8c547;
-      margin-top: 3px;
-      letter-spacing: 1.5px;
-    }
     .footer-logo-img {
-      width: 42px; height: 42px;
+      width: 46px; height: 46px;
       border-radius: 50%;
-      border: 1.5px solid rgba(232, 197, 71, 0.4);
-      object-fit: cover;
+      border: none;
+      box-shadow: none;
+      object-fit: contain;
+    }
+    .footer-by-tag {
+      font-family: 'Great Vibes', 'Alex Brush', cursive, serif;
+      font-size: 1.45rem;
+      color: #e8c547;
+      letter-spacing: 1.5px;
+      line-height: 1;
+      padding-top: 4px;
     }
     .tagline {
       font-size: 0.78rem;
