@@ -13,6 +13,7 @@ export interface SpinResult {
 @Injectable({ providedIn: 'root' })
 export class SpinWheelService {
   private apiUrl = `${environment.apiUrl}/users/users/save_spin/`;
+  private slicesUrl = `${environment.apiUrl}/notifications/spin-wheel-slices/`;
 
   private resultSubject = new BehaviorSubject<SpinResult | null>(null);
   result$ = this.resultSubject.asObservable();
@@ -71,6 +72,16 @@ export class SpinWheelService {
         // Still update local state even if API fails
         this.resultSubject.next({ percentage, label, expiresAt: null });
         return of(null);
+      })
+    );
+  }
+
+  /** Fetch dynamic active slices from API with fallback */
+  getActiveSlices(): Observable<any[]> {
+    return this.http.get<any[]>(this.slicesUrl).pipe(
+      catchError(err => {
+        console.warn('Could not fetch dynamic spin wheel slices, using defaults:', err);
+        return of([]);
       })
     );
   }

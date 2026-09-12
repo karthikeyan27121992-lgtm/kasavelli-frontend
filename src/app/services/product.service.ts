@@ -5,7 +5,8 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import {
   Product, Category, ProductReview, Banner,
-  NotificationBar, LeadspaceBanner, StorySection, WhyChooseCard, HomepageConfig
+  NotificationBar, LeadspaceBanner, StorySection, WhyChooseCard,
+  SpinWheelSlice, HomepageConfig
 } from '../models/product.model';
 
 @Injectable({
@@ -184,6 +185,23 @@ export class ProductService {
 
   deleteWhyChooseCard(id: number): Observable<void> {
     return this.http.delete<void>(`${this.notifUrl}/why-choose-cards/${id}/`);
+  }
+
+  // ── Spin Wheel Slices ──
+  getSpinWheelSlices(): Observable<SpinWheelSlice[]> {
+    return this.http.get<SpinWheelSlice[]>(`${this.notifUrl}/spin-wheel-slices/`);
+  }
+
+  createSpinWheelSlice(data: Partial<SpinWheelSlice>): Observable<SpinWheelSlice> {
+    return this.http.post<SpinWheelSlice>(`${this.notifUrl}/spin-wheel-slices/`, data);
+  }
+
+  updateSpinWheelSlice(id: number, data: Partial<SpinWheelSlice>): Observable<SpinWheelSlice> {
+    return this.http.patch<SpinWheelSlice>(`${this.notifUrl}/spin-wheel-slices/${id}/`, data);
+  }
+
+  deleteSpinWheelSlice(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.notifUrl}/spin-wheel-slices/${id}/`);
   }
 }
 

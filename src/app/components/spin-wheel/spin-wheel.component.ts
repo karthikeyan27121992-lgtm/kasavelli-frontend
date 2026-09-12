@@ -192,7 +192,25 @@ export class SpinWheelComponent implements OnInit, AfterViewInit, OnDestroy {
     public authService: AuthService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadSlices();
+  }
+
+  loadSlices(): void {
+    this.spinService.getActiveSlices().subscribe((dynamicSlices) => {
+      if (dynamicSlices && dynamicSlices.length >= 2) {
+        this.slices = dynamicSlices.map(s => ({
+          label: s.label,
+          percentage: Number(s.percentage),
+          color: s.color || '#551756',
+          textColor: s.text_color || '#e8c547'
+        }));
+        if (this.canvasRef?.nativeElement) {
+          this.drawWheel(this.currentAngle);
+        }
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.drawWheel(0);

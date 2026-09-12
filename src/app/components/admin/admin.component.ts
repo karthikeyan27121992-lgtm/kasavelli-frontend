@@ -43,6 +43,10 @@ import {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
           Why Choose Us
         </button>
+        <button class="tab-btn" [class.active]="activeTab === 'spin-wheel'" (click)="switchTab('spin-wheel')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07 19.07 4.93"/></svg>
+          Spin Wheel Slices
+        </button>
       </div>
 
       <!-- ══════════════ 1. PRODUCTS TAB ══════════════ -->
@@ -489,6 +493,71 @@ import {
         </div>
       </div>
 
+      <!-- ══════════════ 7. SPIN WHEEL SLICES TAB ══════════════ -->
+      <div class="tab-content" *ngIf="activeTab === 'spin-wheel'">
+        <div class="section-bar">
+          <div class="section-bar-left">
+            <h3 class="section-title">Spin Wheel Slices</h3>
+            <span class="section-count">{{ spinSlices.length }} slice{{ spinSlices.length !== 1 ? 's' : '' }}</span>
+          </div>
+          <button class="btn-add" (click)="openAddSpinSliceModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Slice
+          </button>
+        </div>
+
+        <div class="table-wrap" *ngIf="spinSlices.length > 0">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Label</th>
+                <th>Discount %</th>
+                <th>Preview Color</th>
+                <th>Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let slice of spinSlices">
+                <td><span class="order-badge">#{{ slice.display_order }}</span></td>
+                <td><strong>{{ slice.label }}</strong></td>
+                <td>
+                  <span class="pct-pill" [class.zero-pct]="slice.percentage === 0">
+                    {{ slice.percentage > 0 ? slice.percentage + '% OFF' : 'No Discount (Better Luck)' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="slice-preview-pill" [style.background-color]="slice.color" [style.color]="slice.text_color">
+                    {{ slice.label }}
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge" [class.active]="slice.is_active" [class.inactive]="!slice.is_active">
+                    {{ slice.is_active ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-action edit" (click)="editSpinSlice(slice)" title="Edit">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn-action delete" (click)="deleteSpinSlice(slice.id)" title="Delete">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" *ngIf="spinSlices.length === 0">
+          <p>No spin wheel slices configured yet. Add slices to customize the wheel discounts.</p>
+          <button class="btn-add" (click)="openAddSpinSliceModal()">Add First Slice</button>
+        </div>
+      </div>
+
       <!-- ══════════════ MODALS ══════════════ -->
 
       <!-- 1. Product Modal -->
@@ -715,6 +784,74 @@ import {
                 <button type="button" class="btn btn-secondary" (click)="closeWhyCardModal()">Cancel</button>
                 <button type="submit" class="btn btn-primary" [disabled]="saving">
                   {{ saving ? 'Saving...' : (editingWhyCard ? 'Update Card' : 'Add Card') }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Spin Wheel Slice Modal -->
+      <div class="modal-overlay" *ngIf="showSpinSliceModal" (click)="closeSpinSliceModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>{{ editingSpinSlice ? 'Edit Spin Wheel Slice' : 'Add Spin Wheel Slice' }}</h3>
+            <button class="close-btn" (click)="closeSpinSliceModal()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="saveSpinSlice()">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Slice Label</label>
+                  <input type="text" class="form-control" [(ngModel)]="spinSliceData.label" name="sw_label" placeholder="e.g. 10% OFF or Better Luck!" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Discount Percentage (%)</label>
+                  <input type="number" class="form-control" [(ngModel)]="spinSliceData.percentage" name="sw_pct" min="0" max="100" placeholder="0 for Better Luck" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Background Color</label>
+                  <div class="color-picker-wrap">
+                    <input type="color" [(ngModel)]="spinSliceData.color" name="sw_color_p">
+                    <input type="text" class="form-control" [(ngModel)]="spinSliceData.color" name="sw_color" placeholder="#551756">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Text Color</label>
+                  <div class="color-picker-wrap">
+                    <input type="color" [(ngModel)]="spinSliceData.text_color" name="sw_tcolor_p">
+                    <input type="text" class="form-control" [(ngModel)]="spinSliceData.text_color" name="sw_tcolor" placeholder="#e8c547">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Slice Live Preview</label>
+                <div class="slice-live-preview" [style.background-color]="spinSliceData.color" [style.color]="spinSliceData.text_color">
+                  {{ spinSliceData.label || 'Preview' }}
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Display Order</label>
+                  <input type="number" class="form-control" [(ngModel)]="spinSliceData.display_order" name="sw_order" required>
+                </div>
+                <div class="form-group checkbox-align">
+                  <label class="form-label checkbox-label">
+                    <input type="checkbox" [(ngModel)]="spinSliceData.is_active" name="sw_active">
+                    <span>Active</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeSpinSliceModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="saving">
+                  {{ saving ? 'Saving...' : (editingSpinSlice ? 'Update Slice' : 'Add Slice') }}
                 </button>
               </div>
             </form>
@@ -1064,6 +1201,60 @@ import {
       border-top: 1px solid var(--border);
     }
 
+    .color-picker-wrap {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .color-picker-wrap input[type="color"] {
+      width: 42px;
+      height: 40px;
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .slice-live-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .slice-preview-pill {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .pct-pill {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      background: #fdf6e2;
+      color: #946800;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border-radius: 12px;
+      border: 1px solid #e8c547;
+    }
+    .pct-pill.zero-pct {
+      background: #f1f0f4;
+      color: #716e7a;
+      border-color: #d2cfda;
+    }
+
     /* Modal styles */
     .modal-overlay {
       position: fixed;
@@ -1190,13 +1381,14 @@ import {
   `]
 })
 export class AdminComponent implements OnInit {
-  activeTab: 'products' | 'categories' | 'notifications' | 'leadspace' | 'story' | 'why-choose' = 'products';
+  activeTab: 'products' | 'categories' | 'notifications' | 'leadspace' | 'story' | 'why-choose' | 'spin-wheel' = 'products';
   
   // Data lists
   products: Product[] = [];
   categories: Category[] = [];
   notificationBars: NotificationBar[] = [];
   whyCards: WhyChooseCard[] = [];
+  spinSlices: any[] = [];
   
   // Single-record forms
   leadspaceData: LeadspaceBanner | null = null;
@@ -1233,6 +1425,13 @@ export class AdminComponent implements OnInit {
     title: '', description: '', icon_type: 'shield', display_order: 1, is_active: true
   };
 
+  showSpinSliceModal = false;
+  editingSpinSlice: any = null;
+  spinSliceData: any = {
+    label: '', percentage: 0, color: '#551756', text_color: '#e8c547',
+    display_order: 1, is_active: true
+  };
+
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
@@ -1240,7 +1439,7 @@ export class AdminComponent implements OnInit {
     this.loadProducts();
   }
 
-  switchTab(tab: 'products' | 'categories' | 'notifications' | 'leadspace' | 'story' | 'why-choose'): void {
+  switchTab(tab: 'products' | 'categories' | 'notifications' | 'leadspace' | 'story' | 'why-choose' | 'spin-wheel'): void {
     this.activeTab = tab;
     if (tab === 'products') this.loadProducts();
     else if (tab === 'categories') this.loadCategories();
@@ -1248,6 +1447,7 @@ export class AdminComponent implements OnInit {
     else if (tab === 'leadspace') this.loadLeadspace();
     else if (tab === 'story') this.loadStory();
     else if (tab === 'why-choose') this.loadWhyCards();
+    else if (tab === 'spin-wheel') this.loadSpinSlices();
   }
 
   // ── 1. Products ──
@@ -1677,6 +1877,71 @@ export class AdminComponent implements OnInit {
           this.loadWhyCards();
         },
         error: (err) => console.error('Error deleting card:', err)
+      });
+    }
+  }
+
+  // ── 7. Spin Wheel Slices ──
+  loadSpinSlices(): void {
+    this.productService.getSpinWheelSlices().subscribe({
+      next: (slices) => this.spinSlices = slices,
+      error: (err) => console.error('Error loading spin slices:', err)
+    });
+  }
+
+  openAddSpinSliceModal(): void {
+    this.editingSpinSlice = null;
+    this.spinSliceData = {
+      label: '',
+      percentage: 0,
+      color: '#551756',
+      text_color: '#e8c547',
+      display_order: this.spinSlices.length + 1,
+      is_active: true
+    };
+    this.showSpinSliceModal = true;
+  }
+
+  editSpinSlice(slice: any): void {
+    this.editingSpinSlice = slice;
+    this.spinSliceData = { ...slice };
+    this.showSpinSliceModal = true;
+  }
+
+  closeSpinSliceModal(): void {
+    this.showSpinSliceModal = false;
+    this.editingSpinSlice = null;
+  }
+
+  saveSpinSlice(): void {
+    this.saving = true;
+    const req = this.editingSpinSlice
+      ? this.productService.updateSpinWheelSlice(this.editingSpinSlice.id, this.spinSliceData)
+      : this.productService.createSpinWheelSlice(this.spinSliceData);
+
+    req.subscribe({
+      next: () => {
+        this.saving = false;
+        alert(this.editingSpinSlice ? 'Spin slice updated!' : 'Spin slice added!');
+        this.closeSpinSliceModal();
+        this.loadSpinSlices();
+      },
+      error: (err) => {
+        this.saving = false;
+        console.error('Error saving spin slice:', err);
+        alert('Failed to save spin wheel slice');
+      }
+    });
+  }
+
+  deleteSpinSlice(id: number): void {
+    if (confirm('Are you sure you want to delete this slice?')) {
+      this.productService.deleteSpinWheelSlice(id).subscribe({
+        next: () => {
+          alert('Slice deleted successfully');
+          this.loadSpinSlices();
+        },
+        error: (err) => console.error('Error deleting slice:', err)
       });
     }
   }

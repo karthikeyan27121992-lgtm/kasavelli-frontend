@@ -158,11 +158,24 @@ export interface WhyChooseCard {
   updated_at?: string;
 }
 
+export interface SpinWheelSlice {
+  id: number;
+  label: string;
+  percentage: number;
+  color: string;
+  text_color: string;
+  display_order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface HomepageConfig {
   notifications: NotificationBar[];
   leadspace: LeadspaceBanner | null;
   story: StorySection | null;
   why_choose_cards: WhyChooseCard[];
+  spin_wheel_slices: SpinWheelSlice[];
 }
 
 // Made with Bob
