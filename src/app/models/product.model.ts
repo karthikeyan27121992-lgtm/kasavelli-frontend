@@ -116,6 +116,9 @@ export interface LeadspaceBanner {
   offer_label?: string;
   button_text: string;
   button_link: string;
+  trust_tag1?: string;
+  trust_tag2?: string;
+  trust_tag3?: string;
   image?: string;
   image_url?: string;
   is_active: boolean;

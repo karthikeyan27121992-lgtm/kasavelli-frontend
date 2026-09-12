@@ -23,7 +23,6 @@ import {
 
       <div class="notif-stage">
         <div class="notif-item" [class.visible]="notifVisibleState">
-          <!-- Delivery Van Icon in notification ticker -->
           <svg class="notif-truck-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
             <rect x="1" y="3" width="15" height="13" rx="1"/>
             <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
@@ -46,88 +45,62 @@ import {
 
     <div class="landing">
 
-      <!-- ══ 1. LEADSPACE BANNER (Seamless Full-Width Hero Background with Soft Gradient Fade) ════ -->
+      <!-- ══ 1. LEADSPACE BANNER (Exact Layout: Split with Angular Ribbon & Image Side) ════ -->
       <section class="ls-wrapper" *ngIf="leadspace?.is_active !== false">
-        <div class="ls-split-card">
-          <!-- Left Text Content Side -->
-          <div class="ls-text-side">
-            <!-- Kasavelli Silver Capsule Badge -->
+        <div class="ls-banner-card">
+          <!-- Left: Angular Content Area with Brand Graphics -->
+          <div class="ls-content-pane">
             <div class="ls-brand-badge">
               <span class="ls-brand-sparkle">✦</span>
               <span class="ls-brand-text">KASAVELLI SILVER</span>
             </div>
 
-            <!-- Eyebrow & Headline -->
             <div class="ls-header-group">
-              <p class="ls-eyebrow">{{ leadspace?.eyebrow || 'NEW COLLECTION · 2026' }}</p>
+              <p class="ls-eyebrow">{{ leadspace?.eyebrow || 'New Collection · 2026' }}</p>
               <h1 class="ls-title" [innerHTML]="formattedTitle"></h1>
             </div>
 
-            <!-- Subtitle / Narrative Description -->
-            <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian Vanki rings, handpicked in 925 sterling silver.' }}</p>
+            <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian finger rings, handcrafted in 925 sterling silver.' }}</p>
             <p class="ls-desc ls-desc-sub" *ngIf="leadspace?.desc_line2">{{ leadspace?.desc_line2 }}</p>
 
-            <!-- Call to Action Button & Offer -->
             <div class="ls-action-row">
+              <div class="ls-offer-pill" *ngIf="leadspace?.offer_pct || leadspace?.offer_label">
+                <span class="ls-offer-val" *ngIf="leadspace?.offer_pct">{{ leadspace?.offer_pct }}</span>
+                <span class="ls-offer-txt" *ngIf="leadspace?.offer_label">{{ leadspace?.offer_label }}</span>
+              </div>
               <a [routerLink]="leadspace?.button_link || '/products'" class="ls-cta-btn">
-                <span>{{ leadspace?.button_text || 'SHOP NOW' }}</span>
+                <span>{{ leadspace?.button_text || 'Shop Now' }}</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
               </a>
-
-              <div class="ls-offer-pill" *ngIf="leadspace?.offer_pct || leadspace?.offer_label">
-                <span class="ls-offer-val" *ngIf="leadspace?.offer_pct">{{ leadspace?.offer_pct }}</span>
-                <span class="ls-offer-txt" *ngIf="leadspace?.offer_label">{{ leadspace?.offer_label }}</span>
-              </div>
             </div>
 
-            <!-- Trust Features with Crisp Geometric Gold Icons -->
-            <div class="ls-trust-row">
-              <!-- 925 Certified Shield -->
-              <div class="ls-trust-item">
-                <svg class="ls-trust-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                  <polyline points="9 12 11 14 15 10"/>
-                </svg>
-                <span>925 Certified</span>
-              </div>
-
-              <div class="ls-trust-divider"></div>
-
-              <!-- Free Shipping Truck -->
-              <div class="ls-trust-item">
-                <svg class="ls-trust-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2">
-                  <rect x="1" y="3" width="15" height="13" rx="1"/>
-                  <polygon points="16 8 20 8 23 11 23 16 16 16 8"/>
-                  <circle cx="5.5" cy="18.5" r="2.5"/>
-                  <circle cx="18.5" cy="18.5" r="2.5"/>
-                </svg>
-                <span>Free Shipping</span>
-              </div>
-
-              <div class="ls-trust-divider"></div>
-
-              <!-- Easy Returns Rotating Clockwise Arrow -->
-              <div class="ls-trust-item">
-                <svg class="ls-trust-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2">
-                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                  <path d="M3 3v5h5"/>
-                  <path d="M12 7v5l3 3"/>
-                </svg>
-                <span>Easy Returns</span>
-              </div>
+            <!-- Footer Trust Tags (editable from admin via Leadspace Banner) -->
+            <div class="ls-footer-tags" *ngIf="leadspace?.trust_tag1 || leadspace?.trust_tag2 || leadspace?.trust_tag3">
+              <span class="ls-tag" *ngIf="leadspace?.trust_tag1"><span class="ls-dot">●</span> {{ leadspace?.trust_tag1 }}</span>
+              <span class="ls-tag" *ngIf="leadspace?.trust_tag2"><span class="ls-dot">●</span> {{ leadspace?.trust_tag2 }}</span>
+              <span class="ls-tag" *ngIf="leadspace?.trust_tag3"><span class="ls-dot">●</span> {{ leadspace?.trust_tag3 }}</span>
+            </div>
+            <!-- Fallback when no leadspace loaded yet -->
+            <div class="ls-footer-tags" *ngIf="!leadspace">
+              <span class="ls-tag"><span class="ls-dot">●</span> 925 Certified</span>
+              <span class="ls-tag"><span class="ls-dot">●</span> Free Shipping</span>
+              <span class="ls-tag"><span class="ls-dot">●</span> Easy Returns</span>
             </div>
           </div>
 
-          <!-- Right Showcase Image Side -->
-          <div class="ls-img-side">
-            <img [src]="leadspace?.image || 'assets/images/vanki-ring.webp'"
-                 [alt]="leadspace?.title || 'Kasavelli Jewellery'"
-                 class="ls-product-img">
-            <!-- Smooth Feathered Edge Blending into Left Gradient -->
-            <div class="ls-img-feather"></div>
+          <!-- Angular Cutout Separator & Slanted Accent Ribbons -->
+          <div class="ls-slant-divider"></div>
+          <div class="ls-gold-accent-strip"></div>
+
+          <!-- Right: Image Showcase Area -->
+          <div class="ls-image-pane">
+            <img [src]="leadspace?.image || 'assets/images/vanki-ring.webp'" 
+                 [alt]="leadspace?.title || 'Kasavelli Jewellery'" 
+                 class="ls-hero-img">
+            <div class="ls-image-overlay"></div>
           </div>
         </div>
       </section>
@@ -138,7 +111,7 @@ import {
           <div class="sec-head">
             <h2>Shop by Category</h2>
             <div class="sec-line"></div>
-            <p class="sec-sub">Discover our handpicked silver collections</p>
+            <p class="sec-sub">Discover our handcrafted silver collections</p>
           </div>
           <div class="cat-grid">
             <div class="cat-card" *ngFor="let cat of categories"
@@ -179,7 +152,7 @@ import {
           <div class="about-text-col">
             <p class="about-eyebrow">{{ story?.eyebrow || 'Our Story' }}</p>
             <h2 class="about-title" [innerHTML]="formattedStoryTitle"></h2>
-            <p class="about-desc">{{ story?.paragraph_1 || 'Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handpicked by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.' }}</p>
+            <p class="about-desc">{{ story?.paragraph_1 || 'Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handcrafted by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.' }}</p>
             <p class="about-desc" *ngIf="story?.paragraph_2">{{ story?.paragraph_2 }}</p>
             <div class="about-stats">
               <div class="astat">
@@ -304,11 +277,9 @@ import {
   styles: [`
     /* ══ CSS VARIABLES ══ */
     :host {
-      --royal: #881e62;
-      --royal-mid: #631248;
-      --royal-dark: #400732;
-      --royal-deep: #300424;
-      --royal-light: #b8337a;
+      --royal: #551756;
+      --royal-mid: #3e0e3f;
+      --royal-dark: #2a072c;
       --gold: #c9a84c;
       --gold-light: #f5cf62;
       --gold-dark: #a17822;
@@ -385,6 +356,11 @@ import {
       font-size: inherit;
     }
 
+    .notif-truck-icon {
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
     .notif-nav-arrow {
       position: absolute;
       top: 50%;
@@ -411,13 +387,8 @@ import {
       transform: translateY(-50%) scale(1.1);
     }
 
-    .notif-prev {
-      left: 14px;
-    }
-
-    .notif-next {
-      right: 44px;
-    }
+    .notif-prev { left: 14px; }
+    .notif-next { right: 44px; }
 
     .notif-close {
       position: absolute;
@@ -455,26 +426,11 @@ import {
         line-height: 1.25;
         gap: 4px;
       }
-      .notif-tag {
-        font-size: 0.62rem;
-        padding: 1px 4px;
-      }
-      .notif-nav-arrow {
-        width: 20px;
-        height: 20px;
-      }
-      .notif-prev {
-        left: 4px;
-      }
-      .notif-next {
-        right: 26px;
-      }
-      .notif-close {
-        right: 4px;
-        width: 18px;
-        height: 18px;
-        font-size: 0.65rem;
-      }
+      .notif-tag { font-size: 0.62rem; padding: 1px 4px; }
+      .notif-nav-arrow { width: 20px; height: 20px; }
+      .notif-prev { left: 4px; }
+      .notif-next { right: 26px; }
+      .notif-close { right: 4px; width: 18px; height: 18px; font-size: 0.65rem; }
     }
 
     /* ══ SHARED ══ */
@@ -493,87 +449,61 @@ import {
     }
     .sec-sub { color: var(--text-light); font-size: 0.95rem; }
 
-    /* ══ 1. EXACT LEADSPACE LAYOUT (Split Card Showcase) ══ */
+    /* ══ 1. FULL-WIDTH LEADSPACE LAYOUT ══ */
     .ls-wrapper {
       width: 100%;
-      background: #2b0422;
+      background: #180319;
       padding: 0;
       margin: 0;
-      position: relative;
-      overflow: hidden;
+      display: block;
+      box-sizing: border-box;
     }
 
-    .ls-split-card {
-      display: flex;
+    .ls-banner-card {
+      position: relative;
       width: 100%;
+      max-width: 100%;
       min-height: 520px;
-      background: #2b0422;
-      position: relative;
+      background: #250628;
+      border-radius: 0;
       overflow: hidden;
+      display: flex;
+      box-shadow: none;
+      border: none;
     }
 
-    /* Left Text Content Side */
-    .ls-text-side {
-      flex: 1.15;
-      padding: 3.5rem 1.5rem 3.5rem clamp(1.5rem, 5vw, 4.5rem);
-      background: linear-gradient(135deg, #2b0422 0%, #35072a 60%, #440936 100%);
+    /* Left Content Pane (Angular Cut with dark maroon-purple gradient) */
+    .ls-content-pane {
+      position: relative;
+      flex: 1.25;
+      z-index: 3;
+      padding: 3.5rem 4.5rem 3.5rem 4rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      z-index: 2;
+      background: linear-gradient(135deg, #300832 0%, #200422 65%, #18031a 100%);
+      clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
+      box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
     }
 
-    /* Right Showcase Image Side */
-    .ls-img-side {
-      flex: 1.35;
-      position: relative;
-      min-height: 100%;
-      background: #1e0218;
-      overflow: hidden;
-    }
-
-    .ls-product-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      display: block;
-      transition: transform 0.6s ease;
-    }
-
-    .ls-split-card:hover .ls-product-img {
-      transform: scale(1.03);
-    }
-
-    /* Smooth Feathered Gradient Edge between text side and image */
-    .ls-img-feather {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 100px;
-      background: linear-gradient(90deg, #440936 0%, rgba(68, 9, 54, 0.45) 50%, transparent 100%);
-      pointer-events: none;
-    }
-
-    /* Decorative Brand Capsule Badge */
+    /* Decorative Brand Logo/Sparkle Top */
     .ls-brand-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       background: rgba(245, 207, 98, 0.12);
-      border: 1.5px solid rgba(245, 207, 98, 0.55);
-      padding: 0.35rem 0.95rem;
-      border-radius: 24px;
+      border: 1px solid rgba(245, 207, 98, 0.35);
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
       width: fit-content;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.5rem;
     }
     .ls-brand-sparkle {
-      color: #f5cf62;
+      color: var(--gold-light);
       font-size: 0.85rem;
     }
     .ls-brand-text {
-      color: #f5cf62;
+      color: var(--gold-light);
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 2px;
@@ -582,73 +512,50 @@ import {
 
     /* Header Group */
     .ls-header-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
     .ls-eyebrow {
       font-size: 0.78rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #f5cf62;
+      color: var(--gold-light);
       font-weight: 700;
       margin: 0 0 0.5rem;
     }
     .ls-title {
-      font-family: 'Playfair Display', 'Cinzel', 'Bodoni MT', Georgia, serif;
-      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
-      font-weight: 700;
-      line-height: 1.08;
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
       color: #ffffff;
       margin: 0;
-      letter-spacing: 0.5px;
-      text-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
+      letter-spacing: -0.5px;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
     }
 
     /* Description Texts */
     .ls-desc {
-      color: rgba(249, 245, 239, 0.92);
-      font-size: 1.02rem;
+      color: rgba(249, 245, 239, 0.9);
+      font-size: 1rem;
       line-height: 1.6;
       margin: 0 0 0.4rem;
-      max-width: 480px;
+      max-width: 520px;
       font-weight: 300;
     }
     .ls-desc-sub {
-      color: rgba(249, 245, 239, 0.78);
+      color: rgba(249, 245, 239, 0.75);
       font-size: 0.92rem;
       margin-bottom: 1.5rem;
     }
 
-    /* Action Row: Button & Offer */
+    /* Action Row: Offer & Button */
     .ls-action-row {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
-      margin-top: 0.8rem;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
       margin-bottom: 2rem;
       flex-wrap: wrap;
-    }
-
-    .ls-cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.65rem;
-      background: linear-gradient(135deg, #fce18b 0%, #e8c547 50%, #cfa030 100%);
-      color: #2b0422;
-      font-family: 'Raleway', sans-serif;
-      font-weight: 800;
-      font-size: 0.88rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 0.95rem 2.2rem;
-      border-radius: 8px;
-      text-decoration: none;
-      box-shadow: 0 8px 24px rgba(245, 207, 98, 0.4);
-      transition: all 0.3s ease;
-    }
-    .ls-cta-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(245, 207, 98, 0.6);
-      background: linear-gradient(135deg, #fff0a8 0%, #f5cf62 50%, #dbaf3b 100%);
     }
 
     .ls-offer-pill {
@@ -656,7 +563,7 @@ import {
       align-items: center;
       gap: 0.6rem;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px dashed #f5cf62;
+      border: 1px dashed var(--gold);
       padding: 0.5rem 1.1rem;
       border-radius: 8px;
     }
@@ -664,7 +571,7 @@ import {
       font-family: 'Raleway', sans-serif;
       font-size: 1.4rem;
       font-weight: 800;
-      color: #f5cf62;
+      color: var(--gold-light);
     }
     .ls-offer-txt {
       font-size: 0.75rem;
@@ -676,37 +583,98 @@ import {
       line-height: 1.3;
     }
 
-    /* Trust Features Row */
-    .ls-trust-row {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      padding-top: 1rem;
-      flex-wrap: wrap;
-    }
-    .ls-trust-item {
+    .ls-cta-btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.55rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: rgba(255, 255, 255, 0.95);
+      gap: 0.6rem;
+      background: linear-gradient(135deg, #f5cf62 0%, #c9a84c 100%);
+      color: #1a031d;
+      font-weight: 800;
+      font-size: 0.88rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.95rem 2.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(245, 207, 98, 0.35);
+      transition: all 0.3s ease;
     }
-    .ls-trust-icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-    .ls-trust-divider {
-      width: 1px;
-      height: 18px;
-      background: rgba(245, 207, 98, 0.4);
+    .ls-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(245, 207, 98, 0.5);
+      background: linear-gradient(135deg, #fae08c 0%, #dbba5d 100%);
     }
 
-    .notif-truck-icon {
-      margin-right: 4px;
-      flex-shrink: 0;
+    /* Footer Trust Tags */
+    .ls-footer-tags {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      max-width: 480px;
+    }
+    .ls-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.76rem;
+      color: rgba(245, 207, 98, 0.9);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .ls-dot {
+      font-size: 0.5rem;
+      color: var(--gold);
+    }
+
+    /* Slanted Accent Ribbons */
+    .ls-slant-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 54%;
+      width: 45px;
+      background: linear-gradient(to bottom, #200422, #200422);
+      transform: skewX(-14deg);
+      z-index: 2;
+      opacity: 1;
+    }
+    .ls-gold-accent-strip {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 56.5%;
+      width: 6px;
+      background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
+      transform: skewX(-14deg);
+      z-index: 2;
+    }
+
+    /* Right Image Showcase Pane */
+    .ls-image-pane {
+      position: relative;
+      flex: 1;
+      min-height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      margin-left: -5%;
+    }
+    .ls-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      transition: transform 0.6s ease;
+    }
+    .ls-banner-card:hover .ls-hero-img {
+      transform: scale(1.03);
+    }
+    .ls-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(37, 6, 40, 0.5) 0%, transparent 60%);
+      pointer-events: none;
     }
 
     /* ══ 2. CATEGORIES ══ */
@@ -718,27 +686,13 @@ import {
     }
     .cat-card {
       background: #faf8f5; border-radius: 12px; overflow: hidden;
-      cursor: pointer; transition: all 0.35s ease;
-      position: relative;
-      border: 1.5px solid rgba(232, 197, 71, 0.45);
-      box-shadow: 0 4px 18px rgba(201, 168, 76, 0.12);
-    }
-    .cat-card::before {
-      content: '✦';
-      position: absolute;
-      top: 6px;
-      right: 8px;
-      color: #f5cf62;
-      font-size: 0.7rem;
-      opacity: 0.75;
-      text-shadow: 0 0 6px rgba(245, 207, 98, 0.8);
-      z-index: 4;
-      pointer-events: none;
+      cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid #f0eaee;
     }
     .cat-card:hover {
-      transform: translateY(-5px);
-      border-color: #f5cf62;
-      box-shadow: 0 10px 28px rgba(85,23,86,0.14), 0 0 16px rgba(245, 207, 98, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(85,23,86,0.12);
+      border-color: var(--gold);
     }
     .cat-img-wrap {
       position: relative; height: 180px; overflow: hidden;
@@ -803,12 +757,8 @@ import {
       border: 1px solid rgba(201,148,26,0.2);
     }
     .about-badge-num {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--royal-dark);
-      line-height: 1;
-      letter-spacing: -0.5px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
     .about-badge-lbl { font-size: 0.72rem; color: var(--text-light); line-height: 1.4; }
 
@@ -835,12 +785,8 @@ import {
     .astat { text-align: center; padding: 0 1.5rem; flex: 1; }
     .astat-n {
       display: block;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--royal-dark);
-      line-height: 1.1;
-      letter-spacing: -0.5px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 2rem; font-weight: 700; color: var(--royal-dark); line-height: 1;
     }
     .astat-l { font-size: 0.72rem; color: var(--text-light); margin-top: 0.25rem; display: block; }
     .astat-div { width: 1px; height: 36px; background: #e0d8e0; flex-shrink: 0; }
@@ -864,26 +810,13 @@ import {
     .offer-card {
       background: #fff; border-radius: 12px;
       padding: 2rem 1.75rem;
-      position: relative;
-      border: 1.5px solid rgba(232, 197, 71, 0.45);
-      box-shadow: 0 4px 18px rgba(201, 168, 76, 0.12);
-      transition: all 0.35s ease;
-    }
-    .offer-card::before {
-      content: '✦';
-      position: absolute;
-      top: 8px;
-      right: 12px;
-      color: #f5cf62;
-      font-size: 0.72rem;
-      opacity: 0.75;
-      text-shadow: 0 0 6px rgba(245, 207, 98, 0.8);
-      pointer-events: none;
+      border: 1px solid #f0eaee;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
     .offer-card:hover {
       transform: translateY(-4px);
-      border-color: #f5cf62;
-      box-shadow: 0 10px 30px rgba(85,23,86,0.12), 0 0 18px rgba(245, 207, 98, 0.35);
+      box-shadow: 0 10px 30px rgba(85,23,86,0.1);
+      border-color: rgba(201,148,26,0.3);
     }
     .offer-icon {
       width: 52px; height: 52px; border-radius: 12px;
@@ -907,29 +840,14 @@ import {
     }
     .arrival-card {
       background: #fff; border-radius: 10px; overflow: hidden;
-      border: 1.5px solid rgba(232, 197, 71, 0.45);
-      box-shadow: 0 4px 18px rgba(201, 168, 76, 0.12);
-      cursor: pointer;
-      position: relative;
-      transition: all 0.35s ease;
+      border: 1px solid #f0eaee; cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
       text-decoration: none; color: inherit; display: block;
-    }
-    .arrival-card::after {
-      content: '✦';
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      color: #f5cf62;
-      font-size: 0.72rem;
-      opacity: 0.85;
-      text-shadow: 0 0 8px rgba(245, 207, 98, 0.9);
-      z-index: 3;
-      pointer-events: none;
     }
     .arrival-card:hover {
       transform: translateY(-5px);
-      border-color: #f5cf62;
-      box-shadow: 0 12px 32px rgba(85,23,86,0.14), 0 0 20px rgba(245, 207, 98, 0.45);
+      box-shadow: 0 12px 32px rgba(85,23,86,0.12);
+      border-color: var(--gold);
     }
     .arrival-img-wrap {
       position: relative; height: 260px; overflow: hidden;
@@ -995,22 +913,20 @@ import {
 
     /* ══ RESPONSIVE ══ */
     @media (max-width: 960px) {
-      .ls-split-card {
+      /* Keep banner as row — just reduce padding and font */
+      .ls-banner-card {
         flex-direction: row;
-        min-height: 420px;
+        min-height: 380px;
       }
-      .ls-text-side {
-        flex: 1.2;
-        padding: 2rem 1.25rem 2rem 1.5rem;
+      .ls-content-pane {
+        flex: 1.3;
+        padding: 2rem 1.5rem 2rem 1.75rem;
       }
-      .ls-img-side {
-        flex: 1.1;
+      .ls-image-pane {
+        flex: 1;
       }
       .ls-title {
-        font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-      }
-      .ls-desc {
-        font-size: 0.9rem;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       }
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
       .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
@@ -1018,162 +934,93 @@ import {
       .about-img-frame::before { display: none; }
       .about-badge { right: 0; }
     }
-
-    @media (max-width: 680px) {
-      .ls-split-card {
+    @media (max-width: 600px) {
+      /* Still keep side-by-side split on small phones */
+      .ls-banner-card {
         flex-direction: row;
-        min-height: 380px;
+        min-height: 320px;
       }
-      .ls-text-side {
-        flex: 1.35;
-        padding: 1.25rem 0.75rem 1.25rem 0.9rem;
-        z-index: 2;
+      .ls-content-pane {
+        flex: 1.4;
+        padding: 1.25rem 0.75rem 1.25rem 1rem;
+        clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
       }
-      .ls-img-side {
+      .ls-image-pane {
         flex: 1;
-        min-height: 100%;
-        display: block;
+        margin-left: -5%;
       }
-      .ls-product-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center center;
+      .ls-slant-divider {
+        left: 53%;
+        width: 36px;
       }
-      .ls-img-feather {
-        width: 40px;
-        background: linear-gradient(90deg, #440936 0%, transparent 100%);
+      .ls-gold-accent-strip {
+        left: 60%;
+        
+        width: 4px;
       }
       .ls-brand-badge {
         padding: 0.2rem 0.55rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.6rem;
       }
       .ls-brand-text {
         font-size: 0.58rem;
         letter-spacing: 1px;
       }
-      .ls-brand-sparkle {
-        font-size: 0.65rem;
-      }
-      .ls-header-group {
-        margin-bottom: 0.4rem;
-      }
+      .ls-brand-sparkle { font-size: 0.65rem; }
+      .ls-header-group { margin-bottom: 0.5rem; }
       .ls-eyebrow {
-        font-size: 0.62rem;
+        font-size: 0.6rem;
         letter-spacing: 1.5px;
         margin-bottom: 0.2rem;
       }
       .ls-title {
-        font-size: clamp(1.15rem, 4.4vw, 1.6rem);
+        font-size: clamp(1.15rem, 4.5vw, 1.65rem);
         line-height: 1.15;
-        word-break: break-word;
       }
       .ls-desc {
         font-size: clamp(0.68rem, 2.2vw, 0.78rem);
         line-height: 1.35;
-        margin-bottom: 0.35rem;
-        word-break: break-word;
+        margin-bottom: 0.3rem;
       }
-      .ls-desc-sub {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        font-size: 0.68rem;
-        line-height: 1.3;
-        margin-bottom: 0.5rem;
-      }
+      .ls-desc-sub { display: none; }
       .ls-action-row {
         gap: 0.4rem;
         margin-top: 0.3rem;
-        margin-bottom: 0.65rem;
+        margin-bottom: 0.6rem;
       }
+      .ls-offer-pill { display: none; }
       .ls-cta-btn {
-        padding: 0.5rem 0.95rem;
-        font-size: 0.68rem;
+        padding: 0.5rem 0.85rem;
+        font-size: 0.65rem;
         letter-spacing: 1px;
         gap: 0.3rem;
       }
-      .ls-cta-btn svg {
-        width: 13px;
-        height: 13px;
+      .ls-cta-btn svg { width: 13px; height: 13px; }
+      .ls-footer-tags {
+        gap: 0.5rem;
+        padding-top: 0.65rem;
       }
-      .ls-offer-pill {
-        padding: 0.25rem 0.45rem;
-        gap: 0.25rem;
-      }
-      .ls-offer-val {
-        font-size: 0.85rem;
-      }
-      .ls-offer-txt {
-        font-size: 0.55rem;
-        max-width: 75px;
-      }
-      .ls-trust-row {
-        gap: 0.35rem 0.65rem;
-        padding-top: 0.4rem;
-        flex-wrap: wrap;
-      }
-      .ls-trust-item {
-        font-size: 0.6rem;
-        gap: 0.25rem;
-        white-space: nowrap;
-      }
-      .ls-trust-icon {
-        width: 13px;
-        height: 13px;
-      }
-      .ls-trust-divider {
-        height: 12px;
-      }
+      .ls-tag { font-size: 0.58rem; gap: 0.25rem; }
+      .ls-dot { font-size: 0.4rem; }
       .offers-grid { grid-template-columns: 1fr; }
       .arrivals-grid { grid-template-columns: 1fr; }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
-    @media (max-width: 440px) {
-      .ls-split-card {
-        min-height: 350px;
-      }
-      .ls-text-side {
-        flex: 1.4;
+    @media (max-width: 400px) {
+      .ls-banner-card { min-height: 280px; }
+      .ls-content-pane {
+        flex: 1.5;
         padding: 1rem 0.6rem 1rem 0.75rem;
       }
-      .ls-img-side {
-        flex: 0.95;
-      }
       .ls-title {
-        font-size: clamp(1.05rem, 4.4vw, 1.3rem);
-        line-height: 1.15;
+        font-size: clamp(1rem, 4.5vw, 1.3rem);
       }
-      .ls-desc {
-        font-size: 0.66rem;
-        line-height: 1.3;
-      }
-      .ls-desc-sub {
-        display: none;
-      }
-      .ls-action-row {
-        margin-bottom: 0.4rem;
-      }
-      .ls-offer-pill {
-        display: none;
-      }
+      .ls-desc { font-size: 0.62rem; }
       .ls-cta-btn {
-        padding: 0.45rem 0.8rem;
-        font-size: 0.65rem;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.6rem;
       }
-      .ls-trust-row {
-        gap: 0.25rem 0.5rem;
-        padding-top: 0.35rem;
-      }
-      .ls-trust-item {
-        font-size: 0.55rem;
-      }
-      .ls-trust-icon {
-        width: 12px;
-        height: 12px;
-      }
+      .ls-footer-tags { display: none; }
     }
   `]
 })
@@ -1268,10 +1115,6 @@ export class LandingComponent implements OnInit, OnDestroy {
     }, 350);
   }
 
-  /**
-   * Parse notification items into structured objects.
-   * If an item contains '·' (e.g. joined list from admin), it splits them into individual notifications.
-   */
   get notificationList(): Array<{ tag: string; text: string }> {
     const rawTexts: string[] = [];
     if (this.notificationBars && this.notificationBars.length > 0) {
@@ -1335,9 +1178,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       { id: 3, title: 'Fast & Safe Delivery', description: 'Free shipping above ₹999. Secure packaging ensures your jewellery arrives safely across India in 5–7 days.', icon_type: 'truck', display_order: 3, is_active: true },
       { id: 4, title: '30-Day Returns', description: 'Not happy? Return within 30 days — no questions asked. Your satisfaction is our highest priority.', icon_type: 'returns', display_order: 4, is_active: true },
       { id: 5, title: 'Perfect for Gifting', description: 'Every order comes gift-ready with elegant packaging — ideal for birthdays, anniversaries, and festivities.', icon_type: 'gift', display_order: 5, is_active: true },
-      { id: 6, title: 'Made in India', description: 'Proudly handpicked by Indian artisans — supporting traditional craft while delivering world-class quality.', icon_type: 'sparkles', display_order: 6, is_active: true },
+      { id: 6, title: 'Made in India', description: 'Proudly handcrafted by Indian artisans — supporting traditional craft while delivering world-class quality.', icon_type: 'sparkles', display_order: 6, is_active: true },
     ];
   }
 }
-
-// Made with Bob
