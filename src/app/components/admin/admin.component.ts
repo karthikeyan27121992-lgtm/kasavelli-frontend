@@ -289,6 +289,21 @@ import {
               </div>
             </div>
 
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Trust Tag 1</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.trust_tag1" name="ls_trust1" placeholder="e.g. 925 Certified">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Trust Tag 2</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.trust_tag2" name="ls_trust2" placeholder="e.g. Free Shipping">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Trust Tag 3</label>
+                <input type="text" class="form-control" [(ngModel)]="leadspaceData.trust_tag3" name="ls_trust3" placeholder="e.g. Easy Returns">
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="form-label">Banner Image</label>
               <div *ngIf="leadspaceData.image && !selectedLeadspaceFile" class="current-image-preview">
@@ -1698,6 +1713,9 @@ export class AdminComponent implements OnInit {
             offer_label: 'on all Vanki Rings · Limited Time',
             button_text: 'Shop Now',
             button_link: '/products',
+            trust_tag1: '925 Certified',
+            trust_tag2: 'Free Shipping',
+            trust_tag3: 'Easy Returns',
             is_active: true
           };
         }
