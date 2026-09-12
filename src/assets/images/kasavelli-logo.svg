@@ -1,103 +1,106 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
   <defs>
-    <!-- Background Radial Gradient matching brand theme -->
-    <radialGradient id="logo-bg-grad" cx="70%" cy="30%" r="85%" fx="60%" fy="25%">
-      <stop offset="0%" stop-color="#b8337a"/>
-      <stop offset="45%" stop-color="#881e62"/>
-      <stop offset="85%" stop-color="#550e42"/>
-      <stop offset="100%" stop-color="#38072e"/>
+    <!-- Background Gradient matching the exact magenta-purple backdrop -->
+    <radialGradient id="bg-glow" cx="80%" cy="20%" r="90%">
+      <stop offset="0%" stop-color="#b6337a"/>
+      <stop offset="40%" stop-color="#8e1e62"/>
+      <stop offset="75%" stop-color="#550e42"/>
+      <stop offset="100%" stop-color="#34062a"/>
     </radialGradient>
 
-    <!-- Linear Gradient for Subtle Depth -->
-    <linearGradient id="logo-linear-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#400732"/>
-      <stop offset="50%" stop-color="#881e62"/>
-      <stop offset="100%" stop-color="#b8337a"/>
-    </linearGradient>
-
-    <!-- 4-pointed Emerald/Dark Sparkle Star as shown in reference image -->
+    <!-- 4-Pointed Dark Green Sparkle Star (Precision Matched) -->
     <g id="sparkle-star">
-      <path d="M 0,-18 Q 0,0 18,0 Q 0,0 0,18 Q 0,0 -18,0 Q 0,0 0,-18 Z" fill="#0d3824"/>
+      <path d="M 0,-14 C 0,-3.5 3.5,0 14,0 C 3.5,0 0,3.5 0,14 C 0,3.5 -3.5,0 -14,0 C -3.5,0 0,-3.5 0,-14 Z" fill="#0d3522"/>
     </g>
 
-    <!-- Diamond Jewel Symbol on K and S -->
+    <!-- Faceted Brilliant Diamond Motif for Letter K and Letter S -->
     <g id="diamond-gem">
-      <!-- Facet polygons with sparkling clean facets -->
-      <polygon points="-10,-2 -5,-10 5,-10 10,-2 0,11" fill="#ffffff" fill-opacity="0.95" stroke="#0d3824" stroke-width="0.75" stroke-linejoin="round"/>
-      <polygon points="-5,-10 5,-10 2.5,-2 -2.5,-2" fill="#ffffff" stroke="#0d3824" stroke-width="0.6"/>
-      <polygon points="-10,-2 -5,-10 -2.5,-2" fill="#e8f3ee" stroke="#0d3824" stroke-width="0.6"/>
-      <polygon points="10,-2 5,-10 2.5,-2" fill="#e8f3ee" stroke="#0d3824" stroke-width="0.6"/>
-      <polygon points="-2.5,-2 2.5,-2 0,11" fill="#ffffff" stroke="#0d3824" stroke-width="0.6"/>
-      <polygon points="-10,-2 -2.5,-2 0,11" fill="#d9ece3" stroke="#0d3824" stroke-width="0.6"/>
-      <polygon points="10,-2 2.5,-2 0,11" fill="#d9ece3" stroke="#0d3824" stroke-width="0.6"/>
+      <!-- Outer facet outline -->
+      <polygon points="-8,-1 -4,-8 4,-8 8,-1 0,9" fill="#ffffff" stroke="#0d3522" stroke-width="0.75" stroke-linejoin="round"/>
+      <!-- Table facet -->
+      <polygon points="-4,-8 4,-8 2,-1 -2,-1" fill="#ffffff" stroke="#0d3522" stroke-width="0.5"/>
+      <!-- Side top facets -->
+      <polygon points="-8,-1 -4,-8 -2,-1" fill="#f0f7f3" stroke="#0d3522" stroke-width="0.5"/>
+      <polygon points="8,-1 4,-8 2,-1" fill="#f0f7f3" stroke="#0d3522" stroke-width="0.5"/>
+      <!-- Lower pavilion facets -->
+      <polygon points="-2,-1 2,-1 0,9" fill="#ffffff" stroke="#0d3522" stroke-width="0.5"/>
+      <polygon points="-8,-1 -2,-1 0,9" fill="#dbeef4" stroke="#0d3522" stroke-width="0.5"/>
+      <polygon points="8,-1 2,-1 0,9" fill="#dbeef4" stroke="#0d3522" stroke-width="0.5"/>
     </g>
   </defs>
 
-  <!-- Circular Badge Background with Exact Reference Magenta-Purple Gradient -->
-  <circle cx="250" cy="250" r="240" fill="url(#logo-bg-grad)"/>
+  <!-- Circular Badge Background -->
+  <circle cx="250" cy="250" r="242" fill="url(#bg-glow)"/>
 
-  <!-- Orbital Rings with Dark Emerald Strokes as in the Reference -->
-  <!-- Orbital Ring 1 (Left tilted) -->
-  <ellipse cx="236" cy="245" rx="192" ry="182" fill="none" stroke="#0d3824" stroke-width="2.6" transform="rotate(-28 236 245)"/>
+  <!-- ================= ORBITAL GEOMETRIC RINGS ================= -->
+  <!-- Left Ring: Fine dark green ellipse tilted at -30 deg -->
+  <ellipse cx="232" cy="246" rx="192" ry="176" fill="none" stroke="#0d3522" stroke-width="2.2" transform="rotate(-30 232 246)"/>
 
-  <!-- Orbital Ring 2 (Right tilted) -->
-  <ellipse cx="264" cy="245" rx="192" ry="182" fill="none" stroke="#0d3824" stroke-width="2.6" transform="rotate(26 264 245)"/>
+  <!-- Right Ring: Fine dark green ellipse tilted at +28 deg -->
+  <ellipse cx="268" cy="246" rx="192" ry="176" fill="none" stroke="#0d3522" stroke-width="2.2" transform="rotate(28 268 246)"/>
 
-  <!-- Sparkle Stars Placed Exactly on the Orbital Intersections & Perimeters -->
-  <!-- Top Center Stars -->
-  <use href="#sparkle-star" x="274" y="65" transform="scale(1.15) translate(-22,-7)"/>
-  <use href="#sparkle-star" x="212" y="86" transform="scale(0.95) translate(14,4)"/>
+  <!-- ================= 8 GREEN SPARKLE STARS ================= -->
+  <!-- Top Pair (Ring Apex and Intersection) -->
+  <use href="#sparkle-star" x="272" y="72" transform="scale(1.15) translate(-24,-7)"/>
+  <use href="#sparkle-star" x="214" y="90" transform="scale(0.95) translate(14,3)"/>
 
-  <!-- Right Orbit Stars -->
-  <use href="#sparkle-star" x="448" y="278" transform="scale(1.15) translate(-42,-4)"/>
-  <use href="#sparkle-star" x="408" y="308" transform="scale(0.9) translate(18,10)"/>
+  <!-- Right Pair (Orbit Extremities) -->
+  <use href="#sparkle-star" x="435" y="278" transform="scale(1.1) translate(-36,-5)"/>
+  <use href="#sparkle-star" x="398" y="306" transform="scale(0.9) translate(16,8)"/>
 
-  <!-- Bottom Orbit Stars -->
-  <use href="#sparkle-star" x="264" y="440" transform="scale(1.15) translate(-24,-34)"/>
-  <use href="#sparkle-star" x="216" y="456" transform="scale(0.95) translate(18,-24)"/>
+  <!-- Bottom Pair (Ring Lower Base) -->
+  <use href="#sparkle-star" x="268" y="432" transform="scale(1.1) translate(-26,-30)"/>
+  <use href="#sparkle-star" x="220" y="446" transform="scale(0.95) translate(18,-22)"/>
 
-  <!-- Left Orbit Stars -->
-  <use href="#sparkle-star" x="52" y="282" transform="scale(1.15) translate(0,-24)"/>
-  <use href="#sparkle-star" x="98" y="258" transform="scale(0.95) translate(0,6)"/>
+  <!-- Left Pair (Orbit Extremities) -->
+  <use href="#sparkle-star" x="65" y="284" transform="scale(1.15) translate(0,-24)"/>
+  <use href="#sparkle-star" x="105" y="260" transform="scale(0.9) translate(0,6)"/>
 
-  <!-- ================= LOGO TYPOGRAPHY ================= -->
-  <!-- 1. KASA Line (Elegant high-contrast Didone / Serif font) -->
-  <g id="kasa-text" transform="translate(250, 222)">
-    <!-- Letter 'K' with left pillar diamond -->
-    <!-- Left vertical stem of K -->
-    <path d="M -118,-44 L -110,-44 L -110,28 L -118,28 Z" fill="#FFFFFF"/>
-    <!-- Top left diamond on K's stem -->
-    <use href="#diamond-gem" x="-114" y="-55" transform="scale(0.95)"/>
-    <!-- K diagonal legs with elegant serifs -->
-    <path d="M -110,-10 Q -94,-12 -76,-44 L -62,-44 L -91,-2 L -60,28 L -74,28 L -100,4 L -110,14 Z" fill="#FFFFFF"/>
+  <!-- ================= TYPOGRAPHY ================= -->
+  <!-- 1. KASA — High-Contrast Didone Serif with Custom Diamonds -->
+  <g id="kasa-wordmark" transform="translate(250, 222)">
+    <!-- ── Letter K ── -->
+    <!-- Left vertical stem with top serif & bottom serif -->
+    <path d="M -118,-42 L -108,-42 L -108,26 L -118,26 Z" fill="#FFFFFF"/>
+    <!-- Top-left diamond crowning the K stem -->
+    <use href="#diamond-gem" x="-113" y="-50" transform="scale(1.05)"/>
+    <!-- Diagonal upper arm with sweeping serif -->
+    <path d="M -108,-6 Q -90,-18 -72,-42 L -58,-42 Q -76,-16 -96,0 Z" fill="#FFFFFF"/>
+    <!-- Diagonal lower leg extending down with serif -->
+    <path d="M -98,-3 L -60,26 L -74,26 L -105,2 Z" fill="#FFFFFF"/>
 
-    <!-- Letter 'A' (First) -->
-    <path d="M -46,28 L -24,-44 L -12,-44 L 11,28 L -1,28 L -9,-2 L -37,-2 L -42,28 Z M -34,-13 L -12,-13 L -18,-31 Z" fill="#FFFFFF"/>
+    <!-- ── Letter A (First) ── -->
+    <path d="M -44,26 L -24,-42 L -14,-42 L 7,26 L -3,26 L -10,2 L -37,2 L -41,26 Z M -34,-8 L -13,-8 L -20,-28 Q -21,-25 -26,-13 Z" fill="#FFFFFF"/>
 
-    <!-- Letter 'S' with diamond topping the upper curve -->
-    <path d="M 52,-40 Q 38,-48 22,-40 Q 10,-32 16,-18 Q 21,-4 43,2 Q 60,8 55,22 Q 50,32 32,30 Q 16,28 8,18 L 8,28 Q 22,38 38,36 Q 64,34 66,14 Q 68,-4 44,-12 Q 28,-18 30,-28 Q 32,-36 44,-34 Q 52,-33 58,-26 Z" fill="#FFFFFF"/>
-    <!-- Diamond resting on S -->
-    <use href="#diamond-gem" x="46" y="-36" transform="scale(0.92)"/>
+    <!-- ── Letter S ── -->
+    <!-- Distinctive elegant high-contrast spine -->
+    <path d="M 52,-38 Q 38,-46 22,-38 Q 10,-30 16,-16 Q 21,-2 43,4 Q 60,10 55,24 Q 50,34 32,32 Q 16,30 8,20 L 8,30 Q 22,40 38,38 Q 64,36 66,16 Q 68,-2 44,-10 Q 28,-16 30,-26 Q 32,-34 44,-32 Q 52,-31 58,-24 Z" fill="#FFFFFF"/>
+    <!-- Diamond resting on top curve of S -->
+    <use href="#diamond-gem" x="46" y="-36" transform="scale(0.95)"/>
 
-    <!-- Letter 'A' (Second) -->
-    <path d="M 74,28 L 96,-44 L 108,-44 L 131,28 L 119,28 L 111,-2 L 83,-2 L 78,28 Z M 86,-13 L 108,-13 L 102,-31 Z" fill="#FFFFFF"/>
+    <!-- ── Letter A (Second) ── -->
+    <path d="M 74,26 L 94,-42 L 104,-42 L 125,26 L 115,26 L 108,2 L 81,2 L 77,26 Z M 84,-8 L 105,-8 L 98,-28 Q 97,-25 92,-13 Z" fill="#FFFFFF"/>
   </g>
 
-  <!-- 2. VELLI Line (Crisp spaced typography) -->
-  <text x="250" y="306" 
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Montserrat', sans-serif" 
-        font-size="32" 
-        font-weight="500" 
-        fill="#FFFFFF" 
-        text-anchor="middle" 
-        letter-spacing="22">VELLI</text>
+  <!-- 2. VELLI — High Legibility Spaced Serif Subtitle -->
+  <g id="velli-wordmark" transform="translate(250, 302)">
+    <text x="0" y="0" 
+          font-family="'Playfair Display', Didot, 'Bodoni MT', Georgia, serif" 
+          font-size="28" 
+          font-weight="500" 
+          fill="#FFFFFF" 
+          text-anchor="middle" 
+          letter-spacing="20">VELLI</text>
+  </g>
 
-  <!-- 3. 925 Hallmark Line -->
-  <text x="250" y="366" 
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
-        font-size="24" 
-        font-weight="500" 
-        fill="#FFFFFF" 
-        text-anchor="middle" 
-        letter-spacing="5">925</text>
+  <!-- 3. 925 — Pure Silver Hallmark -->
+  <g id="hallmark-925" transform="translate(250, 362)">
+    <text x="0" y="0" 
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Montserrat', sans-serif" 
+          font-size="20" 
+          font-weight="500" 
+          fill="#FFFFFF" 
+          text-anchor="middle" 
+          letter-spacing="5">925</text>
+  </g>
 </svg>
