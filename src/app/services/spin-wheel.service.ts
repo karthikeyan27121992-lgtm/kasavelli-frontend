@@ -30,27 +30,23 @@ export class SpinWheelService {
     const pct: number = user.spin_discount_pct ?? 0;
     const expiresAt: string | null = user.spin_discount_expires_at ?? null;
 
-    // Check if an existing discount is still valid (not expired)
-    if (pct > 0 && expiresAt) {
+    // If a spin was recorded AND the 24h window hasn't expired yet —
+    // don't show the wheel again regardless of whether they won or got Better Luck.
+    if (expiresAt) {
       const expiryMs = new Date(expiresAt).getTime();
       if (expiryMs > Date.now()) {
-        // Still valid — load it, no need to spin again
+        // Still within 24h — load result (discount or Better Luck) and block re-spin
         this.resultSubject.next({
           percentage: pct,
-          label: `${pct}% OFF`,
+          label: pct > 0 ? `${pct}% OFF` : 'Better Luck',
           expiresAt,
         });
-        return false;  // needsSpin = false
+        return false;  // needsSpin = false — wheel hidden for 24h
       }
     }
 
-    // Either no spin yet, or Better Luck was recorded (pct=0, no expiry),
-    // or the discount has expired → needs a fresh spin
+    // No spin recorded yet, or 24h has passed → show the wheel
     this.resultSubject.next(null);
-
-    // If pct=0 and expiresAt=null it means they never spun OR spun "Better Luck"
-    // but we still want them to spin on every fresh login after expiry.
-    // "Better Luck" saves pct=0 with no expiry, so needsSpin is true next login.
     return true;  // needsSpin = true
   }
 
