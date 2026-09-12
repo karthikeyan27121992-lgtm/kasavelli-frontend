@@ -201,12 +201,13 @@ import { LoginRequest } from '../../models/user.model';
       margin-bottom: 1.75rem;
     }
     .auth-logo-img {
-      width: 72px;
-      height: 72px;
+      width: 96px;
+      height: 96px;
       border-radius: 0;
       box-shadow: none;
       object-fit: contain;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      filter: drop-shadow(0 4px 12px rgba(64, 7, 50, 0.2));
     }
     .auth-brand-names {
       display: flex;

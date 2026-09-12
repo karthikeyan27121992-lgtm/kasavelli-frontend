@@ -316,15 +316,20 @@ import { Product } from './models/product.model';
       transform: translateY(-1px);
     }
     .logo-img {
-      width: 44px;
-      height: 44px;
+      width: 62px;
+      height: 62px;
       border-radius: 0;
       box-shadow: none;
       object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(245, 207, 98, 0.35));
+      transition: transform 0.25s ease;
+    }
+    .logo:hover .logo-img {
+      transform: scale(1.06);
     }
     .logo-title {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.35rem;
+      font-size: 1.45rem;
       font-weight: 700;
       letter-spacing: 3.5px;
       text-transform: uppercase;
@@ -474,14 +479,15 @@ import { Product } from './models/product.model';
       margin-bottom: 1rem;
     }
     .footer-logo-img {
-      width: 42px; height: 42px;
+      width: 54px; height: 54px;
       border-radius: 0;
       box-shadow: none;
       object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(245, 207, 98, 0.35));
     }
     .footer-logo-title {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
