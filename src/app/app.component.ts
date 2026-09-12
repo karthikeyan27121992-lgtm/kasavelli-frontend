@@ -24,7 +24,7 @@ import { Product } from './models/product.model';
 
         <!-- Logo -->
         <a routerLink="/" class="logo">
-          <img src="assets/images/kasavelli-logo.svg" alt="KASAVELLI" class="logo-img">
+          <img src="assets/images/kasavelli-logo.svg?v=2" alt="KASAVELLI" class="logo-img">
           <span class="logo-title">KASAVELLI</span>
         </a>
 
@@ -197,7 +197,7 @@ import { Product } from './models/product.model';
         <!-- Brand -->
         <div class="footer-col brand-col">
           <div class="footer-logo">
-            <img src="assets/images/kasavelli-logo.svg" alt="KASAVELLI" class="footer-logo-img">
+            <img src="assets/images/kasavelli-logo.svg?v=2" alt="KASAVELLI" class="footer-logo-img">
             <span class="footer-logo-title">KASAVELLI</span>
           </div>
           <p class="tagline">Premium 925 Silver Collection</p>

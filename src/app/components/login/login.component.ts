@@ -16,7 +16,7 @@ import { LoginRequest } from '../../models/user.model';
         
         <!-- Brand Header with Logo -->
         <div class="auth-brand">
-          <img src="assets/images/kasavelli-logo.svg" alt="Kasavelli 925" class="auth-logo-img">
+          <img src="assets/images/kasavelli-logo.svg?v=2" alt="Kasavelli 925" class="auth-logo-img">
           <div class="auth-brand-names">
             <span class="auth-brand-title">KASAVELLI</span>
           </div>

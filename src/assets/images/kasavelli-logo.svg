@@ -2,74 +2,67 @@
   <defs>
     <!-- Sparkling Gold Linear Gradient for Orbits & Accents -->
     <linearGradient id="gold-glitter-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#fff2a1"/>
-      <stop offset="25%" stop-color="#f5cf62"/>
-      <stop offset="50%" stop-color="#e8c547"/>
-      <stop offset="75%" stop-color="#ffd966"/>
-      <stop offset="100%" stop-color="#d4af37"/>
+      <stop offset="0%" stop-color="#fff6b3"/>
+      <stop offset="25%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#ffae19"/>
+      <stop offset="75%" stop-color="#ffe066"/>
+      <stop offset="100%" stop-color="#e6a100"/>
     </linearGradient>
-
-    <!-- Glowing Gold Filter for Glittering Radiance -->
-    <filter id="gold-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
 
     <!-- 4-Pointed Golden Glitter Sparkle Star -->
     <g id="sparkle-star">
       <!-- Outer gold star -->
-      <path d="M 0,-18 C 0,-4.5 4.5,0 18,0 C 4.5,0 0,4.5 0,18 C 0,4.5 -4.5,0 -18,0 C -4.5,0 0,-4.5 0,-18 Z" fill="url(#gold-glitter-grad)" filter="url(#gold-glow)"/>
+      <path d="M 0,-20 C 0,-5 5,0 20,0 C 5,0 0,5 0,20 C 0,5 -5,0 -20,0 C -5,0 0,-5 0,-20 Z" fill="#ffd700"/>
       <!-- Inner bright diamond core -->
-      <path d="M 0,-9 C 0,-2 2,0 9,0 C 2,0 0,2 0,9 C 0,2 -2,0 -9,0 C -2,0 0,-2 0,-9 Z" fill="#ffffff"/>
-      <circle cx="0" cy="0" r="2.5" fill="#ffffff"/>
+      <path d="M 0,-10 C 0,-2.5 2.5,0 10,0 C 2.5,0 0,2.5 0,10 C 0,2.5 -2.5,0 -10,0 C -2.5,0 0,-2.5 0,-10 Z" fill="#ffffff"/>
+      <circle cx="0" cy="0" r="3" fill="#ffffff"/>
     </g>
 
     <!-- Faceted Brilliant Diamond for Letter K and Letter S -->
     <g id="diamond-gem">
-      <polygon points="-9,-1 -4.5,-9 4.5,-9 9,-1 0,10" fill="#ffffff" stroke="#f5cf62" stroke-width="0.9" stroke-linejoin="round"/>
-      <polygon points="-4.5,-9 4.5,-9 2.5,-1 -2.5,-1" fill="#ffffff" stroke="#e8c547" stroke-width="0.6"/>
-      <polygon points="-9,-1 -4.5,-9 -2.5,-1" fill="#fffbe6" stroke="#e8c547" stroke-width="0.6"/>
-      <polygon points="9,-1 4.5,-9 2.5,-1" fill="#fffbe6" stroke="#e8c547" stroke-width="0.6"/>
-      <polygon points="-2.5,-1 2.5,-1 0,10" fill="#ffffff" stroke="#e8c547" stroke-width="0.6"/>
-      <polygon points="-9,-1 -2.5,-1 0,10" fill="#ffeaa7" stroke="#e8c547" stroke-width="0.6"/>
-      <polygon points="9,-1 2.5,-1 0,10" fill="#ffeaa7" stroke="#e8c547" stroke-width="0.6"/>
+      <polygon points="-10,-1 -5,-10 5,-10 10,-1 0,11" fill="#ffffff" stroke="#ffd700" stroke-width="1.2" stroke-linejoin="round"/>
+      <polygon points="-5,-10 5,-10 3,-1 -3,-1" fill="#ffffff" stroke="#e6a100" stroke-width="0.8"/>
+      <polygon points="-10,-1 -5,-10 -3,-1" fill="#fffbe6" stroke="#e6a100" stroke-width="0.8"/>
+      <polygon points="10,-1 5,-10 3,-1" fill="#fffbe6" stroke="#e6a100" stroke-width="0.8"/>
+      <polygon points="-3,-1 3,-1 0,11" fill="#ffffff" stroke="#e6a100" stroke-width="0.8"/>
+      <polygon points="-10,-1 -3,-1 0,11" fill="#ffeaa7" stroke="#e6a100" stroke-width="0.8"/>
+      <polygon points="10,-1 3,-1 0,11" fill="#ffeaa7" stroke="#e6a100" stroke-width="0.8"/>
     </g>
   </defs>
 
-  <!-- ================= ORBITAL GEOMETRIC RINGS (Golden Glittering) ================= -->
-  <!-- Left Ring: Gold glittering ellipse tilted at -30 deg with soft glow -->
-  <ellipse cx="232" cy="246" rx="194" ry="178" fill="none" stroke="url(#gold-glitter-grad)" stroke-width="3.5" filter="url(#gold-glow)" transform="rotate(-30 232 246)"/>
+  <!-- ================= ORBITAL GEOMETRIC RINGS (Vibrant High-Contrast Golden Glittering) ================= -->
+  <!-- Left Ring: Gold glittering ellipse tilted at -30 deg -->
+  <ellipse cx="232" cy="246" rx="194" ry="178" fill="none" stroke="#ffd700" stroke-width="4.5" transform="rotate(-30 232 246)"/>
+  <ellipse cx="232" cy="246" rx="194" ry="178" fill="none" stroke="#ffffff" stroke-width="1.5" transform="rotate(-30 232 246)"/>
 
-  <!-- Right Ring: Gold glittering ellipse tilted at +28 deg with soft glow -->
-  <ellipse cx="268" cy="246" rx="194" ry="178" fill="none" stroke="url(#gold-glitter-grad)" stroke-width="3.5" filter="url(#gold-glow)" transform="rotate(28 268 246)"/>
+  <!-- Right Ring: Gold glittering ellipse tilted at +28 deg -->
+  <ellipse cx="268" cy="246" rx="194" ry="178" fill="none" stroke="#ffd700" stroke-width="4.5" transform="rotate(28 268 246)"/>
+  <ellipse cx="268" cy="246" rx="194" ry="178" fill="none" stroke="#ffffff" stroke-width="1.5" transform="rotate(28 268 246)"/>
 
   <!-- ================= 8 GOLDEN GLITTER SPARKLE STARS ================= -->
   <!-- Top Pair -->
-  <use href="#sparkle-star" x="272" y="72" transform="scale(1.2) translate(-22,-7)"/>
-  <use href="#sparkle-star" x="214" y="90" transform="scale(1.0) translate(14,3)"/>
+  <use href="#sparkle-star" x="272" y="72" transform="scale(1.25) translate(-22,-7)"/>
+  <use href="#sparkle-star" x="214" y="90" transform="scale(1.05) translate(14,3)"/>
 
   <!-- Right Pair -->
-  <use href="#sparkle-star" x="435" y="278" transform="scale(1.15) translate(-36,-5)"/>
-  <use href="#sparkle-star" x="398" y="306" transform="scale(0.95) translate(16,8)"/>
+  <use href="#sparkle-star" x="435" y="278" transform="scale(1.2) translate(-36,-5)"/>
+  <use href="#sparkle-star" x="398" y="306" transform="scale(1.0) translate(16,8)"/>
 
   <!-- Bottom Pair -->
-  <use href="#sparkle-star" x="268" y="432" transform="scale(1.15) translate(-26,-30)"/>
-  <use href="#sparkle-star" x="220" y="446" transform="scale(1.0) translate(18,-22)"/>
+  <use href="#sparkle-star" x="268" y="432" transform="scale(1.2) translate(-26,-30)"/>
+  <use href="#sparkle-star" x="220" y="446" transform="scale(1.05) translate(18,-22)"/>
 
   <!-- Left Pair -->
-  <use href="#sparkle-star" x="65" y="284" transform="scale(1.2) translate(0,-24)"/>
-  <use href="#sparkle-star" x="105" y="260" transform="scale(0.95) translate(0,6)"/>
+  <use href="#sparkle-star" x="65" y="284" transform="scale(1.25) translate(0,-24)"/>
+  <use href="#sparkle-star" x="105" y="260" transform="scale(1.0) translate(0,6)"/>
 
-  <!-- ================= TYPOGRAPHY (Brilliant White & Gold) ================= -->
+  <!-- ================= TYPOGRAPHY (Brilliant Pure White & Gold) ================= -->
   <!-- 1. KASA — High-Contrast Didone Serif with Glowing Gold Faceted Diamonds -->
   <g id="kasa-wordmark" transform="translate(250, 222)">
     <!-- ── Letter K ── -->
     <path d="M -118,-42 L -108,-42 L -108,26 L -118,26 Z" fill="#FFFFFF"/>
     <!-- Top-left diamond crowning the K stem -->
-    <use href="#diamond-gem" x="-113" y="-50" transform="scale(1.1)"/>
+    <use href="#diamond-gem" x="-113" y="-50" transform="scale(1.15)"/>
     <!-- Diagonal upper arm with sweeping serif -->
     <path d="M -108,-6 Q -90,-18 -72,-42 L -58,-42 Q -76,-16 -96,0 Z" fill="#FFFFFF"/>
     <!-- Diagonal lower leg extending down with serif -->
@@ -81,7 +74,7 @@
     <!-- ── Letter S ── -->
     <path d="M 52,-38 Q 38,-46 22,-38 Q 10,-30 16,-16 Q 21,-2 43,4 Q 60,10 55,24 Q 50,34 32,32 Q 16,30 8,20 L 8,30 Q 22,40 38,38 Q 64,36 66,16 Q 68,-2 44,-10 Q 28,-16 30,-26 Q 32,-34 44,-32 Q 52,-31 58,-24 Z" fill="#FFFFFF"/>
     <!-- Diamond resting on top curve of S -->
-    <use href="#diamond-gem" x="46" y="-36" transform="scale(1.0)"/>
+    <use href="#diamond-gem" x="46" y="-36" transform="scale(1.05)"/>
 
     <!-- ── Letter A (Second) ── -->
     <path d="M 74,26 L 94,-42 L 104,-42 L 125,26 L 115,26 L 108,2 L 81,2 L 77,26 Z M 84,-8 L 105,-8 L 98,-28 Q 97,-25 92,-13 Z" fill="#FFFFFF"/>
@@ -91,20 +84,20 @@
   <g id="velli-wordmark" transform="translate(250, 302)">
     <text x="0" y="0" 
           font-family="'Playfair Display', Didot, 'Bodoni MT', Georgia, serif" 
-          font-size="28" 
-          font-weight="600" 
+          font-size="30" 
+          font-weight="700" 
           fill="#FFFFFF" 
           text-anchor="middle" 
           letter-spacing="20">VELLI</text>
   </g>
 
   <!-- 3. 925 — Pure Silver Hallmark in Gold -->
-  <g id="hallmark-925" transform="translate(250, 362)">
+  <g id="hallmark-925" transform="translate(250, 364)">
     <text x="0" y="0" 
           font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Montserrat', sans-serif" 
-          font-size="22" 
+          font-size="24" 
           font-weight="700" 
-          fill="url(#gold-glitter-grad)" 
+          fill="#ffd700" 
           text-anchor="middle" 
           letter-spacing="6">925</text>
   </g>
