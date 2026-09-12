@@ -217,10 +217,10 @@ import { LoginRequest } from '../../models/user.model';
       margin-bottom: 0.35rem;
     }
     .auth-brand-title {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.35rem;
+      font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem;
       font-weight: 700;
-      letter-spacing: 3.5px;
+      letter-spacing: 4px;
       color: var(--royal-dark);
       text-transform: uppercase;
     }

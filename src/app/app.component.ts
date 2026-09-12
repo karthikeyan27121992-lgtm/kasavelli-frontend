@@ -328,13 +328,17 @@ import { Product } from './models/product.model';
       transform: scale(1.06);
     }
     .logo-title {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.45rem;
+      font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.55rem;
       font-weight: 700;
-      letter-spacing: 3.5px;
+      letter-spacing: 4.5px;
       text-transform: uppercase;
-      color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      background: linear-gradient(135deg, #ffffff 0%, #f7f9fa 25%, #e2e8f0 50%, #cbd5e1 75%, #ffffff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.6))
+              drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))
+              drop-shadow(0 4px 14px rgba(226, 232, 240, 0.35));
     }
 
     /* Desktop Nav */
@@ -486,12 +490,16 @@ import { Product } from './models/product.model';
       filter: drop-shadow(0 2px 8px rgba(245, 207, 98, 0.35));
     }
     .footer-logo-title {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
-      font-size: 1.35rem;
+      font-family: 'Cinzel', 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.45rem;
       font-weight: 700;
-      letter-spacing: 3px;
+      letter-spacing: 4px;
       text-transform: uppercase;
-      color: #ffffff;
+      background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 30%, #cbd5e1 70%, #ffffff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 1px 1px rgba(255, 255, 255, 0.5))
+              drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7));
     }
     .tagline {
       font-size: 0.78rem;
