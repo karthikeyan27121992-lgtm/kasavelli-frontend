@@ -304,23 +304,28 @@ import { Product } from './models/product.model';
     .logo {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       text-decoration: none;
-      color: var(--cream);
+      color: #ffffff;
       transition: opacity 0.2s;
     }
-    .logo:hover { opacity: 0.85; color: var(--cream); }
+    .logo:hover { opacity: 0.9; color: #ffffff; }
     .logo-img {
-      width: 44px;
-      height: 44px;
-      filter: brightness(0) invert(1);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(232, 197, 71, 0.4);
+      object-fit: cover;
     }
     .logo-text {
-      font-family: 'Raleway', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: 3px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 4px;
       text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     }
 
     /* Desktop Nav */
@@ -463,15 +468,17 @@ import { Product } from './models/product.model';
     .footer-logo {
       display: flex; align-items: center; gap: 0.75rem;
       margin-bottom: 1rem;
-      font-family: 'Raleway', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
       font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--cream);
-      letter-spacing: 2px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 3px;
     }
     .footer-logo-img {
-      width: 36px; height: 36px;
-      filter: brightness(0) invert(1);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(232, 197, 71, 0.4);
+      object-fit: cover;
     }
     .tagline {
       font-size: 0.78rem;

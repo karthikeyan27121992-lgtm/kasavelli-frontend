@@ -11,248 +11,422 @@ import { LoginRequest } from '../../models/user.model';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="container">
-      <div class="login-container">
-        <h2 class="text-center">Login</h2>
+    <div class="auth-page-wrap">
+      <div class="auth-card">
         
-        <div class="alert alert-error" *ngIf="errorMessage">
-          {{ errorMessage }}
+        <!-- Brand Header with Logo -->
+        <div class="auth-brand">
+          <img src="assets/images/kasavelli-logo.svg" alt="Kasavelli 925" class="auth-logo-img">
+          <h1 class="auth-brand-title">KASAVELLI</h1>
+          <p class="auth-brand-subtitle">Pure 925 Sterling Silver Jewellery</p>
         </div>
 
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <!-- Mode Switcher Tabs -->
+        <div class="auth-tabs">
+          <button type="button" class="tab-btn" [class.active]="!showRegister" (click)="setMode(false)">
+            Sign In
+          </button>
+          <button type="button" class="tab-btn" [class.active]="showRegister" (click)="setMode(true)">
+            Create Account
+          </button>
+        </div>
+
+        <!-- Error Message Alert -->
+        <div class="alert alert-error" *ngIf="errorMessage">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <!-- ── LOGIN FORM ───────────────────────────── -->
+        <form *ngIf="!showRegister" (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
           <div class="form-group">
             <label class="form-label">Phone Number</label>
-            <input 
-              type="tel" 
-              class="form-control" 
-              [(ngModel)]="credentials.phone_number" 
-              name="phone_number"
-              placeholder="Enter your phone number"
+            <div class="input-icon-wrap">
+              <span class="input-prefix">+91</span>
+              <input
+                type="tel"
+                class="form-control with-prefix"
+                [(ngModel)]="credentials.phone_number"
+                name="phone_number"
+                placeholder="Enter 10-digit mobile number"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-icon-wrap">
+              <input
+                type="password"
+                class="form-control"
+                [(ngModel)]="credentials.password"
+                name="password"
+                placeholder="Enter your account password"
+                required
+              >
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-submit"
+            [disabled]="!loginForm.valid || loading"
+          >
+            <span *ngIf="!loading">Sign In</span>
+            <span *ngIf="loading" class="loading-state">
+              <span class="btn-spinner"></span> Signing in...
+            </span>
+          </button>
+
+          <div class="auth-footer-prompt">
+            <span>New to Kasavelli?</span>
+            <button type="button" class="link-btn" (click)="setMode(true)">Create an Account</button>
+          </div>
+        </form>
+
+        <!-- ── REGISTRATION FORM ────────────────────── -->
+        <form *ngIf="showRegister" (ngSubmit)="onRegister()" #registerForm="ngForm" class="auth-form">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="registerData.name"
+              name="name"
+              placeholder="e.g. Priya Sharma"
               required
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <div class="input-icon-wrap">
+              <span class="input-prefix">+91</span>
+              <input
+                type="tel"
+                class="form-control with-prefix"
+                [(ngModel)]="registerData.phone_number"
+                name="reg_phone"
+                placeholder="10-digit mobile number"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address (Optional)</label>
+            <input
+              type="email"
+              class="form-control"
+              [(ngModel)]="registerData.email"
+              name="email"
+              placeholder="name@example.com"
             >
           </div>
 
           <div class="form-group">
             <label class="form-label">Password</label>
-            <input 
-              type="password" 
-              class="form-control" 
-              [(ngModel)]="credentials.password" 
-              name="password"
-              placeholder="Enter your password"
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="registerData.password"
+              name="reg_password"
+              placeholder="Create a secure password"
               required
             >
           </div>
 
-          <button 
-            type="submit" 
-            class="btn btn-primary" 
-            [disabled]="!loginForm.valid || loading"
-            style="width: 100%;"
+          <button
+            type="submit"
+            class="btn-submit"
+            [disabled]="!registerForm.valid || loading"
           >
-            {{ loading ? 'Logging in...' : 'Login' }}
+            <span *ngIf="!loading">Create Account</span>
+            <span *ngIf="loading" class="loading-state">
+              <span class="btn-spinner"></span> Creating account...
+            </span>
           </button>
+
+          <div class="auth-footer-prompt">
+            <span>Already have an account?</span>
+            <button type="button" class="link-btn" (click)="setMode(false)">Sign In</button>
+          </div>
         </form>
 
-        <p class="text-center mt-3">
-          Don't have an account? <a href="#" (click)="toggleRegister($event)">Register</a>
-        </p>
-
-        <!-- Registration Form -->
-        <div *ngIf="showRegister" class="mt-4">
-          <h3 class="text-center">Register</h3>
-          <form (ngSubmit)="onRegister()" #registerForm="ngForm">
-            <div class="form-group">
-              <label class="form-label">Name</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                [(ngModel)]="registerData.name" 
-                name="name"
-                required
-              >
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Phone Number</label>
-              <input 
-                type="tel" 
-                class="form-control" 
-                [(ngModel)]="registerData.phone_number" 
-                name="reg_phone"
-                required
-              >
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Email (Optional)</label>
-              <input 
-                type="email" 
-                class="form-control" 
-                [(ngModel)]="registerData.email" 
-                name="email"
-              >
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Password</label>
-              <input 
-                type="password" 
-                class="form-control" 
-                [(ngModel)]="registerData.password" 
-                name="reg_password"
-                required
-              >
-            </div>
-
-            <button 
-              type="submit" 
-              class="btn btn-primary" 
-              [disabled]="!registerForm.valid || loading"
-              style="width: 100%;"
-            >
-              {{ loading ? 'Registering...' : 'Register' }}
-            </button>
-          </form>
-        </div>
       </div>
     </div>
   `,
   styles: [`
-    .container {
-      min-height: 80vh;
+    :host {
+      --royal: #551756;
+      --royal-mid: #6e2370;
+      --royal-dark: #3a0e3b;
+      --gold: #c9a84c;
+      --gold-light: #f5cf62;
+      --cream-bg: #faf7f2;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-muted: #6b6b7b;
+      --border: #e8e0ee;
+    }
+
+    .auth-page-wrap {
+      min-height: 85vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, rgba(139, 58, 98, 0.05) 0%, rgba(169, 75, 118, 0.05) 100%);
+      padding: 3rem 1.5rem;
+      background: radial-gradient(circle at 50% 20%, rgba(85, 23, 86, 0.06) 0%, rgba(250, 247, 242, 1) 75%);
     }
 
-    .login-container {
-      max-width: 450px;
+    .auth-card {
+      max-width: 440px;
       width: 100%;
-      margin: 2rem;
-      padding: 3rem;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(139, 58, 98, 0.15);
-      border: 1px solid rgba(139, 58, 98, 0.1);
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem 2.25rem 2.75rem;
+      box-shadow: 0 16px 48px rgba(58, 14, 59, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+      border: 1.5px solid rgba(232, 197, 71, 0.35);
+      position: relative;
     }
 
-    h2, h3 {
-      color: var(--primary-purple);
-      font-family: 'Raleway', sans-serif;
+    /* Brand Header */
+    .auth-brand {
+      text-align: center;
       margin-bottom: 2rem;
-      font-size: 2rem;
+    }
+    .auth-logo-img {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      box-shadow: 0 4px 16px rgba(85, 23, 86, 0.25);
+      object-fit: cover;
+      margin-bottom: 0.85rem;
+    }
+    .auth-brand-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Montserrat", sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: var(--royal-dark);
+      margin: 0 0 0.25rem;
+    }
+    .auth-brand-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin: 0;
     }
 
-    h3 {
-      font-size: 1.5rem;
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 2px solid rgba(139, 58, 98, 0.1);
+    /* Tabs */
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f4edf5;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+    .tab-btn {
+      padding: 0.65rem 1rem;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.25s ease;
+    }
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--royal);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Form Fields */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
     }
 
     .form-group {
-      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
     }
 
     .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      color: var(--primary-purple);
-      font-family: 'Raleway', sans-serif;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--royal-dark);
+    }
+
+    .input-icon-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--royal);
+      pointer-events: none;
     }
 
     .form-control {
       width: 100%;
-      padding: 0.875rem;
-      border: 2px solid rgba(139, 58, 98, 0.2);
-      border-radius: 8px;
-      font-family: 'Raleway', sans-serif;
-      font-size: 1rem;
-      transition: all 0.3s ease;
+      padding: 0.85rem 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: #fcfbfe;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .form-control.with-prefix {
+      padding-left: 48px;
     }
 
     .form-control:focus {
       outline: none;
-      border-color: var(--primary-purple);
-      box-shadow: 0 0 0 4px rgba(139, 58, 98, 0.1);
+      border-color: var(--royal);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(85, 23, 86, 0.1);
     }
 
-    .btn-primary {
+    .form-control::placeholder {
+      color: #aaa;
+      font-size: 0.88rem;
+    }
+
+    /* Submit Button (High visibility) */
+    .btn-submit {
       width: 100%;
-      padding: 1rem;
-      margin-top: 1rem;
-      background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-magenta) 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 1.125rem;
-      font-weight: 600;
+      padding: 0.95rem 1.5rem;
+      margin-top: 0.75rem;
+      background: linear-gradient(135deg, #551756 0%, #3a0e3b 100%);
+      color: #ffffff !important;
+      border: 1.5px solid rgba(232, 197, 71, 0.4);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.98rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(139, 58, 98, 0.3);
+      box-shadow: 0 6px 20px rgba(58, 14, 59, 0.28);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .btn-primary:hover:not(:disabled) {
-      background: linear-gradient(135deg, var(--dark-purple) 0%, var(--primary-purple) 100%);
-      box-shadow: 0 6px 16px rgba(139, 58, 98, 0.4);
+    .btn-submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, #6e2370 0%, #551756 100%);
       transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(58, 14, 59, 0.35);
+      border-color: var(--gold-light);
     }
 
-    .btn-primary:disabled {
-      opacity: 0.6;
+    .btn-submit:disabled {
+      opacity: 0.65;
       cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
     }
 
+    .loading-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+    }
+
+    .btn-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer link */
+    .auth-footer-prompt {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--royal);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.88rem;
+      padding: 0;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+    .link-btn:hover {
+      color: #c9a84c;
+    }
+
+    /* Alert */
     .alert-error {
-      background-color: rgba(211, 47, 47, 0.1);
-      border: 1px solid rgba(211, 47, 47, 0.3);
-      color: #D32F2F;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      font-size: 0.86rem;
       font-weight: 500;
     }
-
-    .text-center {
-      text-align: center;
+    .alert-error svg {
+      flex-shrink: 0;
     }
 
-    .mt-3 {
-      margin-top: 1.5rem;
-    }
-
-    .mt-4 {
-      margin-top: 2rem;
-    }
-
-    p {
-      color: var(--dark-gray);
-      font-family: 'Raleway', sans-serif;
-    }
-
-    a {
-      color: var(--primary-purple);
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    a:hover {
-      color: var(--primary-magenta);
-      text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-      .login-container {
-        padding: 2rem;
-        margin: 1rem;
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 2rem 1.25rem;
+        border-radius: 16px;
       }
-
-      h2 {
-        font-size: 1.75rem;
+      .auth-logo-img {
+        width: 60px;
+        height: 60px;
+      }
+      .auth-brand-title {
+        font-size: 1.25rem;
       }
     }
   `]
@@ -322,6 +496,11 @@ export class LoginComponent {
         }
       }
     });
+  }
+
+  setMode(registerMode: boolean): void {
+    this.showRegister = registerMode;
+    this.errorMessage = '';
   }
 
   toggleRegister(event: Event): void {
