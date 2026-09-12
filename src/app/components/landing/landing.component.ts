@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product.service';
@@ -14,11 +14,14 @@ import {
   template: `
 
     <!-- ══ NOTIFICATION BAR ══════════════════════════════════════ -->
-    <div class="notif-bar" *ngIf="notifVisible && activeNotificationText">
+    <div class="notif-bar" *ngIf="notifVisible && currentNotificationItem">
       <div class="notif-inner">
-        <span class="notif-icon">✦</span>
-        <span class="notif-text">{{ activeNotificationText }}</span>
-        <span class="notif-icon">✦</span>
+        <span class="notif-sparkle notif-sparkle-l">✦</span>
+        <div class="notif-content-box" [class.bouncing]="notifAnimating">
+          <span class="notif-badge">EXCLUSIVE</span>
+          <span class="notif-text">{{ currentNotificationItem }}</span>
+        </div>
+        <span class="notif-sparkle notif-sparkle-r">✦</span>
       </div>
       <button class="notif-close" (click)="notifVisible=false" aria-label="Close">✕</button>
     </div>
@@ -265,32 +268,133 @@ import {
 
     /* ══ NOTIFICATION BAR ══ */
     .notif-bar {
-      background: var(--royal-dark);
+      background: linear-gradient(90deg, #1f0521 0%, #3a0e3b 35%, #551756 50%, #3a0e3b 65%, #1f0521 100%);
+      background-size: 200% 100%;
+      animation: bgShimmer 8s ease infinite;
       display: flex; align-items: center;
       justify-content: center;
-      padding: 0.6rem 3rem 0.6rem 1rem;
+      padding: 0.55rem 3.5rem 0.55rem 1.5rem;
       position: relative; overflow: hidden;
+      border-bottom: 1.5px solid rgba(232, 197, 71, 0.4);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     }
+    @keyframes bgShimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     .notif-inner {
-      display: flex; align-items: center; gap: 0.75rem;
-      white-space: nowrap; overflow: hidden;
-      animation: marquee 28s linear infinite;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
     }
-    @keyframes marquee {
-      0%   { transform: translateX(30%); }
-      100% { transform: translateX(-100%); }
+
+    .notif-content-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: all 0.3s ease;
     }
-    .notif-text { font-size: 0.78rem; letter-spacing: 1px; color: #e8c547; font-weight: 500; }
-    .notif-icon { color: #e8c547; font-size: 0.65rem; flex-shrink: 0; }
+
+    .notif-content-box.bouncing {
+      animation: bouncyEnter 4s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+    }
+
+    @keyframes bouncyEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.85);
+      }
+      10% {
+        opacity: 1;
+        transform: translateY(6px) scale(1.06);
+      }
+      16% {
+        transform: translateY(-4px) scale(0.98);
+      }
+      22% {
+        transform: translateY(2px) scale(1.01);
+      }
+      26% {
+        transform: translateY(0px) scale(1);
+      }
+      88% {
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+      }
+      94% {
+        opacity: 0.5;
+        transform: translateY(-3px) scale(0.98);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.88);
+      }
+    }
+
+    .notif-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #e8c547 0%, #c9a84c 100%);
+      color: #3a0e3b;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      flex-shrink: 0;
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); filter: brightness(1.15); }
+    }
+
+    .notif-text {
+      font-size: 0.82rem;
+      letter-spacing: 0.7px;
+      color: #fff9e6;
+      font-weight: 600;
+      text-align: center;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      line-height: 1.3;
+    }
+
+    .notif-sparkle {
+      color: #e8c547;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      text-shadow: 0 0 8px rgba(232,197,71,0.9);
+      animation: sparkleRotate 3s ease-in-out infinite;
+    }
+    .notif-sparkle-r {
+      animation-delay: 1.5s;
+    }
+    @keyframes sparkleRotate {
+      0%, 100% { transform: scale(0.85) rotate(0deg); opacity: 0.7; }
+      50% { transform: scale(1.25) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 6px #e8c547); }
+    }
+
     .notif-close {
-      position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
-      background: rgba(255,255,255,0.1); border: none; border-radius: 50%;
-      width: 22px; height: 22px; font-size: 0.7rem;
-      color: rgba(232,197,71,0.8); cursor: pointer;
+      position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(232,197,71,0.3); border-radius: 50%;
+      width: 24px; height: 24px; font-size: 0.7rem;
+      color: rgba(232,197,71,0.9); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s; flex-shrink: 0;
+      transition: all 0.2s; flex-shrink: 0;
     }
-    .notif-close:hover { background: rgba(255,255,255,0.2); color: #e8c547; }
+    .notif-close:hover {
+      background: rgba(232,197,71,0.25);
+      color: #fff;
+      transform: translateY(-50%) scale(1.1);
+      border-color: #e8c547;
+    }
 
     /* ══ SHARED ══ */
     .landing { background: #fff; }
@@ -1016,7 +1120,7 @@ import {
     }
   `]
 })
-export class LandingComponent implements OnInit {
+export class LandingComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   newArrivals: Product[] = [];
   heroBanner: Banner | null = null;
@@ -1028,9 +1132,15 @@ export class LandingComponent implements OnInit {
   story: StorySection | null = null;
   whyCards: WhyChooseCard[] = [];
 
+  // Bouncy notification rotation state
+  activeNotifIndex = 0;
+  notifAnimating = true;
+  private notifTimer: any = null;
+
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    this.startNotifRotation();
     // Load dynamic homepage config
     this.productService.getHomepageConfig().subscribe({
       next: (config: HomepageConfig) => {
@@ -1066,6 +1176,43 @@ export class LandingComponent implements OnInit {
       },
       error: (e) => console.error('Banners:', e)
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.notifTimer) {
+      clearInterval(this.notifTimer);
+    }
+  }
+
+  private startNotifRotation(): void {
+    if (this.notifTimer) clearInterval(this.notifTimer);
+    this.notifTimer = setInterval(() => {
+      const items = this.notificationItems;
+      if (items.length > 1) {
+        this.notifAnimating = false;
+        setTimeout(() => {
+          this.activeNotifIndex = (this.activeNotifIndex + 1) % items.length;
+          this.notifAnimating = true;
+        }, 50);
+      }
+    }, 4000);
+  }
+
+  get notificationItems(): string[] {
+    if (this.notificationBars && this.notificationBars.length > 0) {
+      return this.notificationBars.map(n => n.text);
+    }
+    return [
+      'Free shipping on orders above ₹999 across India',
+      '30-Day easy returns & instant refund guarantee',
+      '925 Hallmarked Silver — 100% Certified & Authentic',
+      'Handcrafted with love by skilled Indian artisans'
+    ];
+  }
+
+  get currentNotificationItem(): string {
+    const items = this.notificationItems;
+    return items[this.activeNotifIndex % items.length] || items[0] || '';
   }
 
   get activeNotificationText(): string {
