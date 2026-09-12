@@ -281,13 +281,12 @@ import {
     .notif-bar {
       background: #551756;
       color: #ffffff;
-      min-height: 40px;
-      height: 40px;
+      min-height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      padding: 0 52px;
+      padding: 4px 44px;
       overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       z-index: 100;
@@ -296,8 +295,8 @@ import {
 
     .notif-stage {
       flex: 1;
-      max-width: 860px;
-      height: 100%;
+      max-width: 900px;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -310,14 +309,17 @@ import {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      font-size: 0.83rem;
-      line-height: 1.3;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+      line-height: 1.35;
+      letter-spacing: 0.2px;
+      text-align: center;
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      max-width: 100%;
+      word-break: break-word;
     }
 
     .notif-item.visible {
@@ -329,8 +331,8 @@ import {
       font-weight: 700;
       color: #e8c547;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
-      font-size: 0.76rem;
+      letter-spacing: 0.5px;
+      font-size: clamp(0.62rem, 1.9vw, 0.76rem);
       flex-shrink: 0;
       display: inline-block;
     }
@@ -339,6 +341,7 @@ import {
       font-weight: 500;
       color: #ffffff;
       display: inline-block;
+      font-size: inherit;
     }
 
     .notif-nav-arrow {
@@ -403,32 +406,33 @@ import {
 
     @media (max-width: 680px) {
       .notif-bar {
-        height: 38px;
-        min-height: 38px;
-        padding: 0 38px 0 36px;
+        min-height: 34px;
+        padding: 4px 30px 4px 28px;
       }
-      .notif-spin-card {
-        font-size: 0.75rem;
-        gap: 6px;
+      .notif-item {
+        font-size: clamp(0.66rem, 2.8vw, 0.78rem);
+        line-height: 1.25;
+        gap: 4px;
       }
       .notif-tag {
-        font-size: 0.65rem;
-        padding: 2px 6px;
+        font-size: 0.62rem;
+        padding: 1px 4px;
       }
       .notif-nav-arrow {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
       }
       .notif-prev {
-        left: 6px;
+        left: 4px;
       }
       .notif-next {
-        right: 34px;
+        right: 26px;
       }
       .notif-close {
-        right: 6px;
-        width: 22px;
-        height: 22px;
+        right: 4px;
+        width: 18px;
+        height: 18px;
+        font-size: 0.65rem;
       }
     }
 
@@ -1017,17 +1021,19 @@ import {
       }
       .ls-banner-card {
         flex-direction: row;
-        min-height: 360px;
+        min-height: 380px;
         border-radius: 0;
       }
       .ls-content-pane {
-        flex: 1.05;
-        padding: 1.3rem 1.2rem 1.1rem 0.9rem;
-        clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
+        flex: 1.35;
+        padding: 1.25rem 1.4rem 1.25rem 1rem;
+        clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+        overflow: visible;
+        word-break: break-word;
       }
       .ls-brand-badge {
-        padding: 0.18rem 0.5rem;
-        margin-bottom: 0.6rem;
+        padding: 0.2rem 0.55rem;
+        margin-bottom: 0.5rem;
       }
       .ls-brand-text {
         font-size: 0.58rem;
@@ -1037,7 +1043,7 @@ import {
         font-size: 0.65rem;
       }
       .ls-header-group {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.45rem;
       }
       .ls-eyebrow {
         font-size: 0.62rem;
@@ -1045,39 +1051,41 @@ import {
         margin-bottom: 0.2rem;
       }
       .ls-title {
-        font-size: clamp(1.2rem, 4.5vw, 1.65rem);
-        line-height: 1.1;
+        font-size: clamp(1.15rem, 4.2vw, 1.55rem);
+        line-height: 1.15;
+        word-break: break-word;
       }
       .ls-desc {
-        font-size: 0.75rem;
-        line-height: 1.4;
-        margin-bottom: 0.2rem;
+        font-size: clamp(0.68rem, 2.2vw, 0.78rem);
+        line-height: 1.35;
+        margin-bottom: 0.35rem;
+        word-break: break-word;
       }
       .ls-desc-sub {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        font-size: 0.7rem;
-        line-height: 1.35;
-        margin-bottom: 0.7rem;
+        font-size: 0.68rem;
+        line-height: 1.3;
+        margin-bottom: 0.6rem;
       }
       .ls-action-row {
         gap: 0.5rem;
         margin-top: 0.2rem;
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.75rem;
       }
       .ls-offer-pill {
-        padding: 0.3rem 0.55rem;
+        padding: 0.25rem 0.5rem;
         gap: 0.3rem;
       }
       .ls-offer-val {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
       .ls-offer-txt {
-        font-size: 0.58rem;
-        max-width: 90px;
-        letter-spacing: 0.4px;
+        font-size: 0.55rem;
+        max-width: 80px;
+        letter-spacing: 0.3px;
       }
       .ls-cta-btn {
         padding: 0.5rem 1rem;
@@ -1090,29 +1098,32 @@ import {
         height: 13px;
       }
       .ls-footer-tags {
-        gap: 0.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 0.75rem;
         padding-top: 0.5rem;
       }
       .ls-tag {
-        font-size: 0.58rem;
+        font-size: 0.6rem;
         gap: 0.2rem;
+        white-space: nowrap;
       }
       .ls-dot {
         font-size: 0.35rem;
       }
       .ls-slant-divider {
-        left: 45%;
-        width: 20px;
+        left: 50%;
+        width: 18px;
         display: block;
       }
       .ls-gold-accent-strip {
-        left: 47.5%;
+        left: 52%;
         width: 3px;
         display: block;
       }
       .ls-image-pane {
-        flex: 1.25;
-        margin-left: -7%;
+        flex: 1;
+        margin-left: -5%;
         height: auto;
       }
       .offers-grid { grid-template-columns: 1fr; }
@@ -1122,18 +1133,19 @@ import {
 
     @media (max-width: 440px) {
       .ls-banner-card {
-        min-height: 330px;
+        min-height: 350px;
       }
       .ls-content-pane {
-        flex: 1.05;
-        padding: 1rem 0.8rem 0.8rem 0.7rem;
-        clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%);
+        flex: 1.4;
+        padding: 1.1rem 1.1rem 1rem 0.75rem;
+        clip-path: polygon(0 0, 100% 0, 89% 100%, 0 100%);
       }
       .ls-title {
-        font-size: 1.15rem;
+        font-size: clamp(1.05rem, 4.4vw, 1.3rem);
+        line-height: 1.15;
       }
       .ls-desc {
-        font-size: 0.68rem;
+        font-size: 0.66rem;
         line-height: 1.3;
       }
       .ls-desc-sub {
@@ -1146,20 +1158,27 @@ import {
         display: none;
       }
       .ls-cta-btn {
-        padding: 0.45rem 0.8rem;
-        font-size: 0.65rem;
+        padding: 0.45rem 0.85rem;
+        font-size: 0.66rem;
+      }
+      .ls-footer-tags {
+        gap: 0.3rem 0.6rem;
+        padding-top: 0.4rem;
+      }
+      .ls-tag {
+        font-size: 0.55rem;
       }
       .ls-slant-divider {
-        left: 42%;
-        width: 16px;
+        left: 51%;
+        width: 15px;
       }
       .ls-gold-accent-strip {
-        left: 44.5%;
-        width: 3px;
+        left: 53%;
+        width: 2.5px;
       }
       .ls-image-pane {
-        flex: 1.35;
-        margin-left: -8%;
+        flex: 0.95;
+        margin-left: -5%;
       }
     }
   `]
