@@ -13,23 +13,23 @@ import {
   imports: [CommonModule, RouterLink],
   template: `
 
-    <!-- ══ NOTIFICATION BAR (GIVA STYLE) ══════════════════════════════ -->
-    <div class="notif-bar" *ngIf="notifVisible && currentNotificationItem">
-      <button class="notif-nav-arrow notif-prev" (click)="prevNotif()" aria-label="Previous announcement" *ngIf="notificationItems.length > 1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13">
+    <!-- ══ NOTIFICATION BAR (3D SPIN FLIP LIST) ═════════════════════════ -->
+    <div class="notif-bar" *ngIf="notifVisible && notificationList.length > 0">
+      <button class="notif-nav-arrow notif-prev" (click)="prevNotif()" aria-label="Previous announcement" *ngIf="notificationList.length > 1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
 
-      <div class="notif-slider-track">
-        <div class="notif-message-item" [class.slide-active]="notifAnimating">
-          <span class="notif-tag" *ngIf="currentNotificationTag">{{ currentNotificationTag }}</span>
-          <span class="notif-text">{{ currentNotificationBody }}</span>
+      <div class="notif-stage">
+        <div class="notif-spin-card" [class.spinning]="isSpinning">
+          <span class="notif-tag" *ngIf="currentNotif.tag">{{ currentNotif.tag }}</span>
+          <span class="notif-text">{{ currentNotif.text }}</span>
         </div>
       </div>
 
-      <button class="notif-nav-arrow notif-next" (click)="nextNotif()" aria-label="Next announcement" *ngIf="notificationItems.length > 1">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13">
+      <button class="notif-nav-arrow notif-next" (click)="nextNotif()" aria-label="Next announcement" *ngIf="notificationList.length > 1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
@@ -277,80 +277,98 @@ import {
       --text-light: #6b6b7b;
     }
 
-    /* ══ NOTIFICATION BAR (GIVA STYLE) ══ */
+    /* ══ NOTIFICATION BAR (3D SPIN FLIP LIST) ══ */
     .notif-bar {
-      background-color: #551756;
+      background: #2b052d;
+      background: linear-gradient(90deg, #1d031e 0%, #3a093b 30%, #551756 50%, #3a093b 70%, #1d031e 100%);
       color: #ffffff;
-      height: 38px;
+      min-height: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      padding: 0 45px;
+      padding: 0 50px;
       overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1.5px solid rgba(232, 197, 71, 0.45);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
     }
 
-    .notif-slider-track {
+    .notif-stage {
       flex: 1;
-      max-width: 820px;
+      max-width: 860px;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      perspective: 700px;
       text-align: center;
+      overflow: visible;
     }
 
-    .notif-message-item {
+    .notif-spin-card {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      line-height: 1.2;
+      gap: 10px;
+      font-size: 0.85rem;
+      line-height: 1.25;
       letter-spacing: 0.3px;
       white-space: nowrap;
+      backface-visibility: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
     }
 
-    .notif-message-item.slide-active {
-      animation: givaSlideUp 0.45s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    .notif-spin-card.spinning {
+      animation: spinFlip3D 0.55s cubic-bezier(0.2, 0.85, 0.35, 1.2) forwards;
     }
 
-    @keyframes givaSlideUp {
+    @keyframes spinFlip3D {
       0% {
         opacity: 0;
-        transform: translateY(14px);
+        transform: rotateX(-90deg) translateY(18px) scale(0.9);
+      }
+      60% {
+        opacity: 1;
+        transform: rotateX(15deg) translateY(-3px) scale(1.02);
       }
       100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: rotateX(0deg) translateY(0) scale(1);
       }
     }
 
     .notif-tag {
-      font-weight: 700;
-      color: #e8c547;
+      font-weight: 800;
+      color: #3a0e3b;
+      background: linear-gradient(135deg, #f5cf62 0%, #e8c547 50%, #c9a84c 100%);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-size: 0.75rem;
+      letter-spacing: 0.8px;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+      display: inline-block;
     }
 
     .notif-text {
-      font-weight: 500;
-      color: #fdfdfd;
-      text-decoration: none;
+      font-weight: 600;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+      display: inline-block;
     }
 
     .notif-nav-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(232, 197, 71, 0.25);
+      color: #e8c547;
       width: 28px;
       height: 28px;
       display: flex;
@@ -360,11 +378,14 @@ import {
       border-radius: 50%;
       transition: all 0.2s ease;
       padding: 0;
+      z-index: 2;
     }
 
     .notif-nav-arrow:hover {
       color: #ffffff;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(232, 197, 71, 0.35);
+      border-color: #e8c547;
+      transform: translateY(-50%) scale(1.1);
     }
 
     .notif-prev {
@@ -372,7 +393,7 @@ import {
     }
 
     .notif-next {
-      right: 40px;
+      right: 44px;
     }
 
     .notif-close {
@@ -380,49 +401,55 @@ import {
       right: 12px;
       top: 50%;
       transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.72rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.75rem;
       cursor: pointer;
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
       transition: all 0.2s;
+      z-index: 2;
     }
 
     .notif-close:hover {
       color: #ffffff;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(232, 197, 71, 0.3);
+      border-color: #e8c547;
     }
 
     @media (max-width: 680px) {
       .notif-bar {
-        height: 34px;
-        padding: 0 32px 0 28px;
+        height: 38px;
+        min-height: 38px;
+        padding: 0 38px 0 36px;
       }
-      .notif-message-item {
-        font-size: 0.7rem;
-        gap: 4px;
+      .notif-spin-card {
+        font-size: 0.75rem;
+        gap: 6px;
       }
       .notif-tag {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
+        padding: 2px 6px;
       }
       .notif-nav-arrow {
-        width: 22px;
-        height: 22px;
+        width: 24px;
+        height: 24px;
       }
       .notif-prev {
-        left: 4px;
+        left: 6px;
       }
       .notif-next {
-        right: 28px;
+        right: 34px;
       }
       .notif-close {
         right: 6px;
+        width: 22px;
+        height: 22px;
       }
     }
 
@@ -1162,9 +1189,9 @@ export class LandingComponent implements OnInit, OnDestroy {
   story: StorySection | null = null;
   whyCards: WhyChooseCard[] = [];
 
-  // Bouncy notification rotation state
+  // Notification 3D spin rotation state
   activeNotifIndex = 0;
-  notifAnimating = true;
+  isSpinning = true;
   private notifTimer: any = null;
 
   constructor(private productService: ProductService) {}
@@ -1218,73 +1245,72 @@ export class LandingComponent implements OnInit, OnDestroy {
     if (this.notifTimer) clearInterval(this.notifTimer);
     this.notifTimer = setInterval(() => {
       this.nextNotif();
-    }, 4500);
+    }, 4000);
   }
 
   nextNotif(): void {
-    const items = this.notificationItems;
-    if (items.length <= 1) return;
-    this.notifAnimating = false;
+    const list = this.notificationList;
+    if (list.length <= 1) return;
+    this.isSpinning = false;
     setTimeout(() => {
-      this.activeNotifIndex = (this.activeNotifIndex + 1) % items.length;
-      this.notifAnimating = true;
-    }, 40);
+      this.activeNotifIndex = (this.activeNotifIndex + 1) % list.length;
+      this.isSpinning = true;
+    }, 30);
   }
 
   prevNotif(): void {
-    const items = this.notificationItems;
-    if (items.length <= 1) return;
-    this.notifAnimating = false;
+    const list = this.notificationList;
+    if (list.length <= 1) return;
+    this.isSpinning = false;
     setTimeout(() => {
-      this.activeNotifIndex = (this.activeNotifIndex - 1 + items.length) % items.length;
-      this.notifAnimating = true;
-    }, 40);
+      this.activeNotifIndex = (this.activeNotifIndex - 1 + list.length) % list.length;
+      this.isSpinning = true;
+    }, 30);
   }
 
-  get notificationItems(): string[] {
+  /**
+   * Parse notification items into structured objects.
+   * If an item contains '·' (e.g. joined list from admin), it splits them into individual notifications.
+   */
+  get notificationList(): Array<{ tag: string; text: string }> {
+    const rawTexts: string[] = [];
     if (this.notificationBars && this.notificationBars.length > 0) {
-      return this.notificationBars.map(n => n.text);
+      this.notificationBars.forEach(n => {
+        if (n.text) {
+          const parts = n.text.split(/\s*·\s*/);
+          parts.forEach(p => {
+            const trimmed = p.trim();
+            if (trimmed) rawTexts.push(trimmed);
+          });
+        }
+      });
     }
-    return [
-      'FLAT 15% OFF | Use Code: SHINE15 on your first order',
-      'FREE SHIPPING on prepaid orders above ₹999',
-      'AUTHENTIC 925 SILVER with Certificate of Authenticity',
-      'EASY 30 DAYS RETURNS & Instant Exchange'
-    ];
+
+    if (rawTexts.length === 0) {
+      rawTexts.push(
+        'FLAT 15% OFF | Use Code: SHINE15 on your first order',
+        'FREE SHIPPING | On all prepaid orders above ₹999 across India',
+        '925 SILVER | Certified authentic hallmark with certificate',
+        'EASY RETURNS | 30-Day hassle-free return & doorstep exchange'
+      );
+    }
+
+    return rawTexts.map(raw => {
+      if (raw.includes('|')) {
+        const [tag, ...rest] = raw.split('|');
+        return { tag: tag.trim(), text: rest.join('|').trim() };
+      }
+      if (raw.includes('—')) {
+        const [tag, ...rest] = raw.split('—');
+        return { tag: tag.trim(), text: rest.join('—').trim() };
+      }
+      return { tag: '', text: raw };
+    });
   }
 
-  get currentNotificationItem(): string {
-    const items = this.notificationItems;
-    return items[this.activeNotifIndex % items.length] || items[0] || '';
-  }
-
-  get currentNotificationTag(): string {
-    const item = this.currentNotificationItem;
-    if (item.includes('|')) {
-      return item.split('|')[0].trim();
-    }
-    if (item.includes(':')) {
-      return item.split(':')[0].trim();
-    }
-    return '';
-  }
-
-  get currentNotificationBody(): string {
-    const item = this.currentNotificationItem;
-    if (item.includes('|')) {
-      return item.substring(item.indexOf('|') + 1).trim();
-    }
-    if (item.includes(':')) {
-      return item.substring(item.indexOf(':') + 1).trim();
-    }
-    return item;
-  }
-
-  get activeNotificationText(): string {
-    if (this.notificationBars.length > 0) {
-      return this.notificationBars.map(n => n.text).join('   ·   ');
-    }
-    return 'Free shipping on orders above ₹999  ·  30-Day easy returns  ·  925 Hallmarked Silver — Certified & Authentic  ·  Handcrafted in India';
+  get currentNotif(): { tag: string; text: string } {
+    const list = this.notificationList;
+    return list[this.activeNotifIndex % list.length] || { tag: '', text: '' };
   }
 
   get formattedTitle(): string {
