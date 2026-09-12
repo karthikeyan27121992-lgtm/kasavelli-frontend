@@ -39,7 +39,7 @@ import { CartItem } from '../../models/product.model';
           </svg>
         </div>
         <h2>Your bag is empty</h2>
-        <p>Discover our handcrafted 925 silver collection</p>
+        <p>Discover our handpicked 925 silver collection</p>
         <a routerLink="/products" class="btn-shop">Start Shopping</a>
       </div>
 

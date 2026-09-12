@@ -54,7 +54,7 @@ import {
               <h1 class="ls-title" [innerHTML]="formattedTitle"></h1>
             </div>
 
-            <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian finger rings, handcrafted in 925 sterling silver.' }}</p>
+            <p class="ls-desc">{{ leadspace?.desc_line1 || 'Traditional South Indian finger rings, handpicked in 925 sterling silver.' }}</p>
             <p class="ls-desc ls-desc-sub" *ngIf="leadspace?.desc_line2">{{ leadspace?.desc_line2 }}</p>
 
             <div class="ls-action-row">
@@ -99,7 +99,7 @@ import {
           <div class="sec-head">
             <h2>Shop by Category</h2>
             <div class="sec-line"></div>
-            <p class="sec-sub">Discover our handcrafted silver collections</p>
+            <p class="sec-sub">Discover our handpicked silver collections</p>
           </div>
           <div class="cat-grid">
             <div class="cat-card" *ngFor="let cat of categories"
@@ -140,7 +140,7 @@ import {
           <div class="about-text-col">
             <p class="about-eyebrow">{{ story?.eyebrow || 'Our Story' }}</p>
             <h2 class="about-title" [innerHTML]="formattedStoryTitle"></h2>
-            <p class="about-desc">{{ story?.paragraph_1 || 'Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handcrafted by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.' }}</p>
+            <p class="about-desc">{{ story?.paragraph_1 || 'Founded in 2024, Kasavelli was born from a love for traditional Indian jewellery-making. Every piece is handpicked by skilled artisans using 925 hallmarked sterling silver — hypoallergenic, durable, and timeless.' }}</p>
             <p class="about-desc" *ngIf="story?.paragraph_2">{{ story?.paragraph_2 }}</p>
             <div class="about-stats">
               <div class="astat">
@@ -1343,7 +1343,7 @@ export class LandingComponent implements OnInit, OnDestroy {
       { id: 3, title: 'Fast & Safe Delivery', description: 'Free shipping above ₹999. Secure packaging ensures your jewellery arrives safely across India in 5–7 days.', icon_type: 'truck', display_order: 3, is_active: true },
       { id: 4, title: '30-Day Returns', description: 'Not happy? Return within 30 days — no questions asked. Your satisfaction is our highest priority.', icon_type: 'returns', display_order: 4, is_active: true },
       { id: 5, title: 'Perfect for Gifting', description: 'Every order comes gift-ready with elegant packaging — ideal for birthdays, anniversaries, and festivities.', icon_type: 'gift', display_order: 5, is_active: true },
-      { id: 6, title: 'Made in India', description: 'Proudly handcrafted by Indian artisans — supporting traditional craft while delivering world-class quality.', icon_type: 'sparkles', display_order: 6, is_active: true },
+      { id: 6, title: 'Made in India', description: 'Proudly handpicked by Indian artisans — supporting traditional craft while delivering world-class quality.', icon_type: 'sparkles', display_order: 6, is_active: true },
     ];
   }
 }

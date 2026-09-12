@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { ProductService } from './services/product.service';
 import { SpinWheelService } from './services/spin-wheel.service';
 import { SpinWheelComponent } from './components/spin-wheel/spin-wheel.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
-import { Product } from './models/product.model';
+import { Product, Category } from './models/product.model';
 
 @Component({
   selector: 'app-root',
@@ -201,20 +201,15 @@ import { Product } from './models/product.model';
             <span class="footer-logo-title">KASAVELLI</span>
           </div>
           <p class="tagline">Premium 925 Silver Collection</p>
-          <p class="footer-desc">Exquisite handcrafted silver jewellery, ethically sourced and made to last a lifetime.</p>
+          <p class="footer-desc">Exquisite handpicked silver jewellery, ethically sourced and made to last a lifetime.</p>
           <div class="social-row">
-            <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+            <a href="https://www.instagram.com/kasa_velli925?utm_source=qr&stkn=MWttY2J0cTVmYnB2cw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
                 <circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/>
               </svg>
             </a>
-            <a href="https://facebook.com" target="_blank" aria-label="Facebook">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-              </svg>
-            </a>
-            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" aria-label="WhatsApp">
+            <a href="https://wa.me/917339479010" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
               </svg>
@@ -232,15 +227,16 @@ import { Product } from './models/product.model';
           </ul>
         </div>
 
-        <!-- Categories -->
+        <!-- Categories (Dynamic from Backend/Admin) -->
         <div class="footer-col">
           <h4>Categories</h4>
           <ul>
-            <li><a routerLink="/products">Chains & Pendants</a></li>
-            <li><a routerLink="/products">Earrings</a></li>
-            <li><a routerLink="/products">Rings</a></li>
-            <li><a routerLink="/products">Bracelets</a></li>
-            <li><a routerLink="/products">Anklets</a></li>
+            <li *ngFor="let cat of footerCategories">
+              <a [routerLink]="['/products']" [queryParams]="{category: cat.id}">{{ cat.display_name }}</a>
+            </li>
+            <li *ngIf="footerCategories.length === 0">
+              <a routerLink="/products">All Jewellery</a>
+            </li>
           </ul>
         </div>
 
@@ -252,13 +248,13 @@ import { Product } from './models/product.model';
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
               <polyline points="22,6 12,13 2,6"/>
             </svg>
-            info&#64;kasavelli.com
+            <a href="mailto:saranyanatarajan97@gmail.com" class="contact-link">saranyanatarajan97&#64;gmail.com</a>
           </p>
           <p class="contact-line">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.4 19.79 19.79 0 0 1 1.61 4.84 2 2 0 0 1 3.58 2.64h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.18a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
             </svg>
-            +91 XXXXX XXXXX
+            <a href="tel:+917339479010" class="contact-link">+91 7339479010</a>
           </p>
           <p class="badge-925">925 Silver Certified</p>
         </div>
@@ -267,7 +263,7 @@ import { Product } from './models/product.model';
       <div class="footer-bottom">
         <div class="container">
           <p>&copy; {{ year }} KASAVELLI. All rights reserved.</p>
-          <p class="footer-note">Handcrafted with ❤ in India</p>
+          <p class="footer-note">Handpicked with ❤ in India</p>
         </div>
       </div>
     </footer>
@@ -395,7 +391,8 @@ import { Product } from './models/product.model';
     }
     .btn-nav-outline:hover {
       border-color: var(--gold) !important;
-      color: var(--gold) !important;
+      background: var(--gold) !important;
+      color: #000000 !important;
     }
 
     /* Hamburger */
@@ -558,6 +555,15 @@ import { Product } from './models/product.model';
       color: rgba(239,235,225,0.65);
     }
     .contact-line svg { flex-shrink: 0; opacity: 0.6; }
+    .contact-link {
+      color: rgba(239,235,225,0.85);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-link:hover {
+      color: var(--gold);
+      text-decoration: underline;
+    }
     .badge-925 {
       display: inline-block;
       margin-top: 1rem;
@@ -808,12 +814,13 @@ import { Product } from './models/product.model';
     }
   `]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'KASAVELLI - Premium 925 Silver Jewellery';
   cartCount$ = this.cartService.cartCount$;
   menuOpen = false;
   scrolled = false;
   year = new Date().getFullYear();
+  footerCategories: Category[] = [];
 
   searchOpen = false;
   searchQuery = '';
@@ -847,6 +854,7 @@ export class AppComponent {
     private spinService: SpinWheelService,
     private router: Router
   ) {
+    this.loadCategories();
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', () => {
         this.scrolled = window.scrollY > 40;
@@ -926,6 +934,21 @@ export class AppComponent {
     this.searchQuery = '';
     this.searchResults = [];
     this.searching = false;
+  }
+
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories(): void {
+    this.productService.getCategories().subscribe({
+      next: (cats) => {
+        this.footerCategories = Array.isArray(cats) ? cats : [];
+      },
+      error: () => {
+        this.footerCategories = [];
+      }
+    });
   }
 
   @HostListener('document:keydown.escape')

@@ -24,7 +24,7 @@ import { Subscription } from 'rxjs';
           </div>
           <h1 class="page-title">Our Exclusive Collection</h1>
           <div class="title-gold-line"></div>
-          <p class="page-title-sub">Handcrafted by master artisans with pure 925 sterling silver</p>
+          <p class="page-title-sub">Handpicked by master artisans with pure 925 sterling silver</p>
         </div>
       </div>
 
