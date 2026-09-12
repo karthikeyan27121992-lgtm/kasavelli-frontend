@@ -1,58 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
   <defs>
-    <!-- Background Gradient matching the exact magenta-purple backdrop -->
-    <radialGradient id="bg-glow" cx="80%" cy="20%" r="90%">
-      <stop offset="0%" stop-color="#b6337a"/>
-      <stop offset="40%" stop-color="#8e1e62"/>
-      <stop offset="75%" stop-color="#550e42"/>
-      <stop offset="100%" stop-color="#34062a"/>
-    </radialGradient>
-
-    <!-- 4-Pointed Dark Green Sparkle Star (Precision Matched) -->
+    <!-- 4-Pointed Dark Green Sparkle Star -->
     <g id="sparkle-star">
-      <path d="M 0,-14 C 0,-3.5 3.5,0 14,0 C 3.5,0 0,3.5 0,14 C 0,3.5 -3.5,0 -14,0 C -3.5,0 0,-3.5 0,-14 Z" fill="#0d3522"/>
+      <path d="M 0,-16 C 0,-4 4,0 16,0 C 4,0 0,4 0,16 C 0,4 -4,0 -16,0 C -4,0 0,-4 0,-16 Z" fill="#0d3522"/>
     </g>
 
-    <!-- Faceted Brilliant Diamond Motif for Letter K and Letter S -->
+    <!-- Faceted Brilliant Diamond for Letter K and Letter S -->
     <g id="diamond-gem">
-      <!-- Outer facet outline -->
-      <polygon points="-8,-1 -4,-8 4,-8 8,-1 0,9" fill="#ffffff" stroke="#0d3522" stroke-width="0.75" stroke-linejoin="round"/>
-      <!-- Table facet -->
+      <polygon points="-8,-1 -4,-8 4,-8 8,-1 0,9" fill="#ffffff" stroke="#0d3522" stroke-width="0.8" stroke-linejoin="round"/>
       <polygon points="-4,-8 4,-8 2,-1 -2,-1" fill="#ffffff" stroke="#0d3522" stroke-width="0.5"/>
-      <!-- Side top facets -->
       <polygon points="-8,-1 -4,-8 -2,-1" fill="#f0f7f3" stroke="#0d3522" stroke-width="0.5"/>
       <polygon points="8,-1 4,-8 2,-1" fill="#f0f7f3" stroke="#0d3522" stroke-width="0.5"/>
-      <!-- Lower pavilion facets -->
       <polygon points="-2,-1 2,-1 0,9" fill="#ffffff" stroke="#0d3522" stroke-width="0.5"/>
-      <polygon points="-8,-1 -2,-1 0,9" fill="#dbeef4" stroke="#0d3522" stroke-width="0.5"/>
-      <polygon points="8,-1 2,-1 0,9" fill="#dbeef4" stroke="#0d3522" stroke-width="0.5"/>
+      <polygon points="-8,-1 -2,-1 0,9" fill="#e2f0ea" stroke="#0d3522" stroke-width="0.5"/>
+      <polygon points="8,-1 2,-1 0,9" fill="#e2f0ea" stroke="#0d3522" stroke-width="0.5"/>
     </g>
   </defs>
 
-  <!-- Circular Badge Background -->
-  <circle cx="250" cy="250" r="242" fill="url(#bg-glow)"/>
-
-  <!-- ================= ORBITAL GEOMETRIC RINGS ================= -->
+  <!-- ================= ORBITAL GEOMETRIC RINGS (Clean Transparent Vector) ================= -->
   <!-- Left Ring: Fine dark green ellipse tilted at -30 deg -->
-  <ellipse cx="232" cy="246" rx="192" ry="176" fill="none" stroke="#0d3522" stroke-width="2.2" transform="rotate(-30 232 246)"/>
+  <ellipse cx="232" cy="246" rx="192" ry="176" fill="none" stroke="#0d3522" stroke-width="2.4" transform="rotate(-30 232 246)"/>
 
   <!-- Right Ring: Fine dark green ellipse tilted at +28 deg -->
-  <ellipse cx="268" cy="246" rx="192" ry="176" fill="none" stroke="#0d3522" stroke-width="2.2" transform="rotate(28 268 246)"/>
+  <ellipse cx="268" cy="246" rx="192" ry="176" fill="none" stroke="#0d3522" stroke-width="2.4" transform="rotate(28 268 246)"/>
 
   <!-- ================= 8 GREEN SPARKLE STARS ================= -->
-  <!-- Top Pair (Ring Apex and Intersection) -->
+  <!-- Top Pair -->
   <use href="#sparkle-star" x="272" y="72" transform="scale(1.15) translate(-24,-7)"/>
   <use href="#sparkle-star" x="214" y="90" transform="scale(0.95) translate(14,3)"/>
 
-  <!-- Right Pair (Orbit Extremities) -->
+  <!-- Right Pair -->
   <use href="#sparkle-star" x="435" y="278" transform="scale(1.1) translate(-36,-5)"/>
   <use href="#sparkle-star" x="398" y="306" transform="scale(0.9) translate(16,8)"/>
 
-  <!-- Bottom Pair (Ring Lower Base) -->
+  <!-- Bottom Pair -->
   <use href="#sparkle-star" x="268" y="432" transform="scale(1.1) translate(-26,-30)"/>
   <use href="#sparkle-star" x="220" y="446" transform="scale(0.95) translate(18,-22)"/>
 
-  <!-- Left Pair (Orbit Extremities) -->
+  <!-- Left Pair -->
   <use href="#sparkle-star" x="65" y="284" transform="scale(1.15) translate(0,-24)"/>
   <use href="#sparkle-star" x="105" y="260" transform="scale(0.9) translate(0,6)"/>
 
@@ -60,7 +45,6 @@
   <!-- 1. KASA — High-Contrast Didone Serif with Custom Diamonds -->
   <g id="kasa-wordmark" transform="translate(250, 222)">
     <!-- ── Letter K ── -->
-    <!-- Left vertical stem with top serif & bottom serif -->
     <path d="M -118,-42 L -108,-42 L -108,26 L -118,26 Z" fill="#FFFFFF"/>
     <!-- Top-left diamond crowning the K stem -->
     <use href="#diamond-gem" x="-113" y="-50" transform="scale(1.05)"/>
@@ -73,7 +57,6 @@
     <path d="M -44,26 L -24,-42 L -14,-42 L 7,26 L -3,26 L -10,2 L -37,2 L -41,26 Z M -34,-8 L -13,-8 L -20,-28 Q -21,-25 -26,-13 Z" fill="#FFFFFF"/>
 
     <!-- ── Letter S ── -->
-    <!-- Distinctive elegant high-contrast spine -->
     <path d="M 52,-38 Q 38,-46 22,-38 Q 10,-30 16,-16 Q 21,-2 43,4 Q 60,10 55,24 Q 50,34 32,32 Q 16,30 8,20 L 8,30 Q 22,40 38,38 Q 64,36 66,16 Q 68,-2 44,-10 Q 28,-16 30,-26 Q 32,-34 44,-32 Q 52,-31 58,-24 Z" fill="#FFFFFF"/>
     <!-- Diamond resting on top curve of S -->
     <use href="#diamond-gem" x="46" y="-36" transform="scale(0.95)"/>

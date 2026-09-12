@@ -316,10 +316,10 @@ import { Product } from './models/product.model';
       transform: translateY(-1px);
     }
     .logo-img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      width: 44px;
+      height: 44px;
+      border-radius: 0;
+      box-shadow: none;
       object-fit: contain;
     }
     .logo-title {
@@ -474,9 +474,9 @@ import { Product } from './models/product.model';
       margin-bottom: 1rem;
     }
     .footer-logo-img {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      width: 42px; height: 42px;
+      border-radius: 0;
+      box-shadow: none;
       object-fit: contain;
     }
     .footer-logo-title {

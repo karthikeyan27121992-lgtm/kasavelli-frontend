@@ -201,10 +201,10 @@ import { LoginRequest } from '../../models/user.model';
       margin-bottom: 1.75rem;
     }
     .auth-logo-img {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      box-shadow: 0 6px 20px rgba(64, 7, 50, 0.25);
+      width: 72px;
+      height: 72px;
+      border-radius: 0;
+      box-shadow: none;
       object-fit: contain;
       margin-bottom: 0.5rem;
     }
