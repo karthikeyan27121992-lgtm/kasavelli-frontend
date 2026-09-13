@@ -476,7 +476,7 @@ import { Product, Category } from './models/product.model';
     /* ── Footer ─────────────────────────────────── */
     footer {
       background: var(--royal-dark);
-      color: rgba(239,235,225,0.8);
+      color: rgba(255,255,255,0.9);
     }
     .footer-top {
       display: grid;
@@ -520,7 +520,7 @@ import { Product, Category } from './models/product.model';
     .footer-desc {
       font-size: 0.9rem;
       line-height: 1.7;
-      opacity: 0.7;
+      color: rgba(255,255,255,0.75);
       margin-bottom: 1.25rem;
     }
     .social-row {
@@ -552,7 +552,7 @@ import { Product, Category } from './models/product.model';
     .footer-col ul { list-style: none; padding: 0; }
     .footer-col ul li { margin-bottom: 0.6rem; }
     .footer-col ul a {
-      color: rgba(239,235,225,0.65);
+      color: rgba(255,255,255,0.85);
       font-size: 0.9rem;
       text-decoration: none;
       transition: color 0.2s, padding-left 0.2s;
@@ -563,11 +563,11 @@ import { Product, Category } from './models/product.model';
       display: flex; align-items: center; gap: 0.6rem;
       font-size: 0.88rem;
       margin-bottom: 0.6rem;
-      color: rgba(239,235,225,0.65);
+      color: rgba(255,255,255,0.85);
     }
-    .contact-line svg { flex-shrink: 0; opacity: 0.6; }
+    .contact-line svg { flex-shrink: 0; opacity: 0.8; }
     .contact-link {
-      color: rgba(239,235,225,0.85);
+      color: #ffffff;
       text-decoration: none;
       transition: color 0.2s;
     }
@@ -599,11 +599,10 @@ import { Product, Category } from './models/product.model';
     }
     .footer-bottom p {
       font-size: 0.82rem;
-      opacity: 0.55;
       margin: 0;
-      color: var(--cream);
+      color: rgba(255,255,255,0.7);
     }
-    .footer-note { opacity: 0.45 !important; }
+    .footer-note { color: rgba(255,255,255,0.6) !important; }
 
     /* ── Search icon button in nav ── */
     .nav-search-btn {
