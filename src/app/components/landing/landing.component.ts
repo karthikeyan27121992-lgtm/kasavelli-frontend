@@ -494,8 +494,8 @@ import {
     }
 
     /* ══ SHARED ══ */
-    .landing { background: #fff; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .landing { background: #fff; overflow-x: hidden; width: 100%; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; width: 100%; box-sizing: border-box; }
     .sec-head { text-align: center; margin-bottom: 3rem; }
     .sec-head h2 {
       font-family: 'Raleway', sans-serif;
@@ -517,6 +517,7 @@ import {
       margin: 0;
       display: block;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
     .ls-banner-card {
@@ -741,7 +742,7 @@ import {
     .cat-section { padding: 5rem 0; background: #fff; }
     .cat-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
       gap: 1.5rem;
     }
     .cat-card {
@@ -864,7 +865,7 @@ import {
     .offers-section { padding: 5rem 0; background: #faf8f5; }
     .offers-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
       gap: 1.5rem;
     }
     .offer-card {
@@ -895,7 +896,7 @@ import {
     .arrivals-section { padding: 5rem 0; background: #fff; }
     .arrivals-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
       gap: 1.5rem; margin-bottom: 3rem;
     }
     .arrival-card {
@@ -993,6 +994,10 @@ import {
       .about-text-col { padding-right: 0; }
       .about-img-frame::before { display: none; }
       .about-badge { right: 0; }
+      .cat-section { padding: 3.5rem 0; }
+      .about-section { padding: 3.5rem 0; }
+      .offers-section { padding: 3.5rem 0; }
+      .arrivals-section { padding: 3.5rem 0; }
     }
     @media (max-width: 600px) {
       /* Still keep side-by-side split on small phones */
@@ -1015,7 +1020,6 @@ import {
       }
       .ls-gold-accent-strip {
         left: 60%;
-        
         width: 4px;
       }
       .ls-brand-badge {
@@ -1063,24 +1067,41 @@ import {
       .ls-tag { font-size: 0.58rem; gap: 0.25rem; }
       .ls-dot { font-size: 0.4rem; }
       .offers-grid { grid-template-columns: 1fr; }
-      .arrivals-grid { grid-template-columns: 1fr; }
+      .arrivals-grid { grid-template-columns: repeat(2, 1fr); }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .arrival-img-wrap { height: 180px; }
+      .about-stats { padding: 1rem; gap: 0; }
+      .astat { padding: 0 0.75rem; }
+      .astat-n { font-size: 1.5rem; }
+      .sec-head { margin-bottom: 2rem; }
     }
     @media (max-width: 400px) {
-      .ls-banner-card { min-height: 280px; }
+      .ls-banner-card { min-height: 260px; }
       .ls-content-pane {
         flex: 1.5;
-        padding: 1rem 0.6rem 1rem 0.75rem;
+        padding: 1rem 0.5rem 1rem 0.65rem;
+        clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%);
       }
+      .ls-slant-divider { display: none; }
+      .ls-gold-accent-strip { display: none; }
       .ls-title {
-        font-size: clamp(1rem, 4.5vw, 1.3rem);
+        font-size: clamp(0.95rem, 4.5vw, 1.2rem);
       }
-      .ls-desc { font-size: 0.62rem; }
+      .ls-desc { font-size: 0.6rem; }
       .ls-cta-btn {
-        padding: 0.4rem 0.7rem;
-        font-size: 0.6rem;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.58rem;
       }
       .ls-footer-tags { display: none; }
+      .ls-brand-badge { display: none; }
+      .arrivals-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-inner { gap: 2rem; }
+      .about-img-frame { height: 280px; }
+      .cat-section { padding: 2.5rem 0; }
+      .about-section { padding: 2.5rem 0; }
+      .offers-section { padding: 2.5rem 0; }
+      .arrivals-section { padding: 2.5rem 0; }
     }
   `]
 })
