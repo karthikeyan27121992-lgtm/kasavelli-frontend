@@ -350,23 +350,25 @@ import { Product, Category } from './models/product.model';
     .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.1rem;
+      flex-wrap: nowrap;
     }
     .desktop-nav a {
       color: rgba(239,235,225,0.85);
       font-family: 'Raleway', sans-serif;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       font-weight: 500;
-      letter-spacing: 1.2px;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
-      padding: 0.55rem 1rem;
+      padding: 0.5rem 0.7rem;
       border-radius: 2px;
       text-decoration: none;
       transition: all 0.25s ease;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
       cursor: pointer;
+      white-space: nowrap;
     }
     .desktop-nav a:hover {
       color: var(--gold);
@@ -436,7 +438,7 @@ import { Product, Category } from './models/product.model';
     }
     .mobile-nav.open {
       display: flex;
-      max-height: 400px;
+      max-height: 520px;
       padding: 0.5rem 0 1rem;
       border-top: 1px solid rgba(202,178,115,0.2);
     }
@@ -812,7 +814,7 @@ import { Product, Category } from './models/product.model';
     }
 
     /* ── Responsive ──────────────────────────────── */
-    @media (max-width: 900px) {
+    @media (max-width: 1024px) {
       .desktop-nav { display: none; }
       .hamburger   { display: flex; }
       .footer-top  { grid-template-columns: 1fr 1fr; gap: 2rem; }
