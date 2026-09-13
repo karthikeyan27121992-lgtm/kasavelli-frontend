@@ -665,8 +665,8 @@ import { CartItem } from '../../models/product.model';
     .pay-btn {
       width: 100%;
       padding: 1.1rem;
-      background: var(--royal);
-      color: var(--cream);
+      background: #881e62 !important;
+      color: #ffffff !important;
       border: none;
       border-radius: 14px;
       font-family: 'Raleway', sans-serif;
@@ -679,15 +679,21 @@ import { CartItem } from '../../models/product.model';
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      box-shadow: 0 6px 20px rgba(85,23,86,0.3);
+      box-shadow: 0 6px 20px rgba(136,30,98,0.35);
+    }
+    .pay-btn span,
+    .pay-btn svg {
+      color: #ffffff !important;
+      stroke: #ffffff !important;
     }
     .pay-btn:hover:not(:disabled) {
-      background: var(--royal-mid);
+      background: #4a0a38 !important;
+      color: #ffffff !important;
       transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(85,23,86,0.38);
+      box-shadow: 0 10px 28px rgba(74,10,56,0.45);
     }
     .pay-btn:disabled {
-      opacity: 0.45;
+      opacity: 0.55;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
