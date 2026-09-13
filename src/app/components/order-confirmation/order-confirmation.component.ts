@@ -56,6 +56,7 @@ import { Order } from '../../models/product.model';
         </div>
 
         <div class="actions">
+          <a routerLink="/my-orders" class="btn btn-outline">My Orders</a>
           <a routerLink="/products" class="btn btn-primary">Continue Shopping</a>
         </div>
       </div>
@@ -145,9 +146,12 @@ import { Order } from '../../models/product.model';
       margin-bottom: 2rem;
     }
     .total-amount { font-size: 1.4rem; color: #1f2328; }
-    .actions { display: flex; justify-content: center; }
-    .btn { display: inline-block; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer; border: none; }
-    .btn-primary { background: #1f2328; color: white; }
+    .actions { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+    .btn { display: inline-block; padding: 0.75rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer; border: 2px solid transparent; }
+    .btn-primary { background: #881e62; color: white; border-color: #881e62; }
+    .btn-primary:hover { background: #4a0a38; border-color: #4a0a38; }
+    .btn-outline { background: transparent; color: #881e62; border-color: #881e62; }
+    .btn-outline:hover { background: #881e62; color: white; }
     .loading-state, .error-state { text-align: center; padding: 4rem; }
   `]
 })

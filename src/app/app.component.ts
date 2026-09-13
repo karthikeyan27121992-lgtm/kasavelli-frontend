@@ -40,6 +40,14 @@ import { Product, Category } from './models/product.model';
             Cart
             <span class="cart-badge" *ngIf="(cartCount$ | async) as c">{{ c }}</span>
           </a>
+          <a routerLink="/my-orders" *ngIf="isAuthenticated" class="nav-orders">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            My Orders
+          </a>
           <a routerLink="/admin" *ngIf="isAdmin">Admin</a>
           <!-- Search icon -->
           <button class="nav-search-btn" (click)="openSearch()" aria-label="Search">
@@ -61,10 +69,11 @@ import { Product, Category } from './models/product.model';
       <div class="mobile-nav" [class.open]="menuOpen">
         <a routerLink="/"         (click)="menuOpen=false">Home</a>
         <a routerLink="/products" (click)="menuOpen=false">Collections</a>
-        <a routerLink="/cart"     (click)="menuOpen=false" *ngIf="isAuthenticated">
+        <a routerLink="/cart"      (click)="menuOpen=false" *ngIf="isAuthenticated">
           Cart <span class="cart-badge-m" *ngIf="(cartCount$ | async) as c">{{ c }}</span>
         </a>
-        <a routerLink="/admin"    (click)="menuOpen=false" *ngIf="isAdmin">Admin</a>
+        <a routerLink="/my-orders" (click)="menuOpen=false" *ngIf="isAuthenticated">My Orders</a>
+        <a routerLink="/admin"     (click)="menuOpen=false" *ngIf="isAdmin">Admin</a>
         <a routerLink="/login"    (click)="menuOpen=false" *ngIf="!isAuthenticated">Login</a>
         <a (click)="logout(); menuOpen=false" *ngIf="isAuthenticated">Logout</a>
         <!-- Mobile search -->
@@ -363,7 +372,7 @@ import { Product, Category } from './models/product.model';
       color: var(--gold);
       background: rgba(202,178,115,0.1);
     }
-    .nav-cart { position: relative; }
+    .nav-cart, .nav-orders { position: relative; display: flex; align-items: center; gap: 5px; }
     .cart-badge {
       background: var(--gold);
       color: var(--royal-dark);
