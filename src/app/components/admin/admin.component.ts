@@ -199,6 +199,7 @@ import {
             <thead>
               <tr>
                 <th>Order</th>
+                <th>Icon</th>
                 <th>Notification Text</th>
                 <th>Active</th>
                 <th>Actions</th>
@@ -207,6 +208,7 @@ import {
             <tbody>
               <tr *ngFor="let notif of notificationBars">
                 <td data-label="Order"><span class="order-badge">{{ notif.display_order }}</span></td>
+                <td data-label="Icon"><span class="cat-chip">{{ notif.icon_type || 'truck' }}</span></td>
                 <td data-label="Text"><span class="cell-primary">{{ notif.text }}</span></td>
                 <td data-label="Active">
                   <span class="stock-badge" [class.in]="notif.is_active" [class.out]="!notif.is_active">
@@ -731,6 +733,21 @@ import {
               <div class="form-group">
                 <label class="form-label">Announcement Text</label>
                 <textarea class="form-control" [(ngModel)]="notificationData.text" name="notif_text" rows="3" placeholder="e.g. Free shipping on orders above ₹999 · 30-Day easy returns" required></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Icon</label>
+                <select class="form-control" [(ngModel)]="notificationData.icon_type" name="notif_icon" required>
+                  <option value="truck">🚚 Truck — Delivery / Shipping</option>
+                  <option value="speaker">📢 Speaker — Announcement</option>
+                  <option value="tag">🏷️ Tag — Offer / Discount</option>
+                  <option value="shield">🛡️ Shield — Certified / Quality</option>
+                  <option value="gift">🎁 Gift — Packaging / Special</option>
+                  <option value="star">⭐ Star — Featured / Best-seller</option>
+                  <option value="heart">❤️ Heart — Handpicked / Favourite</option>
+                  <option value="sparkles">✨ Sparkles — Made in India</option>
+                  <option value="returns">🔄 Returns — Exchange / Policy</option>
+                  <option value="none">— No Icon</option>
+                </select>
               </div>
               <div class="form-row">
                 <div class="form-group">
@@ -1429,7 +1446,7 @@ export class AdminComponent implements OnInit {
 
   showNotificationModal = false;
   editingNotification: NotificationBar | null = null;
-  notificationData: any = { text: '', display_order: 1, is_active: true };
+  notificationData: any = { text: '', icon_type: 'truck', display_order: 1, is_active: true };
 
   selectedLeadspaceFile: File | null = null;
   selectedStoryFile: File | null = null;
@@ -1646,6 +1663,7 @@ export class AdminComponent implements OnInit {
     this.editingNotification = null;
     this.notificationData = {
       text: '',
+      icon_type: 'truck',
       display_order: this.notificationBars.length + 1,
       is_active: true
     };
