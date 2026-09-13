@@ -496,18 +496,18 @@ import {
     /* ══ SHARED ══ */
     .landing { background: #fff; overflow-x: hidden; width: 100%; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; width: 100%; box-sizing: border-box; }
-    .sec-head { text-align: center; margin-bottom: 3rem; }
+    .sec-head { text-align: center; margin-bottom: 2rem; }
     .sec-head h2 {
       font-family: 'Raleway', sans-serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
       color: var(--royal-dark); font-weight: 700; letter-spacing: 0.5px;
     }
     .sec-line {
-      width: 48px; height: 3px;
+      width: 40px; height: 3px;
       background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      margin: 0.75rem auto 0.75rem; border-radius: 2px;
+      margin: 0.5rem auto 0.5rem; border-radius: 2px;
     }
-    .sec-sub { color: var(--text-light); font-size: 0.95rem; }
+    .sec-sub { color: var(--text-light); font-size: 0.9rem; }
 
     /* ══ 1. FULL-WIDTH LEADSPACE LAYOUT ══ */
     .ls-wrapper {
@@ -739,7 +739,7 @@ import {
     }
 
     /* ══ 2. CATEGORIES ══ */
-    .cat-section { padding: 5rem 0; background: #fff; }
+    .cat-section { padding: 3rem 0; background: #fff; }
     .cat-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
@@ -785,14 +785,14 @@ import {
     .cat-count { font-size: 0.78rem; color: var(--text-light); margin: 0; }
 
     /* ══ 3. ABOUT US ══ */
-    .about-section { padding: 5rem 0; background: var(--cream); }
+    .about-section { padding: 3rem 0; background: var(--cream); }
     .about-inner {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4rem; align-items: center;
+      gap: 3rem; align-items: center;
     }
     .about-img-frame {
-      position: relative; height: 420px; border-radius: 16px;
+      position: relative; height: 380px; border-radius: 16px;
       overflow: visible;
     }
     .about-img-frame::before {
@@ -830,18 +830,18 @@ import {
     }
     .about-title {
       font-family: 'Raleway', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
       font-weight: 700; color: var(--royal-dark); line-height: 1.2;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .about-desc {
-      font-size: 0.95rem; color: var(--text-light);
-      line-height: 1.85; margin-bottom: 1rem;
+      font-size: 0.92rem; color: var(--text-light);
+      line-height: 1.75; margin-bottom: 0.75rem;
     }
     .about-stats {
       display: flex; align-items: center; gap: 0;
-      margin: 2rem 0;
-      background: #faf8f5; border-radius: 10px; padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      background: #faf8f5; border-radius: 10px; padding: 1rem 1.25rem;
     }
     .astat { text-align: center; padding: 0 1.5rem; flex: 1; }
     .astat-n {
@@ -862,15 +862,15 @@ import {
     .about-btn:hover { background: var(--royal); }
 
     /* ══ 4. WHAT WE OFFER ══ */
-    .offers-section { padding: 5rem 0; background: #faf8f5; }
+    .offers-section { padding: 3rem 0; background: #faf8f5; }
     .offers-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
     .offer-card {
       background: #fff; border-radius: 12px;
-      padding: 2rem 1.75rem;
+      padding: 1.5rem 1.5rem;
       border: 1px solid #f0eaee;
       transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
@@ -893,11 +893,11 @@ import {
     .offer-card p { font-size: 0.88rem; color: var(--text-light); line-height: 1.7; margin: 0; }
 
     /* ══ 5. NEW ARRIVALS ══ */
-    .arrivals-section { padding: 5rem 0; background: #fff; }
+    .arrivals-section { padding: 3rem 0; background: #fff; }
     .arrivals-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
-      gap: 1.5rem; margin-bottom: 3rem;
+      gap: 1.25rem; margin-bottom: 2rem;
     }
     .arrival-card {
       background: #fff; border-radius: 10px; overflow: hidden;
@@ -989,15 +989,15 @@ import {
       .ls-title {
         font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       }
-      .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .about-inner { grid-template-columns: 1fr; gap: 2rem; }
       .about-img-col { max-width: 420px; margin: 0 auto; width: 100%; }
       .about-text-col { padding-right: 0; }
       .about-img-frame::before { display: none; }
       .about-badge { right: 0; }
-      .cat-section { padding: 3.5rem 0; }
-      .about-section { padding: 3.5rem 0; }
-      .offers-section { padding: 3.5rem 0; }
-      .arrivals-section { padding: 3.5rem 0; }
+      .cat-section { padding: 2.5rem 0; }
+      .about-section { padding: 2.5rem 0; }
+      .offers-section { padding: 2.5rem 0; }
+      .arrivals-section { padding: 2.5rem 0; }
     }
     @media (max-width: 600px) {
       /* Still keep side-by-side split on small phones */
@@ -1070,10 +1070,10 @@ import {
       .arrivals-grid { grid-template-columns: repeat(2, 1fr); }
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
       .arrival-img-wrap { height: 180px; }
-      .about-stats { padding: 1rem; gap: 0; }
-      .astat { padding: 0 0.75rem; }
-      .astat-n { font-size: 1.5rem; }
-      .sec-head { margin-bottom: 2rem; }
+      .about-stats { padding: 0.75rem; gap: 0; }
+      .astat { padding: 0 0.6rem; }
+      .astat-n { font-size: 1.4rem; }
+      .sec-head { margin-bottom: 1.5rem; }
     }
     @media (max-width: 400px) {
       .ls-banner-card { min-height: 260px; }
@@ -1098,10 +1098,10 @@ import {
       .cat-grid { grid-template-columns: repeat(2, 1fr); }
       .about-inner { gap: 2rem; }
       .about-img-frame { height: 280px; }
-      .cat-section { padding: 2.5rem 0; }
-      .about-section { padding: 2.5rem 0; }
-      .offers-section { padding: 2.5rem 0; }
-      .arrivals-section { padding: 2.5rem 0; }
+      .cat-section { padding: 2rem 0; }
+      .about-section { padding: 2rem 0; }
+      .offers-section { padding: 2rem 0; }
+      .arrivals-section { padding: 2rem 0; }
     }
   `]
 })
