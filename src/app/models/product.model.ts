@@ -100,6 +100,7 @@ export interface Banner {
 export interface NotificationBar {
   id: number;
   text: string;
+  icon_type: string;
   is_active: boolean;
   display_order: number;
   created_at?: string;

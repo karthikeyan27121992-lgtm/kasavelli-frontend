@@ -23,12 +23,72 @@ import {
 
       <div class="notif-stage">
         <div class="notif-item" [class.visible]="notifVisibleState">
-          <svg class="notif-truck-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
-            <rect x="1" y="3" width="15" height="13" rx="1"/>
-            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-            <circle cx="5.5" cy="18.5" r="2.5"/>
-            <circle cx="18.5" cy="18.5" r="2.5"/>
-          </svg>
+
+          <!-- Dynamic icon based on icon_type -->
+          <ng-container [ngSwitch]="currentNotif.icon_type">
+
+            <!-- truck -->
+            <svg *ngSwitchCase="'truck'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+
+            <!-- speaker -->
+            <svg *ngSwitchCase="'speaker'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            </svg>
+
+            <!-- tag -->
+            <svg *ngSwitchCase="'tag'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+
+            <!-- shield -->
+            <svg *ngSwitchCase="'shield'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+
+            <!-- gift -->
+            <svg *ngSwitchCase="'gift'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/>
+              <line x1="12" y1="22" x2="12" y2="7"/>
+              <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+              <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+            </svg>
+
+            <!-- star -->
+            <svg *ngSwitchCase="'star'" class="notif-icon" viewBox="0 0 24 24" fill="#f5cf62" stroke="#f5cf62" stroke-width="1.5" width="16" height="16">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+
+            <!-- heart -->
+            <svg *ngSwitchCase="'heart'" class="notif-icon" viewBox="0 0 24 24" fill="#f5cf62" stroke="#f5cf62" stroke-width="1.5" width="16" height="16">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+
+            <!-- sparkles -->
+            <svg *ngSwitchCase="'sparkles'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+            </svg>
+
+            <!-- returns -->
+            <svg *ngSwitchCase="'returns'" class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.78"/>
+            </svg>
+
+            <!-- none — no icon -->
+            <span *ngSwitchCase="'none'"></span>
+
+            <!-- default fallback = truck -->
+            <svg *ngSwitchDefault class="notif-icon" viewBox="0 0 24 24" fill="none" stroke="#f5cf62" stroke-width="2" width="16" height="16">
+              <rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+
+          </ng-container>
+
           <span class="notif-tag" *ngIf="currentNotif.tag">{{ currentNotif.tag }}</span>
           <span class="notif-text">{{ currentNotif.text }}</span>
         </div>
@@ -633,7 +693,7 @@ import {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 54%;
+      left: 46%;
       width: 45px;
       background: linear-gradient(to bottom, #200422, #200422);
       transform: skewX(-14deg);
@@ -644,7 +704,7 @@ import {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 56.5%;
+      left: 47.8%;
       width: 6px;
       background: linear-gradient(to bottom, var(--gold-light), var(--gold-dark));
       transform: skewX(-14deg);
@@ -1115,45 +1175,43 @@ export class LandingComponent implements OnInit, OnDestroy {
     }, 350);
   }
 
-  get notificationList(): Array<{ tag: string; text: string }> {
-    const rawTexts: string[] = [];
+  get notificationList(): Array<{ tag: string; text: string; icon_type: string }> {
     if (this.notificationBars && this.notificationBars.length > 0) {
+      const items: Array<{ tag: string; text: string; icon_type: string }> = [];
       this.notificationBars.forEach(n => {
-        if (n.text) {
-          const parts = n.text.split(/\s*·\s*/);
-          parts.forEach(p => {
-            const trimmed = p.trim();
-            if (trimmed) rawTexts.push(trimmed);
-          });
-        }
+        if (!n.text) return;
+        const icon = n.icon_type || 'truck';
+        // Support splitting a single entry on · into multiple slides
+        const parts = n.text.split(/\s*·\s*/);
+        parts.forEach(p => {
+          const raw = p.trim();
+          if (!raw) return;
+          if (raw.includes('|')) {
+            const [tag, ...rest] = raw.split('|');
+            items.push({ tag: tag.trim(), text: rest.join('|').trim(), icon_type: icon });
+          } else if (raw.includes('—')) {
+            const [tag, ...rest] = raw.split('—');
+            items.push({ tag: tag.trim(), text: rest.join('—').trim(), icon_type: icon });
+          } else {
+            items.push({ tag: '', text: raw, icon_type: icon });
+          }
+        });
       });
+      if (items.length > 0) return items;
     }
 
-    if (rawTexts.length === 0) {
-      rawTexts.push(
-        'FLAT 15% OFF | Use Code: SHINE15 on your first order',
-        'FREE SHIPPING | On all prepaid orders above ₹999 across India',
-        '925 SILVER | Certified authentic hallmark with certificate',
-        'EASY RETURNS | 30-Day hassle-free return & doorstep exchange'
-      );
-    }
-
-    return rawTexts.map(raw => {
-      if (raw.includes('|')) {
-        const [tag, ...rest] = raw.split('|');
-        return { tag: tag.trim(), text: rest.join('|').trim() };
-      }
-      if (raw.includes('—')) {
-        const [tag, ...rest] = raw.split('—');
-        return { tag: tag.trim(), text: rest.join('—').trim() };
-      }
-      return { tag: '', text: raw };
-    });
+    // Fallback defaults
+    return [
+      { tag: 'FLAT 15% OFF', text: 'Use Code: SHINE15 on your first order',          icon_type: 'tag'     },
+      { tag: 'FREE SHIPPING', text: 'On all prepaid orders above ₹999 across India', icon_type: 'truck'   },
+      { tag: '925 SILVER',   text: 'Certified authentic hallmark with certificate',   icon_type: 'shield'  },
+      { tag: 'EASY RETURNS', text: '30-Day hassle-free return & doorstep exchange',   icon_type: 'returns' },
+    ];
   }
 
-  get currentNotif(): { tag: string; text: string } {
+  get currentNotif(): { tag: string; text: string; icon_type: string } {
     const list = this.notificationList;
-    return list[this.activeNotifIndex % list.length] || { tag: '', text: '' };
+    return list[this.activeNotifIndex % list.length] || { tag: '', text: '', icon_type: 'truck' };
   }
 
   get formattedTitle(): string {
